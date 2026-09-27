@@ -1,0 +1,25 @@
+name: Report an error (erratum)
+description: Tell us about a mistake or an outdated command in the book
+title: "[Erratum] "
+labels: ["erratum"]
+body:
+  - type: dropdown
+    id: format
+    attributes:
+      label: Format
+      options: [Complete PDF (A4), Ebook (Kindle/EPUB), Paperback Volume I, Paperback Volume II]
+    validations: {required: true}
+  - type: input
+    id: edition
+    attributes: {label: Edition line from the copyright page, placeholder: "First edition, 2026"}
+  - type: input
+    id: location
+    attributes: {label: Chapter, section and page, placeholder: "Chapter 5, section 5.3, page 187"}
+    validations: {required: true}
+  - type: textarea
+    id: problem
+    attributes: {label: What the book says, and what you think is correct}
+    validations: {required: true}
+  - type: input
+    id: source
+    attributes: {label: Source (documentation link or software version), placeholder: "Cumulus Linux 5.18 docs, RoCE page"}

@@ -1,0 +1,2614 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Free hands-on labs on NVIDIA DSX Air, errata and study files for the NCP-AIN Certification Guide by Vakeesan Thevarajah (Cloudfoxy Ltd).">
+      
+      
+        <meta name="author" content="Vakeesan Thevarajah">
+      
+      
+        <link rel="canonical" href="https://cloudfoxy-ltd.github.io/ncp-ain-guide/labs/lab01/">
+      
+      
+        <link rel="prev" href="../lab00/">
+      
+      
+        <link rel="next" href="../lab02/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Lab 1 — NVUE essentials - NCP-AIN Certification Guide — Labs & Errata</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="cyan" data-md-color-accent="purple">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#lab-1-nvue-essentials-on-cumulus-vx" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="NCP-AIN Certification Guide — Labs &amp; Errata" class="md-header__button md-logo" aria-label="NCP-AIN Certification Guide — Labs & Errata" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            NCP-AIN Certification Guide — Labs & Errata
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Lab 1 — NVUE essentials
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="cyan" data-md-color-accent="purple"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="cyan" data-md-color-accent="purple"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Cloudfoxy-Ltd/ncp-ain-guide" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Cloudfoxy-Ltd/ncp-ain-guide
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
+          
+  
+  
+  Hands-On Labs
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../book/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  The Book
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../errata/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Errata
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../flashcards/" class="md-tabs__link">
+          
+  
+  
+  Study Files
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../license/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Licence
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="NCP-AIN Certification Guide — Labs &amp; Errata" class="md-nav__button md-logo" aria-label="NCP-AIN Certification Guide — Labs & Errata" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    NCP-AIN Certification Guide — Labs & Errata
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Cloudfoxy-Ltd/ncp-ain-guide" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Cloudfoxy-Ltd/ncp-ain-guide
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hands-On Labs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Hands-On Labs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab00/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 0 — Air and topology
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 1 — NVUE essentials
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 1 — NVUE essentials
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#lab-at-a-glance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lab at a glance
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#objectives" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Objectives
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#background" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Background
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-by-step" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step-by-step
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Step-by-step">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#task-1-first-login-and-password-change" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 1 — First login and password change
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-2-explore-the-object-model-with-nv-show" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 2 — Explore the object model with nv show
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-3-set-the-hostname-through-nvue" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 3 — Set the hostname through NVUE
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-4-pending-vs-applied-vs-startup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 4 — Pending vs applied vs startup
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-5-descriptions-mtu-9216-and-loopbacks-on-every-switch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 5 — Descriptions, MTU 9216 and loopbacks on every switch
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-6-history-revisions-and-rollback" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 6 — History, revisions and rollback
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-7-trial-apply-with-confirm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 7 — Trial apply with --confirm
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-8-read-configuration-through-the-nvue-rest-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 8 — Read configuration through the NVUE REST API
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#verify" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verify
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#break-and-fix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Break and fix
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Break and fix">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fault-1-my-change-was-there-now-it-has-gone" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fault 1 — "My change was there, now it has gone"
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fault-2-a-hand-edit-that-nvue-overwrites" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fault 2 — A hand edit that NVUE overwrites
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#clean-up-save-state" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Clean-up / save state
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exam-tie-in" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exam tie-in
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#review-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Review questions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Review questions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#answers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Answers
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab02/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 2 — eBGP unnumbered underlay
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab03/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 3 — Lossless RoCE and Soft-RoCE
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab04/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 4 — AR, ECMP and telemetry
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab05/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 5 — BGP-EVPN multi-tenancy
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab06/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 6 — Air power skills
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab07/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 7 — Monitoring and troubleshooting
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab08/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 8 — InfiniBand with ibsim
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab09/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 9 — perftest over Soft-RoCE
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab10/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 10 — Kubernetes Network Operator
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab11/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 11 — NVUE templates
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab12/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 12 — Ansible automation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab13/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 13 — Capstone challenge
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../appendix/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Appendices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../book/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The Book
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../errata/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Errata
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Study Files
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Study Files
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../flashcards/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Flashcards
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lab-files/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab files
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../license/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Licence
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#lab-at-a-glance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lab at a glance
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#objectives" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Objectives
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#background" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Background
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-by-step" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step-by-step
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Step-by-step">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#task-1-first-login-and-password-change" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 1 — First login and password change
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-2-explore-the-object-model-with-nv-show" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 2 — Explore the object model with nv show
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-3-set-the-hostname-through-nvue" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 3 — Set the hostname through NVUE
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-4-pending-vs-applied-vs-startup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 4 — Pending vs applied vs startup
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-5-descriptions-mtu-9216-and-loopbacks-on-every-switch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 5 — Descriptions, MTU 9216 and loopbacks on every switch
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-6-history-revisions-and-rollback" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 6 — History, revisions and rollback
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-7-trial-apply-with-confirm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 7 — Trial apply with --confirm
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-8-read-configuration-through-the-nvue-rest-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 8 — Read configuration through the NVUE REST API
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#verify" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verify
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#break-and-fix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Break and fix
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Break and fix">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fault-1-my-change-was-there-now-it-has-gone" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fault 1 — "My change was there, now it has gone"
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fault-2-a-hand-edit-that-nvue-overwrites" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fault 2 — A hand edit that NVUE overwrites
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#clean-up-save-state" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Clean-up / save state
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exam-tie-in" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exam tie-in
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#review-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Review questions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Review questions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#answers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Answers
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="lab-1-nvue-essentials-on-cumulus-vx">Lab 1 — NVUE Essentials on Cumulus VX<a class="headerlink" href="#lab-1-nvue-essentials-on-cumulus-vx" title="Permanent link">&para;</a></h1>
+<div class="admonition abstract">
+<p class="admonition-title">Companion to the NCP-AIN Certification Guide</p>
+<p>This free lab is part of the hands-on companion to <em>NCP-AIN Certification Guide</em> by Vakeesan Thevarajah (Cloudfoxy Ltd). The book explains the theory, design choices and hardware behaviour behind every step. <a class="md-button md-button--primary" href="../../book/">Get the book</a> <a class="md-button" href="../../sample/NCP-AIN_Sample.pdf">Free sample</a></p>
+</div>
+<h2 id="lab-at-a-glance">Lab at a glance<a class="headerlink" href="#lab-at-a-glance" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Book chapters</td>
+<td>Chapter 4 (Cumulus Linux and NVUE Essentials); Chapter 21 (NVUE Templates and Configuration Management) for the revision model</td>
+</tr>
+<tr>
+<td>Exam objectives</td>
+<td>2.1 Configure Spectrum-X switches (foundation: the switch OS and NVUE) · 6.1 Manage switch configuration with NVUE · supports 2.4 (NVIDIA Air)</td>
+</tr>
+<tr>
+<td>Time</td>
+<td>75–90 minutes</td>
+</tr>
+<tr>
+<td>Air resources used</td>
+<td>Simulation <code>helix-b-air</code>: hxb-spine01, hxb-spine02, hxb-leaf-r1 … hxb-leaf-r4 (6 × Cumulus VX 5.16.1) and oob-mgmt-server. The GPU servers can stay powered but are not used.</td>
+</tr>
+<tr>
+<td>Prerequisite labs</td>
+<td>Lab 0 (simulation imported from <code>helix-b-air.json</code>, started, and oob-mgmt-server reachable)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="objectives">Objectives<a class="headerlink" href="#objectives" title="Permanent link">&para;</a></h2>
+<p>By the end of this lab you will be able to:</p>
+<ul>
+<li>Log in to a Cumulus VX switch from the out-of-band jump host and change the default password.</li>
+<li>Use <code>nv show</code>, <code>nv set</code> and <code>nv unset</code>, with Tab completion, to read and change the NVUE object model.</li>
+<li>Explain and observe the <strong>pending</strong>, <strong>applied</strong> and <strong>startup</strong> configurations, and use <code>nv config diff</code>, <code>nv config apply</code> and <code>nv config save</code>.</li>
+<li>Find past changes with <code>nv config history</code> and <code>nv config revision</code>, and roll back with <code>nv config apply &lt;revision&gt;</code>.</li>
+<li>Make a risky change safely with <code>nv config apply --confirm</code> and let it roll back by itself.</li>
+<li>Give every switch in Helix-B its hostname, port descriptions, jumbo MTU (9216) and loopback address, ready for the underlay in Lab 2.</li>
+<li>Read configuration through the NVUE REST API with <code>curl</code> on port 8765.</li>
+</ul>
+<h2 id="background">Background<a class="headerlink" href="#background" title="Permanent link">&para;</a></h2>
+<p>Cumulus Linux 5.x is configured through <strong>NVUE</strong>, an object model of the whole switch. Every <code>nv</code> command addresses a path in that model, for example <code>interface swp31 link mtu</code> or <code>system hostname</code>. The same paths are exposed by the NVUE REST API on TCP port 8765, which is why the CLI, the API, templates (Chapter 21) and Ansible (Chapter 22) all describe configuration in the same way.</p>
+<p>NVUE never changes the running switch while you type. <code>nv set</code> and <code>nv unset</code> only build a <strong>pending</strong> revision. <code>nv config apply</code> turns pending into the <strong>applied</strong> configuration, and NVUE then renders the Linux files (<code>/etc/network/interfaces</code>, <code>/etc/frr/frr.conf</code> and others) and reloads the services. With auto-save enabled (the default in Cumulus Linux 5.x), each apply is also written to the <strong>startup</strong> configuration, <code>/etc/nvue.d/startup.yaml</code>, which is what the switch loads at boot. With auto-save disabled you need an explicit <code>nv config save</code>.</p>
+<p>Every apply is stored as a numbered revision. You can compare revisions with <code>nv config diff</code>, see who applied what with <code>nv config history</code>, and return to an earlier revision with <code>nv config apply &lt;revision&gt;</code>. For changes that could cut you off, <code>nv config apply --confirm &lt;time&gt;</code> applies the change on trial and rolls it back automatically unless you confirm it in time.</p>
+<figure>
+<p><img alt="Figure L1.1: Pending, applied and startup in NVUE" loading="lazy" src="../img/fig-L1_1.png" /></p>
+<figcaption><strong>Figure L1.1: Pending, applied and startup in NVUE.</strong> nv set and nv unset only change the pending revision. nv config apply makes pending the applied (running) configuration and, with auto-save on, also writes startup.yaml. nv config apply --confirm applies on trial and rolls back unless confirmed. nv config apply with a revision number returns to an earlier state.</figcaption>
+</figure>
+<div class="admonition note">
+<p class="admonition-title">Version note</p>
+<p>This guide uses Cumulus VX 5.16.1. NVUE paths occasionally move between 5.x releases (for example, SVI addressing moved under an <code>ipv4</code> object in 5.15; Lab 5 covers that). The commands in this lab were checked against the Cumulus Linux 5.16 documentation. If a command is rejected on your release, press Tab after the last accepted word to see what NVUE expects.</p>
+</div>
+<h2 id="step-by-step">Step-by-step<a class="headerlink" href="#step-by-step" title="Permanent link">&para;</a></h2>
+<p>The addressing and naming plan for this lab is below. Keep it open; every task refers to it.</p>
+<table>
+<thead>
+<tr>
+<th>Switch</th>
+<th>Loopback (lo)</th>
+<th>Uplink ports</th>
+<th>Downlink ports</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>hxb-spine01</td>
+<td>10.255.0.1/32</td>
+<td>–</td>
+<td>swp1–swp4 → leaf-r1…r4 swp31</td>
+</tr>
+<tr>
+<td>hxb-spine02</td>
+<td>10.255.0.2/32</td>
+<td>–</td>
+<td>swp1–swp4 → leaf-r1…r4 swp32</td>
+</tr>
+<tr>
+<td>hxb-leaf-r1</td>
+<td>10.255.0.11/32</td>
+<td>swp31 → spine01 swp1, swp32 → spine02 swp1</td>
+<td>swp1 → hxb-gpu01 eth1, swp2 → hxb-gpu03 eth1</td>
+</tr>
+<tr>
+<td>hxb-leaf-r2</td>
+<td>10.255.0.12/32</td>
+<td>swp31 → spine01 swp2, swp32 → spine02 swp2</td>
+<td>swp1 → hxb-gpu01 eth2, swp2 → hxb-gpu03 eth2</td>
+</tr>
+<tr>
+<td>hxb-leaf-r3</td>
+<td>10.255.0.13/32</td>
+<td>swp31 → spine01 swp3, swp32 → spine02 swp3</td>
+<td>swp1 → hxb-gpu02 eth1, swp2 → hxb-gpu04 eth1</td>
+</tr>
+<tr>
+<td>hxb-leaf-r4</td>
+<td>10.255.0.14/32</td>
+<td>swp31 → spine01 swp4, swp32 → spine02 swp4</td>
+<td>swp1 → hxb-gpu02 eth2, swp2 → hxb-gpu04 eth2</td>
+</tr>
+</tbody>
+</table>
+<figure>
+<p><img alt="Figure L1.2: What Lab 1 builds on each switch" loading="lazy" src="../img/fig-L1_2.png" /></p>
+<figcaption><strong>Figure L1.2: What Lab 1 builds on each switch.</strong> Tasks 1–4 are learned on hxb-leaf-r1. Task 5 then applies the same pattern to all six switches, and Tasks 6–8 exercise history, trial applies and the REST API on hxb-leaf-r1.</figcaption>
+</figure>
+<h3 id="task-1-first-login-and-password-change">Task 1 — First login and password change<a class="headerlink" href="#task-1-first-login-and-password-change" title="Permanent link">&para;</a></h3>
+<p><strong>Do this on all switches</strong></p>
+<table>
+<thead>
+<tr>
+<th>Switch</th>
+<th>Log in from oob-mgmt-server with</th>
+<th>New password</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>hxb-spine01</td>
+<td><code>ssh cumulus@hxb-spine01</code></td>
+<td><code>CumulusLinux!</code></td>
+</tr>
+<tr>
+<td>hxb-spine02</td>
+<td><code>ssh cumulus@hxb-spine02</code></td>
+<td><code>CumulusLinux!</code></td>
+</tr>
+<tr>
+<td>hxb-leaf-r1</td>
+<td><code>ssh cumulus@hxb-leaf-r1</code></td>
+<td><code>CumulusLinux!</code></td>
+</tr>
+<tr>
+<td>hxb-leaf-r2</td>
+<td><code>ssh cumulus@hxb-leaf-r2</code></td>
+<td><code>CumulusLinux!</code></td>
+</tr>
+<tr>
+<td>hxb-leaf-r3</td>
+<td><code>ssh cumulus@hxb-leaf-r3</code></td>
+<td><code>CumulusLinux!</code></td>
+</tr>
+<tr>
+<td>hxb-leaf-r4</td>
+<td><code>ssh cumulus@hxb-leaf-r4</code></td>
+<td><code>CumulusLinux!</code></td>
+</tr>
+</tbody>
+</table>
+<ol>
+<li>
+<p>In the Air console, open the <strong>oob-mgmt-server</strong> terminal and log in as <code>ubuntu</code> / <code>nvidia</code> (check the login banner or your Air node panel if these differ). If Air asks you to change this password too, do so and note it.</p>
+</li>
+<li>
+<p>From the jump host, connect to the first leaf:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>ubuntu@oob-mgmt-server:~$ ssh cumulus@hxb-leaf-r1
+</code></pre></div>
+</li>
+<li>
+<p>Accept the host key (<code>yes</code>), enter the default password <code>cumulus</code>, and then follow the forced password change: enter <code>cumulus</code> again as the current password, then <code>CumulusLinux!</code> twice.</p>
+<p><strong>Expected output</strong> (illustrative; wording varies by release):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>cumulus@hxb-leaf-r1&#39;s password:
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>You are required to change your password immediately (administrator enforced).
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>Changing password for cumulus.
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>Current password:
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>New password:
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>Retype new password:
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>passwd: password updated successfully
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>Connection to hxb-leaf-r1 closed.
+</code></pre></div>
+</li>
+<li>
+<p>The session closes after the change on many releases. Log in again with the new password:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>ubuntu@oob-mgmt-server:~$ ssh cumulus@hxb-leaf-r1
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>cumulus@hxb-leaf-r1:mgmt:~$
+</code></pre></div>
+</li>
+<li>
+<p>Repeat steps 2–4 for the other five switches, using the table above. Use <code>exit</code> to return to the jump host each time.</p>
+<div class="admonition info">
+<p class="admonition-title">Field note</p>
+<p><code>:mgmt:</code> in the prompt means your shell runs in the management VRF, because you arrived over eth0. <code>ping</code> and <code>traceroute</code> still use the default (data-plane) VRF unless you add <code>-I mgmt</code>. You will rely on that in Lab 2.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Use the same new password on every switch. The REST API step in Task 8 and the automation labs later assume <code>cumulus</code> / <code>CumulusLinux!</code>. If you choose something else, substitute it everywhere.</p>
+</div>
+</li>
+</ol>
+<p><strong>Checkpoint</strong></p>
+<ul>
+<li>You can log in to all six switches from oob-mgmt-server with <code>CumulusLinux!</code>.</li>
+<li>The prompt on each switch ends in <code>:mgmt:~$</code>.</li>
+</ul>
+<h3 id="task-2-explore-the-object-model-with-nv-show">Task 2 — Explore the object model with nv show<a class="headerlink" href="#task-2-explore-the-object-model-with-nv-show" title="Permanent link">&para;</a></h3>
+<p>Work on <strong>hxb-leaf-r1</strong> for Tasks 2–4.</p>
+<ol>
+<li>
+<p>Look at the system object and the interface summary:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv show system
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv show interface
+</code></pre></div>
+<p><strong>Expected output</strong> (illustrative, trimmed):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>                     operational          applied
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>-------------------  -------------------  -----------
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>hostname             hxb-leaf-r1          cumulus
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>build                Cumulus Linux 5.16.1
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>uptime               0:24:10
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>timezone             Etc/UTC
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>Interface  Admin Status  Oper Status  Speed  MTU    Type      Remote Host   Remote Port  Summary
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>---------  ------------  -----------  -----  -----  --------  ------------  -----------  -------------------------
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>eth0       up            up           1G     1500   eth       oob-mgmt-sw…  swp2         IP Address: 192.168.200.x/24
+<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>lo         up            up                  65536  loopback                             IP Address:   127.0.0.1/8
+<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>swp1       down          down                9216   swp
+<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>...
+</code></pre></div>
+</li>
+<li>
+<p>Note the two columns in <code>nv show system</code>: <strong>operational</strong> is what the switch is actually doing; <strong>applied</strong> is what NVUE has been told. If they differ (for example, Air set the hostname at boot outside NVUE), NVUE does not yet own that setting.</p>
+</li>
+<li>
+<p>Use Tab completion to discover the tree. Press Tab twice after each partial command:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv show &lt;TAB&gt;&lt;TAB&gt;
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv show interface swp31 &lt;TAB&gt;&lt;TAB&gt;
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv set interface swp31 link &lt;TAB&gt;&lt;TAB&gt;
+</code></pre></div>
+</li>
+<li>
+<p>Try machine-readable output, which automation uses in Labs 11 and 12:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv show interface lo -o json
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv config show
+</code></pre></div>
+<p><code>nv config show</code> prints the whole applied configuration as YAML. On a fresh switch it is short.</p>
+</li>
+<li>
+<p>Ask NVUE where a setting lives with <code>nv config find</code> or <code>nv config lookup</code> if your release has them (Tab after <code>nv config</code> to check). This is useful when you remember a value but not its path.</p>
+</li>
+</ol>
+<p><strong>Checkpoint</strong></p>
+<ul>
+<li>You can explain the difference between the operational and applied columns.</li>
+<li><code>nv show interface</code> lists eth0, lo and the swp ports.</li>
+</ul>
+<h3 id="task-3-set-the-hostname-through-nvue">Task 3 — Set the hostname through NVUE<a class="headerlink" href="#task-3-set-the-hostname-through-nvue" title="Permanent link">&para;</a></h3>
+<ol>
+<li>
+<p>Stage the hostname:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv set system hostname hxb-leaf-r1
+</code></pre></div>
+</li>
+<li>
+<p>Look at what is pending before you apply it:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv config diff
+</code></pre></div>
+<p><strong>Expected output</strong> (illustrative):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>- set:
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>    system:
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>      hostname: hxb-leaf-r1
+</code></pre></div>
+</li>
+<li>
+<p>Apply it. If NVUE asks <code>Are you sure? [y/N]</code>, answer <code>y</code>. The output below is illustrative; your revision number will differ:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv config apply
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>applied [rev_id: 2]
+</code></pre></div>
+</li>
+<li>
+<p>Confirm that the applied and operational values now agree:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv show system
+</code></pre></div>
+<div class="admonition info">
+<p class="admonition-title">Field note</p>
+<p>Air often sets the hostname from the node name, so your prompt may already have shown <code>hxb-leaf-r1</code>. Setting it through NVUE still matters: it puts the hostname in the applied and startup configuration, so NVUE owns it. The shell prompt only changes when you next log in.</p>
+</div>
+</li>
+</ol>
+<p><strong>Checkpoint</strong></p>
+<ul>
+<li><code>nv show system</code> shows <code>hxb-leaf-r1</code> in both the operational and applied columns.</li>
+<li><code>nv config diff</code> now prints nothing (nothing is pending).</li>
+</ul>
+<h3 id="task-4-pending-vs-applied-vs-startup">Task 4 — Pending vs applied vs startup<a class="headerlink" href="#task-4-pending-vs-applied-vs-startup" title="Permanent link">&para;</a></h3>
+<ol>
+<li>
+<p>Stage a description on the first uplink but <strong>do not apply it</strong>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv set interface swp31 description to-hxb-spine01-swp1
+</code></pre></div>
+</li>
+<li>
+<p>Look at the same object in each revision:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv show interface swp31 --pending
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv show interface swp31 --applied
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv show interface swp31 --startup
+</code></pre></div>
+<p><strong>Expected result:</strong> only <code>--pending</code> shows the description. Applied and startup do not have it yet.</p>
+</li>
+<li>
+<p>Check the auto-save setting:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv show system config auto-save
+</code></pre></div>
+<p><strong>Expected output</strong> (illustrative):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>       operational  applied
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>-----  -----------  -------
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>state  enabled      enabled
+</code></pre></div>
+</li>
+<li>
+<p>Now turn auto-save off, so you can see the three revisions separate. Apply both changes together:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv set system config auto-save state disabled
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv config diff
+<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv config apply
+</code></pre></div>
+</li>
+<li>
+<p>Compare applied with startup:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv config diff applied startup
+</code></pre></div>
+<p><strong>Expected output</strong> (illustrative): the description (and the auto-save change itself) appear, because they are applied but not yet in <code>startup.yaml</code>.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>- set:
+<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>    interface:
+<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a>      swp31:
+<a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a>        description: to-hxb-spine01-swp1
+<a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a>    system:
+<a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a>      config:
+<a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a>        auto-save:
+<a id="__codelineno-18-8" name="__codelineno-18-8" href="#__codelineno-18-8"></a>          state: disabled
+</code></pre></div>
+</li>
+<li>
+<p>Save applied to startup and compare again:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv config save
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv config diff applied startup
+</code></pre></div>
+</li>
+</ol>
+<p>The second diff should now be empty.</p>
+<ol>
+<li>
+<p>Turn auto-save back on, because the rest of this guide assumes it:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv set system config auto-save state enabled
+<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv config apply
+<a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv config diff applied startup
+</code></pre></div>
+</li>
+<li>
+<p>Look at the startup file itself (read only; never edit it by hand):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ sudo cat /etc/nvue.d/startup.yaml
+</code></pre></div>
+<div class="admonition danger">
+<p class="admonition-title">Exam trap</p>
+<p><code>nv config save</code> does <strong>not</strong> apply anything. It copies the <em>applied</em> configuration to startup. Only <code>nv config apply</code> changes the running switch. A change that is only pending is lost at reboot.</p>
+</div>
+</li>
+</ol>
+<p><strong>Checkpoint</strong></p>
+<ul>
+<li>You saw a change exist in pending only, then in applied but not startup, then in all three.</li>
+<li><code>nv show system config auto-save</code> shows <code>enabled</code> again.</li>
+</ul>
+<h3 id="task-5-descriptions-mtu-9216-and-loopbacks-on-every-switch">Task 5 — Descriptions, MTU 9216 and loopbacks on every switch<a class="headerlink" href="#task-5-descriptions-mtu-9216-and-loopbacks-on-every-switch" title="Permanent link">&para;</a></h3>
+<p>Now give every switch its identity and port settings. Ports that NVUE configures are brought up; we also set <code>link state up</code> explicitly so the intent is clear in the configuration.</p>
+<p><strong>Do this on all switches</strong></p>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Spines (hxb-spine01, hxb-spine02)</th>
+<th>Leaves (hxb-leaf-r1 … r4)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Hostname</td>
+<td><code>nv set system hostname &lt;name&gt;</code></td>
+<td><code>nv set system hostname &lt;name&gt;</code></td>
+</tr>
+<tr>
+<td>Ports</td>
+<td>swp1–swp4</td>
+<td>swp1, swp2, swp31, swp32</td>
+</tr>
+<tr>
+<td>Admin state</td>
+<td><code>link state up</code></td>
+<td><code>link state up</code></td>
+</tr>
+<tr>
+<td>MTU</td>
+<td><code>link mtu 9216</code></td>
+<td><code>link mtu 9216</code></td>
+</tr>
+<tr>
+<td>Description</td>
+<td>to-hxb-leaf-rN-swp31/32</td>
+<td>server or spine port name</td>
+</tr>
+<tr>
+<td>Loopback</td>
+<td>10.255.0.1/32, 10.255.0.2/32</td>
+<td>10.255.0.11/32 … 10.255.0.14/32</td>
+</tr>
+<tr>
+<td>Finish with</td>
+<td><code>nv config diff</code>, then <code>nv config apply -y</code></td>
+<td><code>nv config diff</code>, then <code>nv config apply -y</code></td>
+</tr>
+</tbody>
+</table>
+<p>The values differ per switch, so a full block is given for each. Paste each block into the matching switch.</p>
+<p><strong>hxb-spine01</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>cumulus@hxb-spine01:mgmt:~$ nv set system hostname hxb-spine01
+<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a>cumulus@hxb-spine01:mgmt:~$ nv set interface swp1 description to-hxb-leaf-r1-swp31
+<a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a>cumulus@hxb-spine01:mgmt:~$ nv set interface swp2 description to-hxb-leaf-r2-swp31
+<a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a>cumulus@hxb-spine01:mgmt:~$ nv set interface swp3 description to-hxb-leaf-r3-swp31
+<a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a>cumulus@hxb-spine01:mgmt:~$ nv set interface swp4 description to-hxb-leaf-r4-swp31
+<a id="__codelineno-22-6" name="__codelineno-22-6" href="#__codelineno-22-6"></a>cumulus@hxb-spine01:mgmt:~$ nv set interface swp1-4 link state up
+<a id="__codelineno-22-7" name="__codelineno-22-7" href="#__codelineno-22-7"></a>cumulus@hxb-spine01:mgmt:~$ nv set interface swp1-4 link mtu 9216
+<a id="__codelineno-22-8" name="__codelineno-22-8" href="#__codelineno-22-8"></a>cumulus@hxb-spine01:mgmt:~$ nv set interface lo ip address 10.255.0.1/32
+<a id="__codelineno-22-9" name="__codelineno-22-9" href="#__codelineno-22-9"></a>cumulus@hxb-spine01:mgmt:~$ nv config diff
+<a id="__codelineno-22-10" name="__codelineno-22-10" href="#__codelineno-22-10"></a>cumulus@hxb-spine01:mgmt:~$ nv config apply -y
+</code></pre></div>
+<p><strong>hxb-spine02</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>cumulus@hxb-spine02:mgmt:~$ nv set system hostname hxb-spine02
+<a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a>cumulus@hxb-spine02:mgmt:~$ nv set interface swp1 description to-hxb-leaf-r1-swp32
+<a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a>cumulus@hxb-spine02:mgmt:~$ nv set interface swp2 description to-hxb-leaf-r2-swp32
+<a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a>cumulus@hxb-spine02:mgmt:~$ nv set interface swp3 description to-hxb-leaf-r3-swp32
+<a id="__codelineno-23-5" name="__codelineno-23-5" href="#__codelineno-23-5"></a>cumulus@hxb-spine02:mgmt:~$ nv set interface swp4 description to-hxb-leaf-r4-swp32
+<a id="__codelineno-23-6" name="__codelineno-23-6" href="#__codelineno-23-6"></a>cumulus@hxb-spine02:mgmt:~$ nv set interface swp1-4 link state up
+<a id="__codelineno-23-7" name="__codelineno-23-7" href="#__codelineno-23-7"></a>cumulus@hxb-spine02:mgmt:~$ nv set interface swp1-4 link mtu 9216
+<a id="__codelineno-23-8" name="__codelineno-23-8" href="#__codelineno-23-8"></a>cumulus@hxb-spine02:mgmt:~$ nv set interface lo ip address 10.255.0.2/32
+<a id="__codelineno-23-9" name="__codelineno-23-9" href="#__codelineno-23-9"></a>cumulus@hxb-spine02:mgmt:~$ nv config diff
+<a id="__codelineno-23-10" name="__codelineno-23-10" href="#__codelineno-23-10"></a>cumulus@hxb-spine02:mgmt:~$ nv config apply -y
+</code></pre></div>
+<p><strong>hxb-leaf-r1</strong> (the hostname and swp31 description are already applied from Tasks 3–4; setting them again is harmless)</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv set system hostname hxb-leaf-r1
+<a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv set interface swp31 description to-hxb-spine01-swp1
+<a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv set interface swp32 description to-hxb-spine02-swp1
+<a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv set interface swp1 description hxb-gpu01-eth1
+<a id="__codelineno-24-5" name="__codelineno-24-5" href="#__codelineno-24-5"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv set interface swp2 description hxb-gpu03-eth1
+<a id="__codelineno-24-6" name="__codelineno-24-6" href="#__codelineno-24-6"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv set interface swp1-2,swp31-32 link state up
+<a id="__codelineno-24-7" name="__codelineno-24-7" href="#__codelineno-24-7"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv set interface swp1-2,swp31-32 link mtu 9216
+<a id="__codelineno-24-8" name="__codelineno-24-8" href="#__codelineno-24-8"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv set interface lo ip address 10.255.0.11/32
+<a id="__codelineno-24-9" name="__codelineno-24-9" href="#__codelineno-24-9"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv config diff
+<a id="__codelineno-24-10" name="__codelineno-24-10" href="#__codelineno-24-10"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv config apply -y
+</code></pre></div>
+<p><strong>hxb-leaf-r2</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a>cumulus@hxb-leaf-r2:mgmt:~$ nv set system hostname hxb-leaf-r2
+<a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a>cumulus@hxb-leaf-r2:mgmt:~$ nv set interface swp31 description to-hxb-spine01-swp2
+<a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a>cumulus@hxb-leaf-r2:mgmt:~$ nv set interface swp32 description to-hxb-spine02-swp2
+<a id="__codelineno-25-4" name="__codelineno-25-4" href="#__codelineno-25-4"></a>cumulus@hxb-leaf-r2:mgmt:~$ nv set interface swp1 description hxb-gpu01-eth2
+<a id="__codelineno-25-5" name="__codelineno-25-5" href="#__codelineno-25-5"></a>cumulus@hxb-leaf-r2:mgmt:~$ nv set interface swp2 description hxb-gpu03-eth2
+<a id="__codelineno-25-6" name="__codelineno-25-6" href="#__codelineno-25-6"></a>cumulus@hxb-leaf-r2:mgmt:~$ nv set interface swp1-2,swp31-32 link state up
+<a id="__codelineno-25-7" name="__codelineno-25-7" href="#__codelineno-25-7"></a>cumulus@hxb-leaf-r2:mgmt:~$ nv set interface swp1-2,swp31-32 link mtu 9216
+<a id="__codelineno-25-8" name="__codelineno-25-8" href="#__codelineno-25-8"></a>cumulus@hxb-leaf-r2:mgmt:~$ nv set interface lo ip address 10.255.0.12/32
+<a id="__codelineno-25-9" name="__codelineno-25-9" href="#__codelineno-25-9"></a>cumulus@hxb-leaf-r2:mgmt:~$ nv config diff
+<a id="__codelineno-25-10" name="__codelineno-25-10" href="#__codelineno-25-10"></a>cumulus@hxb-leaf-r2:mgmt:~$ nv config apply -y
+</code></pre></div>
+<p><strong>hxb-leaf-r3</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>cumulus@hxb-leaf-r3:mgmt:~$ nv set system hostname hxb-leaf-r3
+<a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a>cumulus@hxb-leaf-r3:mgmt:~$ nv set interface swp31 description to-hxb-spine01-swp3
+<a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a>cumulus@hxb-leaf-r3:mgmt:~$ nv set interface swp32 description to-hxb-spine02-swp3
+<a id="__codelineno-26-4" name="__codelineno-26-4" href="#__codelineno-26-4"></a>cumulus@hxb-leaf-r3:mgmt:~$ nv set interface swp1 description hxb-gpu02-eth1
+<a id="__codelineno-26-5" name="__codelineno-26-5" href="#__codelineno-26-5"></a>cumulus@hxb-leaf-r3:mgmt:~$ nv set interface swp2 description hxb-gpu04-eth1
+<a id="__codelineno-26-6" name="__codelineno-26-6" href="#__codelineno-26-6"></a>cumulus@hxb-leaf-r3:mgmt:~$ nv set interface swp1-2,swp31-32 link state up
+<a id="__codelineno-26-7" name="__codelineno-26-7" href="#__codelineno-26-7"></a>cumulus@hxb-leaf-r3:mgmt:~$ nv set interface swp1-2,swp31-32 link mtu 9216
+<a id="__codelineno-26-8" name="__codelineno-26-8" href="#__codelineno-26-8"></a>cumulus@hxb-leaf-r3:mgmt:~$ nv set interface lo ip address 10.255.0.13/32
+<a id="__codelineno-26-9" name="__codelineno-26-9" href="#__codelineno-26-9"></a>cumulus@hxb-leaf-r3:mgmt:~$ nv config diff
+<a id="__codelineno-26-10" name="__codelineno-26-10" href="#__codelineno-26-10"></a>cumulus@hxb-leaf-r3:mgmt:~$ nv config apply -y
+</code></pre></div>
+<p><strong>hxb-leaf-r4</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>cumulus@hxb-leaf-r4:mgmt:~$ nv set system hostname hxb-leaf-r4
+<a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a>cumulus@hxb-leaf-r4:mgmt:~$ nv set interface swp31 description to-hxb-spine01-swp4
+<a id="__codelineno-27-3" name="__codelineno-27-3" href="#__codelineno-27-3"></a>cumulus@hxb-leaf-r4:mgmt:~$ nv set interface swp32 description to-hxb-spine02-swp4
+<a id="__codelineno-27-4" name="__codelineno-27-4" href="#__codelineno-27-4"></a>cumulus@hxb-leaf-r4:mgmt:~$ nv set interface swp1 description hxb-gpu02-eth2
+<a id="__codelineno-27-5" name="__codelineno-27-5" href="#__codelineno-27-5"></a>cumulus@hxb-leaf-r4:mgmt:~$ nv set interface swp2 description hxb-gpu04-eth2
+<a id="__codelineno-27-6" name="__codelineno-27-6" href="#__codelineno-27-6"></a>cumulus@hxb-leaf-r4:mgmt:~$ nv set interface swp1-2,swp31-32 link state up
+<a id="__codelineno-27-7" name="__codelineno-27-7" href="#__codelineno-27-7"></a>cumulus@hxb-leaf-r4:mgmt:~$ nv set interface swp1-2,swp31-32 link mtu 9216
+<a id="__codelineno-27-8" name="__codelineno-27-8" href="#__codelineno-27-8"></a>cumulus@hxb-leaf-r4:mgmt:~$ nv set interface lo ip address 10.255.0.14/32
+<a id="__codelineno-27-9" name="__codelineno-27-9" href="#__codelineno-27-9"></a>cumulus@hxb-leaf-r4:mgmt:~$ nv config diff
+<a id="__codelineno-27-10" name="__codelineno-27-10" href="#__codelineno-27-10"></a>cumulus@hxb-leaf-r4:mgmt:~$ nv config apply -y
+</code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Version note</p>
+<p>On Cumulus Linux 5.16 the loopback address is <code>nv set interface lo ip address &lt;prefix&gt;</code>, as in Chapter 4. If your release rejects <code>ip address</code> for <code>lo</code>, press Tab after <code>nv set interface lo</code> and use the address path it offers (newer releases have reorganised some addressing under <code>ipv4</code>). The command ranges <code>swp1-4</code> and <code>swp1-2,swp31-32</code> are standard NVUE syntax.</p>
+</div>
+<ol>
+<li>
+<p>After applying on each switch, check the ports and the loopback:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv show interface
+<a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv show interface swp31 link
+<a id="__codelineno-28-3" name="__codelineno-28-3" href="#__codelineno-28-3"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv show interface lo ip address
+</code></pre></div>
+<p><strong>Expected output</strong> (illustrative, trimmed):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a>Interface  Admin Status  Oper Status  Speed  MTU    Type      Remote Host  Remote Port  Summary
+<a id="__codelineno-29-2" name="__codelineno-29-2" href="#__codelineno-29-2"></a>---------  ------------  -----------  -----  -----  --------  -----------  -----------  ---------------------------
+<a id="__codelineno-29-3" name="__codelineno-29-3" href="#__codelineno-29-3"></a>lo         up            up                  65536  loopback                            IP Address:  10.255.0.11/32
+<a id="__codelineno-29-4" name="__codelineno-29-4" href="#__codelineno-29-4"></a>swp1       up            up           1G     9216   swp       hxb-gpu01    eth1
+<a id="__codelineno-29-5" name="__codelineno-29-5" href="#__codelineno-29-5"></a>swp2       up            up           1G     9216   swp       hxb-gpu03    eth1
+<a id="__codelineno-29-6" name="__codelineno-29-6" href="#__codelineno-29-6"></a>swp31      up            up           1G     9216   swp       hxb-spine01  swp1
+<a id="__codelineno-29-7" name="__codelineno-29-7" href="#__codelineno-29-7"></a>swp32      up            up           1G     9216   swp       hxb-spine02  swp1
+</code></pre></div>
+</li>
+<li>
+<p>The <strong>Remote Host</strong> and <strong>Remote Port</strong> columns come from LLDP, which is on by default. Use them to prove the cabling matches the plan table. A mismatch here is the cheapest cabling bug you will ever find.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Cumulus VX ports are virtual links and report a nominal speed (often 1G). Real Spectrum ports would show 400G or 800G. MTU 9216 is still applied and visible in <code>nv show</code>; that is what matters here.</p>
+</div>
+</li>
+</ol>
+<p><strong>Checkpoint</strong></p>
+<ul>
+<li>All six switches show their correct hostname (log out and back in to see it in the prompt).</li>
+<li>On every switch, the configured ports are admin <strong>up</strong>, oper <strong>up</strong>, MTU <strong>9216</strong>, with the right description.</li>
+<li>LLDP neighbours match the cabling table on every leaf and spine.</li>
+<li><code>nv show interface lo</code> shows the right 10.255.0.x/32 on each switch.</li>
+</ul>
+<h3 id="task-6-history-revisions-and-rollback">Task 6 — History, revisions and rollback<a class="headerlink" href="#task-6-history-revisions-and-rollback" title="Permanent link">&para;</a></h3>
+<p>Return to <strong>hxb-leaf-r1</strong>.</p>
+<ol>
+<li>
+<p>List the stored revisions and the apply history:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv config revision
+<a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv config history
+</code></pre></div>
+<p><strong>Expected output</strong> (illustrative; your revision numbers and dates will differ):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a>Rev ID  State              Apply ID       Apply Date           Type  User     Reason
+<a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a>2       applied_and_saved  rev_2_apply_1  2026-09-28 10:02:11  CLI   cumulus  Config update
+<a id="__codelineno-31-3" name="__codelineno-31-3" href="#__codelineno-31-3"></a>3       applied            rev_3_apply_1  2026-09-28 10:06:40  CLI   cumulus  Config update
+<a id="__codelineno-31-4" name="__codelineno-31-4" href="#__codelineno-31-4"></a>4       applied_and_saved  rev_4_apply_1  2026-09-28 10:07:15  CLI   cumulus  Config update
+<a id="__codelineno-31-5" name="__codelineno-31-5" href="#__codelineno-31-5"></a>5       applied_and_saved  rev_5_apply_1  2026-09-28 10:15:02  CLI   cumulus  Config update
+</code></pre></div>
+</li>
+<li>
+<p>Write down the revision ID of your current <strong>good</strong> state (the latest one, here 5). Call it <strong>GOOD</strong>.</p>
+</li>
+<li>
+<p>Make a deliberate "bad" change: wrong description and wrong MTU on swp32.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv set interface swp32 description WRONG-PORT
+<a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv set interface swp32 link mtu 1500
+<a id="__codelineno-32-3" name="__codelineno-32-3" href="#__codelineno-32-3"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv config apply -y
+</code></pre></div>
+</li>
+<li>
+<p>Compare the bad revision with GOOD. Replace <code>5</code> and <code>6</code> with your numbers:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv config revision
+<a id="__codelineno-33-2" name="__codelineno-33-2" href="#__codelineno-33-2"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv config diff 5 6
+</code></pre></div>
+<p><strong>Expected output</strong> (illustrative):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a>- set:
+<a id="__codelineno-34-2" name="__codelineno-34-2" href="#__codelineno-34-2"></a>    interface:
+<a id="__codelineno-34-3" name="__codelineno-34-3" href="#__codelineno-34-3"></a>      swp32:
+<a id="__codelineno-34-4" name="__codelineno-34-4" href="#__codelineno-34-4"></a>        description: WRONG-PORT
+<a id="__codelineno-34-5" name="__codelineno-34-5" href="#__codelineno-34-5"></a>        link:
+<a id="__codelineno-34-6" name="__codelineno-34-6" href="#__codelineno-34-6"></a>          mtu: 1500
+</code></pre></div>
+</li>
+<li>
+<p>Roll back by applying the GOOD revision:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv config apply 5 -y
+</code></pre></div>
+</li>
+<li>
+<p>Confirm the rollback and look at how history records it:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv show interface swp32
+<a id="__codelineno-36-2" name="__codelineno-36-2" href="#__codelineno-36-2"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv config history
+</code></pre></div>
+<div class="admonition info">
+<p class="admonition-title">Field note</p>
+<p>Rollback with <code>nv config apply &lt;rev&gt;</code> applies the <strong>whole</strong> configuration of that revision, not just the reverse of the last change. Anything applied after that revision is also undone. Always run <code>nv config diff &lt;good&gt; applied</code> first so you know exactly what will change.</p>
+</div>
+</li>
+</ol>
+<p><strong>Checkpoint</strong></p>
+<ul>
+<li>swp32 shows the description <code>to-hxb-spine02-swp1</code> and MTU 9216 again.</li>
+<li><code>nv config history</code> shows the bad apply and the rollback as separate entries.</li>
+</ul>
+<h3 id="task-7-trial-apply-with-confirm">Task 7 — Trial apply with --confirm<a class="headerlink" href="#task-7-trial-apply-with-confirm" title="Permanent link">&para;</a></h3>
+<p>A trial apply protects you from changes that could lock you out. You will let one trial expire, and confirm a second.</p>
+<figure>
+<p><img alt="Figure L1.3: A trial apply with automatic rollback" loading="lazy" src="../img/fig-L1_3.png" /></p>
+<figcaption><strong>Figure L1.3: A trial apply with automatic rollback.</strong> The first trial is not confirmed, so NVUE restores the previous configuration when the timer expires. The second trial is confirmed within the window and is kept.</figcaption>
+</figure>
+<ol>
+<li>
+<p>Stage a harmless test change and apply it on a two-minute trial:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-37-1" name="__codelineno-37-1" href="#__codelineno-37-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv set interface swp2 description TRIAL-CHANGE
+<a id="__codelineno-37-2" name="__codelineno-37-2" href="#__codelineno-37-2"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv config apply --confirm 2m
+</code></pre></div>
+</li>
+<li>
+<p>Check the change is live and how long is left:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-38-1" name="__codelineno-38-1" href="#__codelineno-38-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv show interface swp2 description
+<a id="__codelineno-38-2" name="__codelineno-38-2" href="#__codelineno-38-2"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv config apply --confirm-status
+</code></pre></div>
+</li>
+<li>
+<p>Do nothing for just over two minutes, then check again:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-39-1" name="__codelineno-39-1" href="#__codelineno-39-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv show interface swp2
+<a id="__codelineno-39-2" name="__codelineno-39-2" href="#__codelineno-39-2"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv config history
+</code></pre></div>
+<p><strong>Expected result:</strong> the description is back to <code>hxb-gpu03-eth1</code>, and the history shows the rollback.</p>
+</li>
+<li>
+<p>Run a second trial and confirm it this time. For the test we set a useful value: a longer description that includes the tenant:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-40-1" name="__codelineno-40-1" href="#__codelineno-40-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv set interface swp2 description hxb-gpu03-eth1-BOREALIS
+<a id="__codelineno-40-2" name="__codelineno-40-2" href="#__codelineno-40-2"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv config apply --confirm 5m
+<a id="__codelineno-40-3" name="__codelineno-40-3" href="#__codelineno-40-3"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv config apply --confirm-yes
+</code></pre></div>
+</li>
+<li>
+<p>Verify the change stayed and is in startup:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-41-1" name="__codelineno-41-1" href="#__codelineno-41-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv show interface swp2 description
+<a id="__codelineno-41-2" name="__codelineno-41-2" href="#__codelineno-41-2"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv config diff applied startup
+</code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Version note</p>
+<p>The NVUE command reference documents <code>nv config apply --confirm [&lt;time&gt;]</code>, <code>--confirm-status</code>, and <code>nv config apply [&lt;revision&gt;] --confirm-yes</code> to keep a trial change. The default window is ten minutes, and the timer accepts <code>s</code>, <code>m</code> or <code>h</code>. On some releases the confirmation is also offered as an interactive prompt; if <code>--confirm-yes</code> is rejected on yours, press Tab after <code>nv config apply --</code> to see the confirm options (check on your release).</p>
+</div>
+<div class="admonition info">
+<p class="admonition-title">Field note</p>
+<p>In production, use <code>--confirm</code> for anything that touches eth0, the management VRF, ACLs, BGP or the NVUE API itself. If the change cuts you off, the switch rolls back without you.</p>
+</div>
+</li>
+</ol>
+<p><strong>Checkpoint</strong></p>
+<ul>
+<li>The first trial rolled back by itself.</li>
+<li>The second trial's description <code>hxb-gpu03-eth1-BOREALIS</code> is applied and, with auto-save on, also in startup.</li>
+</ul>
+<h3 id="task-8-read-configuration-through-the-nvue-rest-api">Task 8 — Read configuration through the NVUE REST API<a class="headerlink" href="#task-8-read-configuration-through-the-nvue-rest-api" title="Permanent link">&para;</a></h3>
+<p>The REST API is enabled by default on TCP port 8765 and, on current releases, listens on <code>localhost</code> unless you add a listening address. You will call it from the switch itself.</p>
+<ol>
+<li>
+<p>Check the API service:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-42-1" name="__codelineno-42-1" href="#__codelineno-42-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv show system api
+</code></pre></div>
+<p><strong>Expected output</strong> (illustrative):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-43-1" name="__codelineno-43-1" href="#__codelineno-43-1"></a>                     operational  applied
+<a id="__codelineno-43-2" name="__codelineno-43-2" href="#__codelineno-43-2"></a>-------------------  -----------  -----------
+<a id="__codelineno-43-3" name="__codelineno-43-3" href="#__codelineno-43-3"></a>port                 8765         8765
+<a id="__codelineno-43-4" name="__codelineno-43-4" href="#__codelineno-43-4"></a>state                enabled      enabled
+<a id="__codelineno-43-5" name="__codelineno-43-5" href="#__codelineno-43-5"></a>certificate          self-signed  self-signed
+<a id="__codelineno-43-6" name="__codelineno-43-6" href="#__codelineno-43-6"></a>[listening-address]  localhost    localhost
+</code></pre></div>
+</li>
+<li>
+<p>Read the applied loopback configuration. <code>-k</code> accepts the self-signed certificate. The single quotes stop Bash from interpreting the <code>!</code> in the password:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-44-1" name="__codelineno-44-1" href="#__codelineno-44-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ curl -s -k -u &#39;cumulus:CumulusLinux!&#39; \
+<a id="__codelineno-44-2" name="__codelineno-44-2" href="#__codelineno-44-2"></a>  &#39;https://127.0.0.1:8765/nvue_v1/interface/lo?rev=applied&#39; | python3 -m json.tool
+</code></pre></div>
+<p><strong>Expected output</strong> (illustrative, trimmed):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-45-1" name="__codelineno-45-1" href="#__codelineno-45-1"></a>{
+<a id="__codelineno-45-2" name="__codelineno-45-2" href="#__codelineno-45-2"></a>    &quot;ip&quot;: {
+<a id="__codelineno-45-3" name="__codelineno-45-3" href="#__codelineno-45-3"></a>        &quot;address&quot;: {
+<a id="__codelineno-45-4" name="__codelineno-45-4" href="#__codelineno-45-4"></a>            &quot;10.255.0.11/32&quot;: {}
+<a id="__codelineno-45-5" name="__codelineno-45-5" href="#__codelineno-45-5"></a>        }
+<a id="__codelineno-45-6" name="__codelineno-45-6" href="#__codelineno-45-6"></a>    },
+<a id="__codelineno-45-7" name="__codelineno-45-7" href="#__codelineno-45-7"></a>    &quot;type&quot;: &quot;loopback&quot;
+<a id="__codelineno-45-8" name="__codelineno-45-8" href="#__codelineno-45-8"></a>}
+</code></pre></div>
+</li>
+<li>
+<p>Read operational state for an uplink, the API equivalent of <code>nv show interface swp31 link</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-46-1" name="__codelineno-46-1" href="#__codelineno-46-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ curl -s -k -u &#39;cumulus:CumulusLinux!&#39; \
+<a id="__codelineno-46-2" name="__codelineno-46-2" href="#__codelineno-46-2"></a>  https://127.0.0.1:8765/nvue_v1/interface/swp31/link | python3 -m json.tool
+</code></pre></div>
+</li>
+<li>
+<p>Read the revision list, which is what automation uses to track changes:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-47-1" name="__codelineno-47-1" href="#__codelineno-47-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ curl -s -k -u &#39;cumulus:CumulusLinux!&#39; \
+<a id="__codelineno-47-2" name="__codelineno-47-2" href="#__codelineno-47-2"></a>  https://127.0.0.1:8765/nvue_v1/revision | python3 -m json.tool | head -30
+</code></pre></div>
+</li>
+<li>
+<p>Compare the JSON paths with the CLI paths. <code>interface/lo?rev=applied</code> is <code>nv show interface lo --applied</code>. That one-to-one mapping is the point of the NVUE object model.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p><code>-k</code> and a password on the command line are fine in a lab. In production use a dedicated automation account, keep credentials in a vault, and validate the switch certificate. To reach the API from oob-mgmt-server you would add a listening address (<code>nv set system api listening-address &lt;ip&gt;</code>) in the management VRF; later labs use SSH and Ansible instead, so leave it on localhost.</p>
+</div>
+</li>
+</ol>
+<p><strong>Checkpoint</strong></p>
+<ul>
+<li><code>curl</code> returns JSON showing <code>10.255.0.11/32</code> on <code>lo</code>.</li>
+<li>You can name the CLI command equivalent to each API URL you used.</li>
+</ul>
+<h2 id="verify">Verify<a class="headerlink" href="#verify" title="Permanent link">&para;</a></h2>
+<p>Tick each item before you move on to Lab 2.</p>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> You can log in to all six switches as <code>cumulus</code> with <code>CumulusLinux!</code>.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <code>nv show system</code> shows the correct hostname in both columns on every switch.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> On every leaf, swp1, swp2, swp31 and swp32 are up, MTU 9216, with correct descriptions; on every spine, swp1–swp4 are the same.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> LLDP (<code>nv show interface</code>) matches the cabling plan.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Loopbacks: spine01 10.255.0.1/32, spine02 10.255.0.2/32, leaf-r1 … r4 10.255.0.11–.14/32.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <code>nv config diff</code> is empty and <code>nv config diff applied startup</code> is empty on every switch.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <code>nv show system config auto-save</code> is <code>enabled</code> on hxb-leaf-r1.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> You rolled back with <code>nv config apply &lt;rev&gt;</code> and watched a <code>--confirm</code> trial expire.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <code>curl</code> to <code>https://127.0.0.1:8765/nvue_v1/...</code> returns JSON.</li>
+</ul>
+<h2 id="break-and-fix">Break and fix<a class="headerlink" href="#break-and-fix" title="Permanent link">&para;</a></h2>
+<h3 id="fault-1-my-change-was-there-now-it-has-gone">Fault 1 — "My change was there, now it has gone"<a class="headerlink" href="#fault-1-my-change-was-there-now-it-has-gone" title="Permanent link">&para;</a></h3>
+<p><strong>Inject</strong> (on hxb-leaf-r2):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-48-1" name="__codelineno-48-1" href="#__codelineno-48-1"></a>cumulus@hxb-leaf-r2:mgmt:~$ nv set system config auto-save state disabled
+<a id="__codelineno-48-2" name="__codelineno-48-2" href="#__codelineno-48-2"></a>cumulus@hxb-leaf-r2:mgmt:~$ nv config apply -y
+<a id="__codelineno-48-3" name="__codelineno-48-3" href="#__codelineno-48-3"></a>cumulus@hxb-leaf-r2:mgmt:~$ nv set interface swp2 description hxb-gpu03-eth2-BOREALIS
+<a id="__codelineno-48-4" name="__codelineno-48-4" href="#__codelineno-48-4"></a>cumulus@hxb-leaf-r2:mgmt:~$ nv config apply -y
+</code></pre></div>
+<p><strong>Symptom:</strong> a colleague reports that the new swp2 description "disappears after every reboot". (Optionally reboot the switch to see it: <code>sudo reboot</code>, wait for it to return, and log in again.)</p>
+<p><strong>Diagnosis:</strong></p>
+<ol>
+<li>
+<p>Compare applied with startup:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-49-1" name="__codelineno-49-1" href="#__codelineno-49-1"></a>cumulus@hxb-leaf-r2:mgmt:~$ nv config diff applied startup
+</code></pre></div>
+</li>
+</ol>
+<p>The description appears in the diff: it is applied but was never written to startup. (After a reboot, it is missing from applied too, because the switch loaded startup.)</p>
+<ol>
+<li>
+<p>Check why:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-50-1" name="__codelineno-50-1" href="#__codelineno-50-1"></a>cumulus@hxb-leaf-r2:mgmt:~$ nv show system config auto-save
+</code></pre></div>
+</li>
+</ol>
+<p>Auto-save is <code>disabled</code>.</p>
+<p><strong>Fix:</strong> re-enable auto-save and make sure the change is applied and saved.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-51-1" name="__codelineno-51-1" href="#__codelineno-51-1"></a>cumulus@hxb-leaf-r2:mgmt:~$ nv set system config auto-save state enabled
+<a id="__codelineno-51-2" name="__codelineno-51-2" href="#__codelineno-51-2"></a>cumulus@hxb-leaf-r2:mgmt:~$ nv set interface swp2 description hxb-gpu03-eth2-BOREALIS
+<a id="__codelineno-51-3" name="__codelineno-51-3" href="#__codelineno-51-3"></a>cumulus@hxb-leaf-r2:mgmt:~$ nv config apply -y
+<a id="__codelineno-51-4" name="__codelineno-51-4" href="#__codelineno-51-4"></a>cumulus@hxb-leaf-r2:mgmt:~$ nv config save
+<a id="__codelineno-51-5" name="__codelineno-51-5" href="#__codelineno-51-5"></a>cumulus@hxb-leaf-r2:mgmt:~$ nv config diff applied startup
+</code></pre></div>
+<p>The last diff must be empty.</p>
+<h3 id="fault-2-a-hand-edit-that-nvue-overwrites">Fault 2 — A hand edit that NVUE overwrites<a class="headerlink" href="#fault-2-a-hand-edit-that-nvue-overwrites" title="Permanent link">&para;</a></h3>
+<p><strong>Inject</strong> (on hxb-leaf-r3): edit a file NVUE manages directly.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-52-1" name="__codelineno-52-1" href="#__codelineno-52-1"></a>cumulus@hxb-leaf-r3:mgmt:~$ sudo sed -i &#39;s/mtu 9216/mtu 1500/&#39; /etc/network/interfaces
+<a id="__codelineno-52-2" name="__codelineno-52-2" href="#__codelineno-52-2"></a>cumulus@hxb-leaf-r3:mgmt:~$ sudo ifreload -a
+<a id="__codelineno-52-3" name="__codelineno-52-3" href="#__codelineno-52-3"></a>cumulus@hxb-leaf-r3:mgmt:~$ ip link show swp31 | grep mtu
+</code></pre></div>
+<p>The kernel now shows MTU 1500 on the ports.</p>
+<p><strong>Symptom:</strong> <code>nv show interface</code> shows MTU 1500 in the operational view, but <code>nv show interface swp31 link --applied</code> still says 9216. Later, after an unrelated <code>nv config apply</code>, the MTU silently returns to 9216.</p>
+<p><strong>Diagnosis:</strong></p>
+<ol>
+<li>
+<p>Compare the views:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-53-1" name="__codelineno-53-1" href="#__codelineno-53-1"></a>cumulus@hxb-leaf-r3:mgmt:~$ nv show interface swp31 link
+<a id="__codelineno-53-2" name="__codelineno-53-2" href="#__codelineno-53-2"></a>cumulus@hxb-leaf-r3:mgmt:~$ nv show interface swp31 link --applied
+</code></pre></div>
+</li>
+</ol>
+<p>Operational and applied disagree: someone changed the switch outside NVUE.</p>
+<ol>
+<li>
+<p><code>nv config history</code> shows no apply that set MTU 1500. The change was never an NVUE change.</p>
+<p><strong>Fix:</strong> let NVUE put back its own configuration, and agree the team rule: NVUE only.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-54-1" name="__codelineno-54-1" href="#__codelineno-54-1"></a>cumulus@hxb-leaf-r3:mgmt:~$ nv set interface swp31 description to-hxb-spine01-swp3
+<a id="__codelineno-54-2" name="__codelineno-54-2" href="#__codelineno-54-2"></a>cumulus@hxb-leaf-r3:mgmt:~$ nv config apply -y
+<a id="__codelineno-54-3" name="__codelineno-54-3" href="#__codelineno-54-3"></a>cumulus@hxb-leaf-r3:mgmt:~$ ip link show swp31 | grep mtu
+</code></pre></div>
+</li>
+</ol>
+<p>If a plain apply reports nothing to apply and the MTU stays at 1500, force NVUE to re-render the files by applying the current revision again with <code>nv config apply &lt;current-rev&gt; -y</code>, or reboot the switch (startup still has MTU 9216). Check on your release which of these re-renders the files.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This is exactly the Chapter 4 scenario. Hand edits to <code>/etc/network/interfaces</code> or <code>/etc/frr/frr.conf</code> on an NVUE-managed switch are overwritten by the next apply. Choose NVUE for a switch and never mix the two.</p>
+</div>
+<h2 id="clean-up-save-state">Clean-up / save state<a class="headerlink" href="#clean-up-save-state" title="Permanent link">&para;</a></h2>
+<ol>
+<li>
+<p>On every switch, confirm nothing is pending and startup matches applied:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-55-1" name="__codelineno-55-1" href="#__codelineno-55-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv config diff
+<a id="__codelineno-55-2" name="__codelineno-55-2" href="#__codelineno-55-2"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv config diff applied startup
+</code></pre></div>
+</li>
+<li>
+<p>If either shows output, run <code>nv config apply -y</code> and <code>nv config save</code>.</p>
+</li>
+<li>Check that auto-save is enabled on hxb-leaf-r2 again (Fault 1).</li>
+<li>Keep the configuration. Lab 2 builds directly on these loopbacks, descriptions and MTUs.</li>
+<li>If you are stopping here, put the simulation to sleep from the Air console to save compute-hour credits. Sleeping keeps the switch disks, so your configuration survives.</li>
+</ol>
+<h2 id="exam-tie-in">Exam tie-in<a class="headerlink" href="#exam-tie-in" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>6.1</strong> — The order of operations is <strong>set → diff → apply (→ save)</strong>. Know the three revisions and how to show each (<code>--pending</code>, <code>--applied</code>, <code>--startup</code>), and that <code>nv config save</code> writes applied to <code>/etc/nvue.d/startup.yaml</code>.</li>
+<li><strong>6.1</strong> — Safe change: <code>nv config apply --confirm &lt;time&gt;</code> rolls back automatically; <code>nv config history</code> / <code>nv config revision</code> plus <code>nv config apply &lt;rev&gt;</code> is the manual rollback.</li>
+<li><strong>2.1</strong> — All Spectrum-X switch configuration in later objectives (RoCE with <code>nv set qos roce</code>, adaptive routing, EVPN) uses this same NVUE workflow, and RoCE can only be configured with NVUE.</li>
+<li><strong>2.1 / 6.1</strong> — The REST API runs on <strong>port 8765</strong> with base path <code>/nvue_v1/</code>, and its URL paths mirror the <code>nv</code> CLI paths.</li>
+<li><strong>2.4</strong> — NVIDIA Air lets you rehearse all of this on Cumulus VX, with the caveat that VX has no Spectrum ASIC.</li>
+</ul>
+<h2 id="review-questions">Review questions<a class="headerlink" href="#review-questions" title="Permanent link">&para;</a></h2>
+<ol>
+<li>You run <code>nv set interface swp1 link mtu 9216</code> and then <code>nv config save</code>, and reboot. What MTU does swp1 have after the reboot, and why?</li>
+<li>Which command shows only the changes you have staged but not yet applied?</li>
+<li>A change applied with <code>nv config apply --confirm 5m</code> is not confirmed. What happens, and how could you have kept it?</li>
+<li>You find a bad change was applied as revision 12, and revision 11 was good. Which command returns the switch to the good state, and what should you check first?</li>
+<li>What is the REST API equivalent of <code>nv show interface lo --applied</code> on a switch, and which port does it use by default?</li>
+</ol>
+<h3 id="answers">Answers<a class="headerlink" href="#answers" title="Permanent link">&para;</a></h3>
+<ol>
+<li>The old MTU. <code>nv config save</code> copies the <strong>applied</strong> configuration to startup; the MTU change was only pending and was never applied, so it was neither running nor saved.</li>
+<li><code>nv config diff</code> (with no arguments it compares pending with applied). <code>nv show &lt;path&gt; --pending</code> shows the pending view of one object.</li>
+<li>After five minutes NVUE rolls back to the previous configuration automatically. To keep it, confirm within the window with <code>nv config apply --confirm-yes</code>.</li>
+<li><code>nv config apply 11</code> (add <code>-y</code> to skip the prompt). First run <code>nv config diff 11 applied</code> to see everything the rollback will change, because it restores the whole revision.</li>
+<li><code>GET https://&lt;switch&gt;:8765/nvue_v1/interface/lo?rev=applied</code>, on port <strong>8765</strong>, using HTTP basic authentication.</li>
+</ol>
+<hr />
+<div class="admonition abstract">
+<p class="admonition-title">Go deeper</p>
+<p>The matching book chapters cover the exam objectives for this lab in full, with a Q&amp;A pack of about 40 exam-style questions per chapter. <a class="md-button md-button--primary" href="../../book/">Get the book</a> <a class="md-button" href="https://github.com/Cloudfoxy-Ltd/ncp-ain-guide/issues/new?template=erratum.yml">Report a problem with this lab</a></p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../lab00/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Lab 0 — Air and topology">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Lab 0 — Air and topology
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../lab02/" class="md-footer__link md-footer__link--next" aria-label="Next: Lab 2 — eBGP unnumbered underlay">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Lab 2 — eBGP unnumbered underlay
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      © 2026 Vakeesan Thevarajah · Cloudfoxy Ltd · Lab guide CC BY-NC-SA 4.0 · Independent, not endorsed by NVIDIA
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.footer", "navigation.top", "content.code.copy", "search.highlight", "search.suggest", "toc.follow"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

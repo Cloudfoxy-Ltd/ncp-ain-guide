@@ -1,0 +1,12 @@
+sequenceDiagram
+    participant U as cumulus on hxb-leaf-r1
+    participant N as NVUE
+    U->>N: nv set ... then nv config apply --confirm 2m
+    N-->>U: applied on trial, rollback in 2m
+    U->>N: nv config apply --confirm-status
+    N-->>U: time remaining
+    Note over N: 2 minutes pass, no confirmation
+    N->>N: automatic rollback to previous revision
+    U->>N: nv set ... then nv config apply --confirm 5m
+    U->>N: nv config apply --confirm-yes
+    N-->>U: change kept

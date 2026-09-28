@@ -1,0 +1,10 @@
+flowchart TB
+    S["RoCE drops under load<br/>nv show qos roce looks correct"]:::bad --> A{"tcpdump udp port 4791:<br/>DSCP 24–31?"}:::ctl
+    A -->|"No: tos 0x0"| H["Host marking fault<br/>set -T / --tclass 106<br/>or default_roce_tos 106"]:::gpu
+    A -->|"Yes: tos 0x6a"| B{"Same RoCE mode<br/>on every switch?"}:::ctl
+    B -->|"No"| F1["Apply nv set qos roce<br/>on the odd switch"]:::eth
+    B -->|"Yes"| F2["Check per-port roce status,<br/>pause and ECN counters (hardware)"]:::eth
+    classDef gpu fill:#DCEBFA,stroke:#1F5FAD,color:#0B2545
+    classDef eth fill:#DDF2DC,stroke:#2E7D32,color:#123B14
+    classDef ctl fill:#FDE8CF,stroke:#D9730D,color:#4A2604
+    classDef bad fill:#FADBD8,stroke:#C62828,color:#5B0F0F

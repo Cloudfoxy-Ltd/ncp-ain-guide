@@ -1,0 +1,2437 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Free hands-on labs on NVIDIA DSX Air, errata and study files for the NCP-AIN Certification Guide by Vakeesan Thevarajah (Cloudfoxy Ltd).">
+      
+      
+        <meta name="author" content="Vakeesan Thevarajah">
+      
+      
+        <link rel="canonical" href="https://cloudfoxy-ltd.github.io/ncp-ain-guide/labs/lab02/">
+      
+      
+        <link rel="prev" href="../lab01/">
+      
+      
+        <link rel="next" href="../lab03/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Lab 2 — eBGP unnumbered underlay - NCP-AIN Certification Guide — Labs & Errata</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="cyan" data-md-color-accent="purple">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#lab-2-underlay-with-ebgp-unnumbered" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="NCP-AIN Certification Guide — Labs &amp; Errata" class="md-header__button md-logo" aria-label="NCP-AIN Certification Guide — Labs & Errata" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            NCP-AIN Certification Guide — Labs & Errata
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Lab 2 — eBGP unnumbered underlay
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="cyan" data-md-color-accent="purple"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="cyan" data-md-color-accent="purple"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Cloudfoxy-Ltd/ncp-ain-guide" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Cloudfoxy-Ltd/ncp-ain-guide
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
+          
+  
+  
+  Hands-On Labs
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../book/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  The Book
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../errata/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Errata
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../flashcards/" class="md-tabs__link">
+          
+  
+  
+  Study Files
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../license/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Licence
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="NCP-AIN Certification Guide — Labs &amp; Errata" class="md-nav__button md-logo" aria-label="NCP-AIN Certification Guide — Labs & Errata" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    NCP-AIN Certification Guide — Labs & Errata
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Cloudfoxy-Ltd/ncp-ain-guide" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Cloudfoxy-Ltd/ncp-ain-guide
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hands-On Labs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Hands-On Labs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab00/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 0 — Air and topology
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab01/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 1 — NVUE essentials
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 2 — eBGP unnumbered underlay
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 2 — eBGP unnumbered underlay
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#lab-at-a-glance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lab at a glance
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#objectives" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Objectives
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#background" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Background
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-by-step" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step-by-step
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Step-by-step">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#task-1-check-the-starting-point" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 1 — Check the starting point
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-2-plan-the-bgp-values" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 2 — Plan the BGP values
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-3-configure-the-spines" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 3 — Configure the spines
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-4-configure-the-leaves" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 4 — Configure the leaves
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-5-verify-the-bgp-sessions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 5 — Verify the BGP sessions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-6-verify-the-routing-table-and-ecmp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 6 — Verify the routing table and ECMP
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-7-loopback-to-loopback-ping-and-traceroute" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 7 — Loopback-to-loopback ping and traceroute
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#verify" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verify
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#break-and-fix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Break and fix
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Break and fix">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fault-1-wrong-remote-as" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fault 1 — Wrong remote-as
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fault-2-uplink-administratively-down" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fault 2 — Uplink administratively down
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#clean-up-save-state" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Clean-up / save state
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exam-tie-in" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exam tie-in
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#review-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Review questions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Review questions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#answers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Answers
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab03/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 3 — Lossless RoCE and Soft-RoCE
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab04/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 4 — AR, ECMP and telemetry
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab05/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 5 — BGP-EVPN multi-tenancy
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab06/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 6 — Air power skills
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab07/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 7 — Monitoring and troubleshooting
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab08/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 8 — InfiniBand with ibsim
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab09/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 9 — perftest over Soft-RoCE
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab10/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 10 — Kubernetes Network Operator
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab11/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 11 — NVUE templates
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab12/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 12 — Ansible automation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab13/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 13 — Capstone challenge
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../appendix/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Appendices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../book/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The Book
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../errata/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Errata
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Study Files
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Study Files
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../flashcards/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Flashcards
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lab-files/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab files
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../license/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Licence
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#lab-at-a-glance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lab at a glance
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#objectives" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Objectives
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#background" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Background
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-by-step" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step-by-step
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Step-by-step">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#task-1-check-the-starting-point" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 1 — Check the starting point
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-2-plan-the-bgp-values" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 2 — Plan the BGP values
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-3-configure-the-spines" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 3 — Configure the spines
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-4-configure-the-leaves" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 4 — Configure the leaves
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-5-verify-the-bgp-sessions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 5 — Verify the BGP sessions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-6-verify-the-routing-table-and-ecmp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 6 — Verify the routing table and ECMP
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-7-loopback-to-loopback-ping-and-traceroute" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 7 — Loopback-to-loopback ping and traceroute
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#verify" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verify
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#break-and-fix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Break and fix
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Break and fix">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fault-1-wrong-remote-as" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fault 1 — Wrong remote-as
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fault-2-uplink-administratively-down" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fault 2 — Uplink administratively down
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#clean-up-save-state" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Clean-up / save state
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exam-tie-in" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exam tie-in
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#review-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Review questions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Review questions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#answers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Answers
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="lab-2-underlay-with-ebgp-unnumbered">Lab 2 — Underlay with eBGP Unnumbered<a class="headerlink" href="#lab-2-underlay-with-ebgp-unnumbered" title="Permanent link">&para;</a></h1>
+<div class="admonition abstract">
+<p class="admonition-title">Companion to the NCP-AIN Certification Guide</p>
+<p>This free lab is part of the hands-on companion to <em>NCP-AIN Certification Guide</em> by Vakeesan Thevarajah (Cloudfoxy Ltd). The book explains the theory, design choices and hardware behaviour behind every step. <a class="md-button md-button--primary" href="../../book/">Get the book</a> <a class="md-button" href="../../sample/NCP-AIN_Sample.pdf">Free sample</a></p>
+</div>
+<h2 id="lab-at-a-glance">Lab at a glance<a class="headerlink" href="#lab-at-a-glance" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Book chapters</td>
+<td>Chapter 4 (4.4 BGP unnumbered with NVUE); Chapter 2 (rail-optimised leaf–spine); Chapter 7 (the underlay that EVPN rides on)</td>
+</tr>
+<tr>
+<td>Exam objectives</td>
+<td>2.1 Configure Spectrum-X switches (underlay foundation) · 2.3 Multi-tenant BGP-EVPN (prerequisite underlay) · 1.2 Rail-optimised topologies · supports 2.4 (NVIDIA Air)</td>
+</tr>
+<tr>
+<td>Time</td>
+<td>75–90 minutes</td>
+</tr>
+<tr>
+<td>Air resources used</td>
+<td>Simulation <code>helix-b-air</code>: hxb-spine01, hxb-spine02, hxb-leaf-r1 … hxb-leaf-r4 and oob-mgmt-server</td>
+</tr>
+<tr>
+<td>Prerequisite labs</td>
+<td>Lab 1 (hostnames, MTU 9216, port descriptions and loopbacks applied and saved on all six switches)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="objectives">Objectives<a class="headerlink" href="#objectives" title="Permanent link">&para;</a></h2>
+<p>By the end of this lab you will be able to:</p>
+<ul>
+<li>Explain why AI fabrics use eBGP with a private ASN per leaf and a shared spine ASN, and what "unnumbered" removes from the design.</li>
+<li>Configure BGP on all six Helix-B switches with NVUE: ASN, router ID, interface neighbours with <code>remote-as external</code>, and loopback advertisement.</li>
+<li>Confirm ECMP multipath is active so each leaf has two equal-cost paths to every other leaf.</li>
+<li>Verify the underlay with <code>nv show vrf default router bgp neighbor</code>, <code>vtysh</code> (<code>show ip bgp summary</code>, <code>show ip route</code>), a loopback-sourced <code>ping</code>, and <code>traceroute</code>.</li>
+<li>Diagnose and fix a wrong <code>remote-as</code> and a downed uplink.</li>
+</ul>
+<h2 id="background">Background<a class="headerlink" href="#background" title="Permanent link">&para;</a></h2>
+<p>Helix-B uses the design most Spectrum-X AI fabrics use: a <strong>Layer 3 leaf–spine underlay running eBGP</strong>. Each leaf has its own private ASN (hxb-leaf-r1 … r4 are AS 65101–65104) and both spines share AS 65100. Sharing the spine ASN is deliberate. A path from one spine through a leaf to the other spine would contain AS 65100 twice, so BGP's own loop prevention rejects it. That keeps spine-to-leaf-to-spine "valley" paths out of the routing table without extra policy.</p>
+<p><strong>Unnumbered</strong> means the point-to-point links have no IPv4 addresses. Each switch port has an IPv6 link-local address and sends IPv6 router advertisements, so the neighbour learns that address automatically. BGP then peers over the link-local address, and carries IPv4 routes with an IPv6 next hop (RFC 5549 / RFC 8950). The result: you configure <code>neighbor swp31 remote-as external</code> instead of an IP address and a numeric ASN per link, there is no /31 addressing plan to maintain, and every leaf's BGP configuration is identical except for its ASN, router ID and loopback. That is exactly what makes templates (Lab 11) and Ansible (Lab 12) easy.</p>
+<p>Each switch advertises only its <strong>loopback</strong> (/32). In Lab 5 the leaf loopbacks become the VXLAN tunnel endpoints (VTEPs), so the underlay's only job is to make every loopback reachable from every other one over <strong>two equal-cost paths</strong> — one through each spine. Cumulus Linux enables BGP multipath by default, so both paths are installed and traffic is spread by ECMP hashing.</p>
+<figure>
+<p><img alt="Figure L2.1: Helix-B underlay in Air" loading="lazy" src="../img/fig-L2_1.png" /></p>
+<figcaption><strong>Figure L2.1: Helix-B underlay in Air.</strong> Each leaf connects swp31 to hxb-spine01 and swp32 to hxb-spine02. Leaves have their own ASN; both spines share AS 65100. Every link is an eBGP unnumbered session, and each switch advertises only its loopback.</figcaption>
+</figure>
+<figure>
+<p><img alt="Figure L2.2: How an unnumbered session comes up" loading="lazy" src="../img/fig-L2_2.png" /></p>
+<figcaption><strong>Figure L2.2: How an unnumbered session comes up.</strong> No IPv4 address is configured on the link. Router advertisements reveal the neighbour's IPv6 link-local address, BGP peers over it, and IPv4 loopback routes are carried with an IPv6 next hop.</figcaption>
+</figure>
+<div class="admonition note">
+<p class="admonition-title">Version note</p>
+<p>Cumulus VX forwards in the Linux kernel, not on a Spectrum ASIC. BGP, the routing table and ECMP behave as on a real switch, but the exact hash the kernel uses to choose between the two paths may differ from Spectrum hardware. The routing table is the authoritative proof of ECMP in this lab.</p>
+</div>
+<h2 id="step-by-step">Step-by-step<a class="headerlink" href="#step-by-step" title="Permanent link">&para;</a></h2>
+<h3 id="task-1-check-the-starting-point">Task 1 — Check the starting point<a class="headerlink" href="#task-1-check-the-starting-point" title="Permanent link">&para;</a></h3>
+<p><strong>Do this on all switches</strong></p>
+<table>
+<thead>
+<tr>
+<th>Check</th>
+<th>Command</th>
+<th>Expected</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Nothing pending</td>
+<td><code>nv config diff</code></td>
+<td>No output</td>
+</tr>
+<tr>
+<td>Loopback present</td>
+<td><code>nv show interface lo</code></td>
+<td>Correct 10.255.0.x/32 from Lab 1</td>
+</tr>
+<tr>
+<td>Fabric ports up with LLDP neighbours</td>
+<td><code>nv show interface</code></td>
+<td>Leaves: swp31/32 up to spine01/02; spines: swp1–4 up to leaf-r1…r4</td>
+</tr>
+<tr>
+<td>No BGP yet</td>
+<td><code>nv show router bgp</code></td>
+<td>No ASN configured</td>
+</tr>
+</tbody>
+</table>
+<ol>
+<li>
+<p>From oob-mgmt-server, log in to each switch in turn (<code>ssh cumulus@hxb-spine01</code> and so on) and run the checks in the table. For example:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv config diff
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv show interface
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv show router bgp
+</code></pre></div>
+</li>
+<li>
+<p>If a port is down or an LLDP neighbour is wrong, fix it before going further (see Lab 1, Task 5). BGP cannot fix cabling.</p>
+</li>
+</ol>
+<p><strong>Checkpoint</strong></p>
+<ul>
+<li>Every fabric port is up with the neighbour the plan expects, and every loopback is correct.</li>
+</ul>
+<h3 id="task-2-plan-the-bgp-values">Task 2 — Plan the BGP values<a class="headerlink" href="#task-2-plan-the-bgp-values" title="Permanent link">&para;</a></h3>
+<p>This is the only information that differs between switches. Everything else is identical.</p>
+<table>
+<thead>
+<tr>
+<th>Switch</th>
+<th>ASN</th>
+<th>Router ID</th>
+<th>Unnumbered neighbours</th>
+<th>Advertise</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>hxb-spine01</td>
+<td>65100</td>
+<td>10.255.0.1</td>
+<td>swp1, swp2, swp3, swp4</td>
+<td>10.255.0.1/32</td>
+</tr>
+<tr>
+<td>hxb-spine02</td>
+<td>65100</td>
+<td>10.255.0.2</td>
+<td>swp1, swp2, swp3, swp4</td>
+<td>10.255.0.2/32</td>
+</tr>
+<tr>
+<td>hxb-leaf-r1</td>
+<td>65101</td>
+<td>10.255.0.11</td>
+<td>swp31, swp32</td>
+<td>10.255.0.11/32</td>
+</tr>
+<tr>
+<td>hxb-leaf-r2</td>
+<td>65102</td>
+<td>10.255.0.12</td>
+<td>swp31, swp32</td>
+<td>10.255.0.12/32</td>
+</tr>
+<tr>
+<td>hxb-leaf-r3</td>
+<td>65103</td>
+<td>10.255.0.13</td>
+<td>swp31, swp32</td>
+<td>10.255.0.13/32</td>
+</tr>
+<tr>
+<td>hxb-leaf-r4</td>
+<td>65104</td>
+<td>10.255.0.14</td>
+<td>swp31, swp32</td>
+<td>10.255.0.14/32</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Do this on all switches</strong> (the pattern)</p>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>NVUE command</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1. Local ASN</td>
+<td><code>nv set router bgp autonomous-system &lt;ASN&gt;</code></td>
+</tr>
+<tr>
+<td>2. Router ID = loopback</td>
+<td><code>nv set router bgp router-id &lt;loopback IP&gt;</code></td>
+</tr>
+<tr>
+<td>3. One unnumbered neighbour per fabric port</td>
+<td><code>nv set vrf default router bgp neighbor &lt;swpX&gt; remote-as external</code></td>
+</tr>
+<tr>
+<td>4. Advertise the loopback</td>
+<td><code>nv set vrf default router bgp address-family ipv4-unicast network &lt;loopback&gt;/32</code></td>
+</tr>
+<tr>
+<td>5. ECMP (default 64; set explicitly for clarity)</td>
+<td><code>nv set vrf default router bgp address-family ipv4-unicast multipaths ebgp 64</code></td>
+</tr>
+<tr>
+<td>6. Review and apply</td>
+<td><code>nv config diff</code> then <code>nv config apply -y</code></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition info">
+<p class="admonition-title">Field note</p>
+<p><code>remote-as external</code> means "any ASN other than mine". That is why one line works on every leaf uplink without typing the spine's ASN, and why a spine can use the same line for four different leaves. Use <code>remote-as internal</code> for iBGP, or a number when you want BGP to enforce a specific peer ASN.</p>
+</div>
+<div class="admonition info">
+<p class="admonition-title">Field note</p>
+<p>The guide uses a <code>network</code> statement to advertise exactly one prefix, as in Chapter 4. The alternative, <code>nv set vrf default router bgp address-family ipv4-unicast redistribute connected</code>, advertises every connected route in the default VRF. That is common in labs, but on a real leaf it can leak link or server subnets into the underlay unless you add a route map, so prefer <code>network</code> for loopbacks.</p>
+</div>
+<h3 id="task-3-configure-the-spines">Task 3 — Configure the spines<a class="headerlink" href="#task-3-configure-the-spines" title="Permanent link">&para;</a></h3>
+<p>Paste each block into the matching spine.</p>
+<p><strong>hxb-spine01</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>cumulus@hxb-spine01:mgmt:~$ nv set router bgp autonomous-system 65100
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>cumulus@hxb-spine01:mgmt:~$ nv set router bgp router-id 10.255.0.1
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>cumulus@hxb-spine01:mgmt:~$ nv set vrf default router bgp neighbor swp1 remote-as external
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>cumulus@hxb-spine01:mgmt:~$ nv set vrf default router bgp neighbor swp2 remote-as external
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>cumulus@hxb-spine01:mgmt:~$ nv set vrf default router bgp neighbor swp3 remote-as external
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>cumulus@hxb-spine01:mgmt:~$ nv set vrf default router bgp neighbor swp4 remote-as external
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>cumulus@hxb-spine01:mgmt:~$ nv set vrf default router bgp address-family ipv4-unicast network 10.255.0.1/32
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>cumulus@hxb-spine01:mgmt:~$ nv set vrf default router bgp address-family ipv4-unicast multipaths ebgp 64
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>cumulus@hxb-spine01:mgmt:~$ nv config diff
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>cumulus@hxb-spine01:mgmt:~$ nv config apply -y
+</code></pre></div>
+<p><strong>hxb-spine02</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>cumulus@hxb-spine02:mgmt:~$ nv set router bgp autonomous-system 65100
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>cumulus@hxb-spine02:mgmt:~$ nv set router bgp router-id 10.255.0.2
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>cumulus@hxb-spine02:mgmt:~$ nv set vrf default router bgp neighbor swp1 remote-as external
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>cumulus@hxb-spine02:mgmt:~$ nv set vrf default router bgp neighbor swp2 remote-as external
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>cumulus@hxb-spine02:mgmt:~$ nv set vrf default router bgp neighbor swp3 remote-as external
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>cumulus@hxb-spine02:mgmt:~$ nv set vrf default router bgp neighbor swp4 remote-as external
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>cumulus@hxb-spine02:mgmt:~$ nv set vrf default router bgp address-family ipv4-unicast network 10.255.0.2/32
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>cumulus@hxb-spine02:mgmt:~$ nv set vrf default router bgp address-family ipv4-unicast multipaths ebgp 64
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>cumulus@hxb-spine02:mgmt:~$ nv config diff
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>cumulus@hxb-spine02:mgmt:~$ nv config apply -y
+</code></pre></div>
+<p><strong>Expected <code>nv config diff</code> output on hxb-spine01</strong> (illustrative, trimmed):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>- set:
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>    router:
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>      bgp:
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>        autonomous-system: 65100
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>        router-id: 10.255.0.1
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>    vrf:
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>      default:
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>        router:
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>          bgp:
+<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>            address-family:
+<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>              ipv4-unicast:
+<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>                multipaths:
+<a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>                  ebgp: 64
+<a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a>                network:
+<a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a>                  10.255.0.1/32: {}
+<a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a>            neighbor:
+<a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a>              swp1:
+<a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a>                remote-as: external
+<a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a>                type: unnumbered
+<a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a>              ...
+</code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Version note</p>
+<p>Recent releases may also need <code>nv set router bgp state enabled</code> or <code>nv set vrf default router bgp state enabled</code> before BGP starts, and on some releases setting the ASN enables BGP implicitly. After applying, if <code>nv show router bgp</code> shows the state as disabled, set it to <code>enabled</code> and apply again (check on your release). The multipaths value 64 is already the default on Cumulus Linux; if your release rejects <code>multipaths ebgp</code>, press Tab after <code>multipaths</code> and skip the line — ECMP still works.</p>
+</div>
+<p><strong>Checkpoint</strong></p>
+<ul>
+<li>Both spines applied without errors.</li>
+<li><code>nv show router bgp</code> on each spine shows AS 65100 and the correct router ID.</li>
+<li>Sessions are not up yet; the leaves have no BGP.</li>
+</ul>
+<h3 id="task-4-configure-the-leaves">Task 4 — Configure the leaves<a class="headerlink" href="#task-4-configure-the-leaves" title="Permanent link">&para;</a></h3>
+<p><strong>hxb-leaf-r1</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv set router bgp autonomous-system 65101
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv set router bgp router-id 10.255.0.11
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv set vrf default router bgp neighbor swp31 remote-as external
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv set vrf default router bgp neighbor swp32 remote-as external
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv set vrf default router bgp address-family ipv4-unicast network 10.255.0.11/32
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv set vrf default router bgp address-family ipv4-unicast multipaths ebgp 64
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv config diff
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv config apply -y
+</code></pre></div>
+<p><strong>hxb-leaf-r2</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>cumulus@hxb-leaf-r2:mgmt:~$ nv set router bgp autonomous-system 65102
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>cumulus@hxb-leaf-r2:mgmt:~$ nv set router bgp router-id 10.255.0.12
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>cumulus@hxb-leaf-r2:mgmt:~$ nv set vrf default router bgp neighbor swp31 remote-as external
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>cumulus@hxb-leaf-r2:mgmt:~$ nv set vrf default router bgp neighbor swp32 remote-as external
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>cumulus@hxb-leaf-r2:mgmt:~$ nv set vrf default router bgp address-family ipv4-unicast network 10.255.0.12/32
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>cumulus@hxb-leaf-r2:mgmt:~$ nv set vrf default router bgp address-family ipv4-unicast multipaths ebgp 64
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>cumulus@hxb-leaf-r2:mgmt:~$ nv config diff
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>cumulus@hxb-leaf-r2:mgmt:~$ nv config apply -y
+</code></pre></div>
+<p><strong>hxb-leaf-r3</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>cumulus@hxb-leaf-r3:mgmt:~$ nv set router bgp autonomous-system 65103
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>cumulus@hxb-leaf-r3:mgmt:~$ nv set router bgp router-id 10.255.0.13
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>cumulus@hxb-leaf-r3:mgmt:~$ nv set vrf default router bgp neighbor swp31 remote-as external
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>cumulus@hxb-leaf-r3:mgmt:~$ nv set vrf default router bgp neighbor swp32 remote-as external
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>cumulus@hxb-leaf-r3:mgmt:~$ nv set vrf default router bgp address-family ipv4-unicast network 10.255.0.13/32
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>cumulus@hxb-leaf-r3:mgmt:~$ nv set vrf default router bgp address-family ipv4-unicast multipaths ebgp 64
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>cumulus@hxb-leaf-r3:mgmt:~$ nv config diff
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>cumulus@hxb-leaf-r3:mgmt:~$ nv config apply -y
+</code></pre></div>
+<p><strong>hxb-leaf-r4</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>cumulus@hxb-leaf-r4:mgmt:~$ nv set router bgp autonomous-system 65104
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>cumulus@hxb-leaf-r4:mgmt:~$ nv set router bgp router-id 10.255.0.14
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>cumulus@hxb-leaf-r4:mgmt:~$ nv set vrf default router bgp neighbor swp31 remote-as external
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>cumulus@hxb-leaf-r4:mgmt:~$ nv set vrf default router bgp neighbor swp32 remote-as external
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>cumulus@hxb-leaf-r4:mgmt:~$ nv set vrf default router bgp address-family ipv4-unicast network 10.255.0.14/32
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>cumulus@hxb-leaf-r4:mgmt:~$ nv set vrf default router bgp address-family ipv4-unicast multipaths ebgp 64
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>cumulus@hxb-leaf-r4:mgmt:~$ nv config diff
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>cumulus@hxb-leaf-r4:mgmt:~$ nv config apply -y
+</code></pre></div>
+<ol>
+<li>
+<p>After each leaf applies, wait 10–30 seconds for the sessions to establish.</p>
+<div class="admonition info">
+<p class="admonition-title">Field note</p>
+<p>Notice how little differs between the four leaf blocks: three values. In Lab 11 you will generate these blocks from one Jinja template and a small variables file.</p>
+</div>
+</li>
+</ol>
+<p><strong>Checkpoint</strong></p>
+<ul>
+<li>All six switches applied without errors.</li>
+<li><code>nv config diff applied startup</code> is empty on each switch (auto-save).</li>
+</ul>
+<h3 id="task-5-verify-the-bgp-sessions">Task 5 — Verify the BGP sessions<a class="headerlink" href="#task-5-verify-the-bgp-sessions" title="Permanent link">&para;</a></h3>
+<ol>
+<li>
+<p>On <strong>hxb-leaf-r1</strong>, check the neighbours with NVUE:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv show vrf default router bgp neighbor
+</code></pre></div>
+<p><strong>Expected output</strong> (illustrative; column names vary by release):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>Neighbor  AS     State        Uptime    PfxSent  PfxRcvd
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>--------  -----  -----------  --------  -------  -------
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>swp31     65100  established  00:01:12  ...      4
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>swp32     65100  established  00:01:10  ...      4
+</code></pre></div>
+</li>
+<li>
+<p>Look at one neighbour in detail:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv show vrf default router bgp neighbor swp31
+</code></pre></div>
+</li>
+</ol>
+<p>Note the remote ASN (65100), the remote router ID (10.255.0.1), the state and the IPv6 link-local address the session uses.</p>
+<ol>
+<li>
+<p>Check the same thing from FRR:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ sudo vtysh -c &quot;show ip bgp summary&quot;
+</code></pre></div>
+<p><strong>Expected output</strong> (illustrative):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>IPv4 Unicast Summary (VRF default):
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>BGP router identifier 10.255.0.11, local AS number 65101 vrf-id 0
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>BGP table version 7
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>RIB entries 11, using 2112 bytes of memory
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>Peers 2, using 47 KiB of memory
+<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>
+<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a>Neighbor            V    AS   MsgRcvd  MsgSent  TblVer  InQ OutQ  Up/Down State/PfxRcd  PfxSnt Desc
+<a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a>hxb-spine01(swp31)  4 65100        45       44       0    0    0 00:01:12            4       5 N/A
+<a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a>hxb-spine02(swp32)  4 65100        45       44       0    0    0 00:01:10            4       5 N/A
+<a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a>
+<a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a>Total number of neighbors 2
+</code></pre></div>
+</li>
+</ol>
+<p>A number under <strong>State/PfxRcd</strong> means the session is Established and shows how many prefixes were accepted. A word such as <code>Active</code>, <code>Connect</code> or <code>Idle</code> means it is not up.</p>
+<ol>
+<li>
+<p>On <strong>hxb-spine01</strong>, confirm all four leaves are neighbours:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>cumulus@hxb-spine01:mgmt:~$ sudo vtysh -c &quot;show ip bgp summary&quot;
+</code></pre></div>
+</li>
+</ol>
+<p>Expect four Established neighbours, <code>hxb-leaf-r1(swp1)</code> … <code>hxb-leaf-r4(swp4)</code>, with remote AS 65101–65104 and one prefix received from each.</p>
+<p><strong>Do this on all switches</strong> (quick check)</p>
+<table>
+<thead>
+<tr>
+<th>Switch</th>
+<th>Command</th>
+<th>Expected</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>hxb-spine01, hxb-spine02</td>
+<td><code>sudo vtysh -c "show ip bgp summary"</code></td>
+<td>4 neighbours Established, AS 65101–65104</td>
+</tr>
+<tr>
+<td>hxb-leaf-r1 … r4</td>
+<td><code>nv show vrf default router bgp neighbor</code></td>
+<td>swp31 and swp32 Established, AS 65100</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Checkpoint</strong></p>
+<ul>
+<li>8 sessions in total (each leaf has 2, each spine has 4), all Established.</li>
+<li>Each leaf receives 4 prefixes per spine.</li>
+</ul>
+<h3 id="task-6-verify-the-routing-table-and-ecmp">Task 6 — Verify the routing table and ECMP<a class="headerlink" href="#task-6-verify-the-routing-table-and-ecmp" title="Permanent link">&para;</a></h3>
+<ol>
+<li>
+<p>On <strong>hxb-leaf-r1</strong>, list the BGP routes:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ sudo vtysh -c &quot;show ip route bgp&quot;
+</code></pre></div>
+<p><strong>Expected output</strong> (illustrative; link-local addresses will differ):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>B&gt;* 10.255.0.1/32 [20/0] via fe80::4638:39ff:fe00:1, swp31, weight 1, 00:01:30
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>B&gt;* 10.255.0.2/32 [20/0] via fe80::4638:39ff:fe00:2, swp32, weight 1, 00:01:28
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>B&gt;* 10.255.0.12/32 [20/0] via fe80::4638:39ff:fe00:1, swp31, weight 1, 00:01:05
+<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a>  *                       via fe80::4638:39ff:fe00:2, swp32, weight 1, 00:01:05
+<a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a>B&gt;* 10.255.0.13/32 [20/0] via fe80::4638:39ff:fe00:1, swp31, weight 1, 00:00:58
+<a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a>  *                       via fe80::4638:39ff:fe00:2, swp32, weight 1, 00:00:58
+<a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a>B&gt;* 10.255.0.14/32 [20/0] via fe80::4638:39ff:fe00:1, swp31, weight 1, 00:00:50
+<a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a>  *                       via fe80::4638:39ff:fe00:2, swp32, weight 1, 00:00:50
+</code></pre></div>
+</li>
+<li>
+<p>Read it carefully:</p>
+<ul>
+<li>The spine loopbacks each have <strong>one</strong> path (you reach spine01 only through swp31).</li>
+<li>Every other leaf loopback has <strong>two</strong> next hops, one per spine. The <code>*</code> on both lines means both are installed in the forwarding table. That is ECMP.</li>
+<li>The next hops are IPv6 link-local addresses: that is BGP unnumbered.</li>
+</ul>
+</li>
+<li>
+<p>Look at one route in detail, and at the kernel's view:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ sudo vtysh -c &quot;show ip route 10.255.0.14&quot;
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>cumulus@hxb-leaf-r1:mgmt:~$ sudo vtysh -c &quot;show ip bgp 10.255.0.14/32&quot;
+<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>cumulus@hxb-leaf-r1:mgmt:~$ ip route show 10.255.0.14
+</code></pre></div>
+<p><code>show ip bgp 10.255.0.14/32</code> should list two paths, both with AS path <code>65100 65104</code>, and mark them <code>multipath</code>. The kernel output shows two <code>nexthop via inet6 fe80::…</code> lines.</p>
+</li>
+<li>
+<p>On <strong>hxb-spine01</strong>, check what a spine knows:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>cumulus@hxb-spine01:mgmt:~$ sudo vtysh -c &quot;show ip route bgp&quot;
+</code></pre></div>
+</li>
+</ol>
+<p>Expect the four leaf loopbacks, each via one port. There is <strong>no</strong> route to 10.255.0.2 (spine02). A path spine02 → leaf → spine01 carries AS path <code>65101 65100</code>, which contains spine01's own ASN, so BGP rejects it. This is the valley-free behaviour described in the Background, not a fault.</p>
+<figure>
+<p><img alt="Figure L2.3: Two equal-cost paths from hxb-leaf-r1 to hxb-leaf-r4" loading="lazy" src="../img/fig-L2_3.png" /></p>
+<figcaption><strong>Figure L2.3: Two equal-cost paths from hxb-leaf-r1 to hxb-leaf-r4.</strong> Both paths have the same AS path length (65100 65104), so BGP installs both. Traffic sourced from 10.255.0.11 to 10.255.0.14 is hashed per flow onto swp31 or swp32.</figcaption>
+</figure>
+<p><strong>Checkpoint</strong></p>
+<ul>
+<li>Every leaf has one path to each spine loopback and two paths to each other leaf loopback.</li>
+<li>Each spine has four leaf loopbacks and no route to the other spine's loopback.</li>
+</ul>
+<h3 id="task-7-loopback-to-loopback-ping-and-traceroute">Task 7 — Loopback-to-loopback ping and traceroute<a class="headerlink" href="#task-7-loopback-to-loopback-ping-and-traceroute" title="Permanent link">&para;</a></h3>
+<p><code>ping</code> and <code>traceroute</code> use the default VRF even though your shell is in the management VRF (Lab 1, Task 1). Always source from the loopback: it is the address the other leaf has a route back to, and it is the address VXLAN will use in Lab 5.</p>
+<ol>
+<li>
+<p>Ping hxb-leaf-r4's loopback from hxb-leaf-r1's loopback:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ ping -c 3 -I 10.255.0.11 10.255.0.14
+</code></pre></div>
+<p><strong>Expected output</strong> (illustrative):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>PING 10.255.0.14 (10.255.0.14) from 10.255.0.11 : 56(84) bytes of data.
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>64 bytes from 10.255.0.14: icmp_seq=1 ttl=63 time=0.912 ms
+<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>64 bytes from 10.255.0.14: icmp_seq=2 ttl=63 time=0.845 ms
+<a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a>64 bytes from 10.255.0.14: icmp_seq=3 ttl=63 time=0.801 ms
+<a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a>
+<a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a>--- 10.255.0.14 ping statistics ---
+<a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a>3 packets transmitted, 3 received, 0% packet loss, time 2003ms
+</code></pre></div>
+</li>
+</ol>
+<p>TTL 63 means one routed hop (a spine) between the leaves.</p>
+<ol>
+<li>
+<p>Test jumbo frames end to end. 8972 bytes of ICMP data plus 28 bytes of headers is 9000 bytes, below the 9216 MTU; <code>-M do</code> forbids fragmentation:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ ping -c 3 -M do -s 8972 -I 10.255.0.11 10.255.0.14
+</code></pre></div>
+</li>
+</ol>
+<p>This should succeed. If it fails with <code>message too long</code>, a port on the path is not at MTU 9216 (Lab 1, Task 5).</p>
+<ol>
+<li>
+<p>Trace the path:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ traceroute -n -s 10.255.0.11 10.255.0.14
+</code></pre></div>
+<p><strong>Expected output</strong> (illustrative):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>traceroute to 10.255.0.14 (10.255.0.14), 30 hops max, 60 byte packets
+<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a> 1  10.255.0.1  0.702 ms  10.255.0.2  0.811 ms  10.255.0.1  0.765 ms
+<a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a> 2  10.255.0.14  1.120 ms  1.082 ms  1.051 ms
+</code></pre></div>
+</li>
+</ol>
+<p>Traceroute sends three UDP probes per hop, each to a different destination port, so each probe is a different flow. When the ECMP hash includes the ports, the probes land on different spines and hop 1 lists both 10.255.0.1 and 10.255.0.2. The spines answer from their loopback because their fabric ports have no IPv4 address.</p>
+<ol>
+<li>
+<p>If hop 1 always shows the same spine, repeat with a few different starting ports to create different flows:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ traceroute -n -s 10.255.0.11 -p 33434 10.255.0.14
+<a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a>cumulus@hxb-leaf-r1:mgmt:~$ traceroute -n -s 10.255.0.11 -p 40000 10.255.0.14
+<a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a>cumulus@hxb-leaf-r1:mgmt:~$ traceroute -n -s 10.255.0.11 -p 50000 10.255.0.14
+</code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Version note</p>
+<p>Which path a flow takes depends on the kernel's multipath hash policy on Cumulus VX, which may hash on addresses only (check on your release with <code>sysctl net.ipv4.fib_multipath_hash_policy</code>: 0 is L3, 1 is L3+L4). If every traceroute shows the same spine, ECMP is still working: the two installed next hops in Task 6 prove it. A Spectrum switch hashes in the ASIC and, with adaptive routing (Lab 4), can go further than per-flow ECMP.</p>
+</div>
+</li>
+</ol>
+<p><strong>Do this on all switches</strong> (full-mesh reachability)</p>
+<table>
+<thead>
+<tr>
+<th>From</th>
+<th>Command</th>
+<th>Expected</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>hxb-leaf-r1</td>
+<td><code>ping -c 2 -I 10.255.0.11 10.255.0.12</code> / <code>.13</code> / <code>.14</code></td>
+<td>0% loss to each</td>
+</tr>
+<tr>
+<td>hxb-leaf-r2</td>
+<td><code>ping -c 2 -I 10.255.0.12 10.255.0.11</code> / <code>.13</code> / <code>.14</code></td>
+<td>0% loss to each</td>
+</tr>
+<tr>
+<td>hxb-leaf-r3</td>
+<td><code>ping -c 2 -I 10.255.0.13 10.255.0.11</code> / <code>.12</code> / <code>.14</code></td>
+<td>0% loss to each</td>
+</tr>
+<tr>
+<td>hxb-leaf-r4</td>
+<td><code>ping -c 2 -I 10.255.0.14 10.255.0.11</code> / <code>.12</code> / <code>.13</code></td>
+<td>0% loss to each</td>
+</tr>
+<tr>
+<td>hxb-spine01</td>
+<td><code>ping -c 2 -I 10.255.0.1 10.255.0.11</code> … <code>.14</code></td>
+<td>0% loss to each leaf</td>
+</tr>
+<tr>
+<td>hxb-spine02</td>
+<td><code>ping -c 2 -I 10.255.0.2 10.255.0.11</code> … <code>.14</code></td>
+<td>0% loss to each leaf</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Checkpoint</strong></p>
+<ul>
+<li>hxb-leaf-r1 pings 10.255.0.14 from 10.255.0.11 with 0% loss, including 9000-byte packets.</li>
+<li>Traceroute shows one spine hop, and you have seen (or can explain why you have not seen) both spines at hop 1.</li>
+<li>Every leaf reaches every other leaf loopback.</li>
+</ul>
+<h2 id="verify">Verify<a class="headerlink" href="#verify" title="Permanent link">&para;</a></h2>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Every switch shows the planned ASN and router ID in <code>nv show router bgp</code>.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> 8 unnumbered sessions are Established (2 per leaf, 4 per spine).</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Each leaf has two ECMP next hops (swp31 and swp32) to every other leaf loopback.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Spines have the four leaf loopbacks and no route to each other's loopback.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <code>ping -I 10.255.0.11 10.255.0.14</code> succeeds, including with <code>-M do -s 8972</code>.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <code>nv config diff</code> and <code>nv config diff applied startup</code> are empty on every switch.</li>
+</ul>
+<h2 id="break-and-fix">Break and fix<a class="headerlink" href="#break-and-fix" title="Permanent link">&para;</a></h2>
+<figure>
+<p><img alt="Figure L2.4: Diagnosing a missing underlay session" loading="lazy" src="../img/fig-L2_4.png" /></p>
+<figcaption><strong>Figure L2.4: Diagnosing a missing underlay session.</strong> Start from the symptom on the leaf, check the link layer first, then the BGP state and the last notification, then compare the configured remote-as with what the neighbour really uses.</figcaption>
+</figure>
+<h3 id="fault-1-wrong-remote-as">Fault 1 — Wrong remote-as<a class="headerlink" href="#fault-1-wrong-remote-as" title="Permanent link">&para;</a></h3>
+<p><strong>Inject</strong> (on hxb-leaf-r4): someone "tightens" the configuration by typing the spine ASN, but gets it wrong.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a>cumulus@hxb-leaf-r4:mgmt:~$ nv set vrf default router bgp neighbor swp31 remote-as 65200
+<a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a>cumulus@hxb-leaf-r4:mgmt:~$ nv config apply -y
+</code></pre></div>
+<p><strong>Symptoms:</strong></p>
+<ul>
+<li>On hxb-leaf-r4, <code>nv show vrf default router bgp neighbor</code> shows swp31 not established.</li>
+<li>On hxb-leaf-r1, <code>sudo vtysh -c "show ip route 10.255.0.14"</code> shows only <strong>one</strong> next hop (via swp32). Traffic still flows, so nothing alarms — you have silently lost half the bandwidth to leaf-r4.</li>
+<li>On hxb-spine01, <code>show ip bgp summary</code> shows the neighbour on swp4 as <code>Idle</code> or <code>Active</code>.</li>
+</ul>
+<p><strong>Diagnosis:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a>cumulus@hxb-leaf-r4:mgmt:~$ sudo vtysh -c &quot;show ip bgp summary&quot;
+<a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a>cumulus@hxb-leaf-r4:mgmt:~$ sudo vtysh -c &quot;show bgp neighbors swp31&quot; | grep -iE &quot;remote AS|state|notification|last reset&quot;
+<a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a>cumulus@hxb-leaf-r4:mgmt:~$ nv config history
+</code></pre></div>
+<p><strong>Expected output</strong> (illustrative):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>BGP neighbor on swp31: fe80::4638:39ff:fe00:1, remote AS 65200, local AS 65104, external link
+<a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a>  BGP state = Active
+<a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a>  Last reset 00:00:41,  Notification sent (OPEN Message Error/Bad Peer AS)
+</code></pre></div>
+<p>The leaf expects AS 65200, the spine opens with AS 65100, so the leaf rejects the OPEN with <strong>Bad Peer AS</strong>. <code>nv config history</code> shows who applied the change and when.</p>
+<p><strong>Fix:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>cumulus@hxb-leaf-r4:mgmt:~$ nv set vrf default router bgp neighbor swp31 remote-as external
+<a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a>cumulus@hxb-leaf-r4:mgmt:~$ nv config apply -y
+<a id="__codelineno-27-3" name="__codelineno-27-3" href="#__codelineno-27-3"></a>cumulus@hxb-leaf-r4:mgmt:~$ nv show vrf default router bgp neighbor
+</code></pre></div>
+<p>Then confirm on hxb-leaf-r1 that 10.255.0.14 has two next hops again. (Setting <code>remote-as 65100</code> would also work; <code>external</code> keeps every leaf identical.)</p>
+<h3 id="fault-2-uplink-administratively-down">Fault 2 — Uplink administratively down<a class="headerlink" href="#fault-2-uplink-administratively-down" title="Permanent link">&para;</a></h3>
+<p><strong>Inject</strong> (on hxb-leaf-r1):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv set interface swp32 link state down
+<a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv config apply -y
+</code></pre></div>
+<p><strong>Symptoms:</strong></p>
+<ul>
+<li><code>nv show vrf default router bgp neighbor</code> shows swp32 down; <code>nv show interface</code> shows swp32 admin down.</li>
+<li><code>sudo vtysh -c "show ip route 10.255.0.14"</code> shows a single next hop via swp31.</li>
+<li>Route to 10.255.0.2 (spine02) is gone from hxb-leaf-r1.</li>
+<li>Traceroute to 10.255.0.14 shows only 10.255.0.1 at hop 1, whatever the port.</li>
+<li>On hxb-spine02, only three leaves are Established.</li>
+</ul>
+<p><strong>Diagnosis:</strong> start at the link layer, as the figure shows.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv show interface swp32
+<a id="__codelineno-29-2" name="__codelineno-29-2" href="#__codelineno-29-2"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv show interface swp32 link --applied
+<a id="__codelineno-29-3" name="__codelineno-29-3" href="#__codelineno-29-3"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv config history
+</code></pre></div>
+<p>Admin state is <code>down</code> in the applied configuration: this was a configuration change, not a cable fault. (A cable fault would show admin up, oper down, and no LLDP neighbour.)</p>
+<p><strong>Fix:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv set interface swp32 link state up
+<a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv config apply -y
+<a id="__codelineno-30-3" name="__codelineno-30-3" href="#__codelineno-30-3"></a>cumulus@hxb-leaf-r1:mgmt:~$ sudo vtysh -c &quot;show ip route 10.255.0.14&quot;
+</code></pre></div>
+<p>Two next hops should return within a few seconds of the session re-establishing.</p>
+<div class="admonition info">
+<p class="admonition-title">Field note</p>
+<p>Both faults leave the fabric "working", because the other spine carries the traffic. In an AI fabric that means half the bandwidth for every flow to or from that leaf, and slower collective operations. Monitor the number of ECMP next hops and Established sessions, not just reachability (Lab 7).</p>
+</div>
+<h2 id="clean-up-save-state">Clean-up / save state<a class="headerlink" href="#clean-up-save-state" title="Permanent link">&para;</a></h2>
+<ol>
+<li>
+<p>On every switch, confirm that nothing is pending and startup matches applied:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv config diff
+<a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv config diff applied startup
+</code></pre></div>
+</li>
+<li>
+<p>Make sure both faults are fixed: all 8 sessions Established, two next hops on every leaf-to-leaf route.</p>
+</li>
+<li>Optional but recommended: in the Air console, take a checkpoint of the simulation now (Lab 6 covers checkpoints in depth). "Underlay complete" is a useful point to return to before the RoCE and EVPN labs.</li>
+<li>Keep the configuration. Labs 3–5 build on this underlay; Lab 5 uses the leaf loopbacks as VTEPs.</li>
+<li>If you are stopping, put the simulation to sleep from the Air console.</li>
+</ol>
+<h2 id="exam-tie-in">Exam tie-in<a class="headerlink" href="#exam-tie-in" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>2.1 / 2.3</strong> — The Spectrum-X underlay is eBGP unnumbered: <code>nv set router bgp autonomous-system</code>, <code>router-id</code>, and <code>nv set vrf default router bgp neighbor swpX remote-as external</code>. EVPN (Lab 5) adds the <code>l2vpn-evpn</code> address family to these same neighbours.</li>
+<li><strong>1.2</strong> — Rail-optimised leaves with a shared spine ASN give valley-free, two-hop paths between any two leaves; each additional spine adds another equal-cost path.</li>
+<li><strong>2.1</strong> — Loopbacks are advertised as /32s and become VTEP addresses; verify with <code>nv show vrf default router bgp neighbor</code>, <code>vtysh show ip bgp summary</code> and <code>show ip route</code>.</li>
+<li><strong>2.2 / 5.3</strong> — ECMP multipath is on by default; losing a session halves the paths without breaking reachability, which is why path counts matter for low-latency, high-bandwidth verification.</li>
+<li><strong>2.4</strong> — Air lets you rehearse the full underlay and its failures on Cumulus VX; hashing detail and forwarding performance are not representative of Spectrum hardware.</li>
+</ul>
+<h2 id="review-questions">Review questions<a class="headerlink" href="#review-questions" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Why can every leaf use <code>remote-as external</code> on both uplinks, and what would break if you typed the wrong numeric ASN instead?</li>
+<li>Why does hxb-spine01 have no route to hxb-spine02's loopback, and is that a problem?</li>
+<li>In <code>show ip route 10.255.0.14</code> on hxb-leaf-r1, what tells you the underlay is using ECMP, and what tells you the sessions are unnumbered?</li>
+<li>Why do you ping with <code>-I 10.255.0.11</code> rather than letting the switch pick a source address?</li>
+<li>A leaf can still reach every other leaf, but <code>show ip route</code> shows one next hop for each. Name two likely causes and the first command you would run.</li>
+</ol>
+<h3 id="answers">Answers<a class="headerlink" href="#answers" title="Permanent link">&para;</a></h3>
+<ol>
+<li><code>remote-as external</code> accepts any ASN different from the local one, so the same line works for any eBGP peer. A wrong numeric ASN makes the leaf reject the spine's OPEN with a <strong>Bad Peer AS</strong> notification, and the session never establishes.</li>
+<li>Both spines use AS 65100. A path to spine02's loopback through any leaf has AS path <code>65101 65100</code>, which contains spine01's own ASN, so BGP loop prevention drops it. It is not a problem: spines do not need to reach each other in a leaf–spine fabric, and this prevents valley paths.</li>
+<li>ECMP: two <code>via</code> lines, both marked <code>*</code> (installed), one through swp31 and one through swp32. Unnumbered: the next hops are IPv6 link-local addresses (<code>fe80::…</code>) on swp ports, with no IPv4 next hop.</li>
+<li>The fabric ports have no IPv4 addresses, and only the loopback /32 is advertised. Sourcing from the loopback makes sure the far leaf has a route back, and it tests the same address pair that VXLAN tunnels will use.</li>
+<li>One uplink or BGP session is down: a port set to admin down (or a cable fault), or a misconfigured neighbour such as a wrong <code>remote-as</code>. Start with <code>nv show vrf default router bgp neighbor</code> (or <code>sudo vtysh -c "show ip bgp summary"</code>), then <code>nv show interface</code> for the affected port.</li>
+</ol>
+<hr />
+<div class="admonition abstract">
+<p class="admonition-title">Go deeper</p>
+<p>The matching book chapters cover the exam objectives for this lab in full, with a Q&amp;A pack of about 40 exam-style questions per chapter. <a class="md-button md-button--primary" href="../../book/">Get the book</a> <a class="md-button" href="https://github.com/Cloudfoxy-Ltd/ncp-ain-guide/issues/new?template=erratum.yml">Report a problem with this lab</a></p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../lab01/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Lab 1 — NVUE essentials">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Lab 1 — NVUE essentials
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../lab03/" class="md-footer__link md-footer__link--next" aria-label="Next: Lab 3 — Lossless RoCE and Soft-RoCE">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Lab 3 — Lossless RoCE and Soft-RoCE
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      © 2026 Vakeesan Thevarajah · Cloudfoxy Ltd · Lab guide CC BY-NC-SA 4.0 · Independent, not endorsed by NVIDIA
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.footer", "navigation.top", "content.code.copy", "search.highlight", "search.suggest", "toc.follow"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

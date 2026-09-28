@@ -1,0 +1,11 @@
+flowchart TB
+    J["helix-b-air.json<br/>nodes · links · oob"]:::oob --> V["Create Simulation<br/>(validate + draw)"]:::ctl
+    V --> R["Start<br/>Requesting → Provisioning"]:::ctl
+    R --> B["Booting<br/>(5–15 min)"]:::ctl
+    B --> A["Active<br/>consoles available"]:::eth
+    A --> S["Sleep<br/>Stop Simulation and Store Checkpoint"]:::gpu
+    S -->|"Start from checkpoint"| R
+    classDef gpu fill:#DCEBFA,stroke:#1F5FAD,color:#0B2545
+    classDef eth fill:#DDF2DC,stroke:#2E7D32,color:#123B14
+    classDef ctl fill:#FDE8CF,stroke:#D9730D,color:#4A2604
+    classDef oob fill:#ECECEC,stroke:#6B6B6B,color:#2A2A2A

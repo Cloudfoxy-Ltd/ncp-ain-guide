@@ -1,0 +1,2455 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Free hands-on labs on NVIDIA DSX Air, errata and study files for the NCP-AIN Certification Guide by Vakeesan Thevarajah (Cloudfoxy Ltd).">
+      
+      
+        <meta name="author" content="Vakeesan Thevarajah">
+      
+      
+        <link rel="canonical" href="https://cloudfoxy-ltd.github.io/ncp-ain-guide/labs/lab06/">
+      
+      
+        <link rel="prev" href="../lab05/">
+      
+      
+        <link rel="next" href="../lab07/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Lab 6 — Air power skills - NCP-AIN Certification Guide — Labs & Errata</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="cyan" data-md-color-accent="purple">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#lab-6-air-power-skills-checkpoints-cloning-services-and-the-sdk" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="NCP-AIN Certification Guide — Labs &amp; Errata" class="md-header__button md-logo" aria-label="NCP-AIN Certification Guide — Labs & Errata" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            NCP-AIN Certification Guide — Labs & Errata
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Lab 6 — Air power skills
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="cyan" data-md-color-accent="purple"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="cyan" data-md-color-accent="purple"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Cloudfoxy-Ltd/ncp-ain-guide" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Cloudfoxy-Ltd/ncp-ain-guide
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
+          
+  
+  
+  Hands-On Labs
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../book/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  The Book
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../errata/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Errata
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../flashcards/" class="md-tabs__link">
+          
+  
+  
+  Study Files
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../license/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Licence
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="NCP-AIN Certification Guide — Labs &amp; Errata" class="md-nav__button md-logo" aria-label="NCP-AIN Certification Guide — Labs & Errata" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    NCP-AIN Certification Guide — Labs & Errata
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Cloudfoxy-Ltd/ncp-ain-guide" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Cloudfoxy-Ltd/ncp-ain-guide
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hands-On Labs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Hands-On Labs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab00/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 0 — Air and topology
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab01/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 1 — NVUE essentials
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab02/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 2 — eBGP unnumbered underlay
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab03/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 3 — Lossless RoCE and Soft-RoCE
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab04/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 4 — AR, ECMP and telemetry
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab05/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 5 — BGP-EVPN multi-tenancy
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 6 — Air power skills
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 6 — Air power skills
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#lab-at-a-glance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lab at a glance
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#objectives" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Objectives
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#background" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Background
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-by-step" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step-by-step
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Step-by-step">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#task-1-save-configuration-on-every-switch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 1 — Save configuration on every switch
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-2-stop-the-simulation-and-store-a-checkpoint" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 2 — Stop the simulation and store a checkpoint
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-3-mark-a-favourite-and-start-from-a-checkpoint" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 3 — Mark a favourite and start from a checkpoint
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-4-break-something-then-revert" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 4 — Break something, then revert
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-5-clone-the-simulation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 5 — Clone the simulation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-6-export-the-topology" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 6 — Export the topology
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-7-read-the-history-tab-and-estimate-credits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 7 — Read the History tab and estimate credits
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-8-ssh-from-your-laptop-with-a-service" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 8 — SSH from your laptop with a Service
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-9-configure-servers-automatically-node-instructions-and-cloud-init" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 9 — Configure servers automatically: node instructions and cloud-init
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-10-drive-air-from-python-with-the-sdk" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 10 — Drive Air from Python with the SDK
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#verify" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verify
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#break-and-fix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Break and fix
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Break and fix">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fault-1-my-changes-disappeared-after-the-restart" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fault 1 — "My changes disappeared after the restart"
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fault-2-permission-denied-publickey" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fault 2 — "Permission denied (publickey)"
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#clean-up-save-state" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Clean-up / save state
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exam-tie-in" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exam tie-in
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#review-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Review questions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Review questions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#answers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Answers
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab07/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 7 — Monitoring and troubleshooting
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab08/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 8 — InfiniBand with ibsim
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab09/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 9 — perftest over Soft-RoCE
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab10/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 10 — Kubernetes Network Operator
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab11/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 11 — NVUE templates
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab12/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 12 — Ansible automation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab13/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 13 — Capstone challenge
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../appendix/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Appendices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../book/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The Book
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../errata/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Errata
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Study Files
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Study Files
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../flashcards/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Flashcards
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lab-files/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab files
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../license/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Licence
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#lab-at-a-glance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lab at a glance
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#objectives" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Objectives
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#background" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Background
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-by-step" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step-by-step
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Step-by-step">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#task-1-save-configuration-on-every-switch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 1 — Save configuration on every switch
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-2-stop-the-simulation-and-store-a-checkpoint" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 2 — Stop the simulation and store a checkpoint
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-3-mark-a-favourite-and-start-from-a-checkpoint" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 3 — Mark a favourite and start from a checkpoint
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-4-break-something-then-revert" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 4 — Break something, then revert
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-5-clone-the-simulation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 5 — Clone the simulation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-6-export-the-topology" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 6 — Export the topology
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-7-read-the-history-tab-and-estimate-credits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 7 — Read the History tab and estimate credits
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-8-ssh-from-your-laptop-with-a-service" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 8 — SSH from your laptop with a Service
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-9-configure-servers-automatically-node-instructions-and-cloud-init" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 9 — Configure servers automatically: node instructions and cloud-init
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-10-drive-air-from-python-with-the-sdk" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 10 — Drive Air from Python with the SDK
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#verify" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verify
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#break-and-fix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Break and fix
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Break and fix">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fault-1-my-changes-disappeared-after-the-restart" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fault 1 — "My changes disappeared after the restart"
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fault-2-permission-denied-publickey" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fault 2 — "Permission denied (publickey)"
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#clean-up-save-state" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Clean-up / save state
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exam-tie-in" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exam tie-in
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#review-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Review questions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Review questions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#answers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Answers
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="lab-6-air-power-skills-checkpoints-cloning-services-and-the-sdk">Lab 6 — Air Power Skills: Checkpoints, Cloning, Services and the SDK<a class="headerlink" href="#lab-6-air-power-skills-checkpoints-cloning-services-and-the-sdk" title="Permanent link">&para;</a></h1>
+<div class="admonition abstract">
+<p class="admonition-title">Companion to the NCP-AIN Certification Guide</p>
+<p>This free lab is part of the hands-on companion to <em>NCP-AIN Certification Guide</em> by Vakeesan Thevarajah (Cloudfoxy Ltd). The book explains the theory, design choices and hardware behaviour behind every step. <a class="md-button md-button--primary" href="../../book/">Get the book</a> <a class="md-button" href="../../sample/NCP-AIN_Sample.pdf">Free sample</a></p>
+</div>
+<h2 id="lab-at-a-glance">Lab at a glance<a class="headerlink" href="#lab-at-a-glance" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Book chapters</td>
+<td>Chapter 9 (Lab simulation with NVIDIA Air) · Chapter 4 (NVUE startup configuration) · Chapters 21–22 (testing templates and Ansible in a twin)</td>
+</tr>
+<tr>
+<td>Exam objectives</td>
+<td><strong>2.4</strong> Use NVIDIA Air to simulate network environments · supports <strong>6.1/6.2</strong> (testing automation in a digital twin)</td>
+</tr>
+<tr>
+<td>Time</td>
+<td>75–90 minutes</td>
+</tr>
+<tr>
+<td>Air resources used</td>
+<td>The whole helix-b-air simulation (about 26 vCPU while running). Some tasks run with the simulation stopped. Your own computer for SSH and the Python SDK</td>
+</tr>
+<tr>
+<td>Prerequisite labs</td>
+<td>Lab 0 (topology imported, OOB network enabled). Labs 1–5 recommended, so there is configuration worth protecting</td>
+</tr>
+</tbody>
+</table>
+<h2 id="objectives">Objectives<a class="headerlink" href="#objectives" title="Permanent link">&para;</a></h2>
+<p>By the end of this lab you will be able to:</p>
+<ol>
+<li>Save switch configuration so it survives a restart, and stop a simulation with a checkpoint.</li>
+<li>Work with checkpoints: start from one, mark a favourite, and revert a simulation to one.</li>
+<li>Clone a simulation and export its topology as JSON.</li>
+<li>Read the <strong>History</strong> tab and estimate how many compute hours (credits) your work uses.</li>
+<li>Reach the simulation directly from your laptop with an SSH service on <code>oob-mgmt-server</code>.</li>
+<li>Configure servers automatically with node instructions and cloud-init.</li>
+<li>Use the DSX Air Python SDK (<code>nv-air-sdk</code>) to list, start and sleep simulations from a script.</li>
+</ol>
+<h2 id="background">Background<a class="headerlink" href="#background" title="Permanent link">&para;</a></h2>
+<p>By Lab 5 you have a working EVPN fabric that took hours to build. This lab is about protecting that work and using Air efficiently. A free-trial account has <strong>10,000 compute hours</strong> for a year and a <strong>60 vCPU / 60 GiB</strong> concurrent limit. A simulation that runs all night uses credits whether you type anything or not. Stopping it with a checkpoint costs nothing while it's stopped and brings you back to exactly where you were.</p>
+<p>Air saves work at two layers, and you need both. <strong>Inside each switch</strong>, NVUE holds the running (applied) configuration and a startup configuration in <code>/etc/nvue.d/startup.yaml</code> (Chapter 4). Only the startup configuration is loaded at boot. <strong>Around the whole simulation</strong>, Air stores <strong>checkpoints</strong>: snapshots of every node's disk state. When you stop a simulation with <strong>Stop Simulation and Store Checkpoint</strong>, Air shuts the nodes down, saves their disks and releases the compute resources. Air keeps up to <strong>three checkpoints</strong> per simulation. The oldest non-favourite checkpoint is deleted automatically when a new one is saved, so mark the important ones as favourites.</p>
+<p>The last part of the lab turns Air into something you can drive from code. The <strong>Services</strong> tab publishes a port on a node (usually SSH on <code>oob-mgmt-server</code>) to the internet. <strong>Node instructions</strong> and <strong>cloud-init</strong> configure servers automatically. The <strong>Python SDK</strong> lets a CI pipeline (Chapter 22) create, start, test and sleep simulations without anyone opening a browser.</p>
+<figure>
+<p><img alt="Figure 6.1: Two layers of saved state" loading="lazy" src="../img/fig-6_1.png" /></p>
+<figcaption><strong>Figure 6.1: Two layers of saved state.</strong> NVUE startup configuration lives inside each switch's disk. An Air checkpoint saves every node's disk. Both are needed: a checkpoint of a switch whose change was never written to startup.yaml brings back the old configuration after the restart.</figcaption>
+</figure>
+<div class="admonition note">
+<p class="admonition-title">Version note</p>
+<p>The DSX Air user interface changes often. The labels in this lab (<strong>Stop Simulation and Store Checkpoint</strong>, <strong>Checkpoints</strong>, <strong>History</strong>, <strong>Services</strong>, <strong>Enable SSH</strong>, <strong>Settings</strong>, <strong>Node Instructions</strong>) come from the DSX Air user guide at the time of writing. If a button has moved or been renamed, look for the same function nearby, and check docs.nvidia.com/dsx-air/simulation-management.</p>
+</div>
+<h2 id="step-by-step">Step-by-step<a class="headerlink" href="#step-by-step" title="Permanent link">&para;</a></h2>
+<h3 id="task-1-save-configuration-on-every-switch">Task 1 — Save configuration on every switch<a class="headerlink" href="#task-1-save-configuration-on-every-switch" title="Permanent link">&para;</a></h3>
+<p>A checkpoint saves disks, not running processes. Anything that exists only in a switch's applied configuration, and not in <code>startup.yaml</code>, might not come back after a stop and start. Make sure every switch's startup configuration matches its applied configuration.</p>
+<ol>
+<li>Open the console of <code>oob-mgmt-server</code> (or SSH to it) and log in as <code>ubuntu</code>.</li>
+<li>
+<p>Connect to the first leaf and check whether anything is pending or unsaved:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>ubuntu@oob-mgmt-server:~$ ssh cumulus@hxb-leaf-r1
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv config diff
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv config diff applied startup
+</code></pre></div>
+<p><strong>Expected output (illustrative):</strong> both commands print nothing. The first shows pending changes that haven't been applied. The second shows differences between applied and startup.</p>
+</li>
+<li>
+<p>If the first command shows output, you have pending changes. Review them, then apply or detach them (<code>nv config apply</code> or <code>nv config detach</code>). If the second shows output, save:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv config save
+</code></pre></div>
+</li>
+<li>
+<p>Confirm that auto-save is on, so future applies are saved automatically:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv show system config auto-save
+</code></pre></div>
+<p><strong>Expected output (illustrative):</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>       operational  applied
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>-----  -----------  -------
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>state  enabled      enabled
+</code></pre></div>
+</li>
+<li>
+<p>Repeat on every switch. A loop from <code>oob-mgmt-server</code> is faster. It assumes the SSH key set-up from Lab 0; otherwise you are asked for the password on each switch:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>ubuntu@oob-mgmt-server:~$ for sw in hxb-spine01 hxb-spine02 hxb-leaf-r1 hxb-leaf-r2 hxb-leaf-r3 hxb-leaf-r4; do
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>  echo &quot;== $sw&quot;; ssh cumulus@$sw &quot;nv config save &amp;&amp; nv config diff applied startup | wc -l&quot;
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>done
+</code></pre></div>
+<p><strong>Expected output (illustrative):</strong> each switch prints its name followed by <code>0</code> (no lines of difference).</p>
+</li>
+<li>
+<p>On the Ubuntu servers, confirm the tenant addresses from Lab 5 are in a netplan file, not only added with <code>ip addr add</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>ubuntu@oob-mgmt-server:~$ ssh ubuntu@hxb-gpu01 &quot;sudo netplan get ethernets&quot;
+</code></pre></div>
+</li>
+</ol>
+<p><strong>Checkpoint:</strong></p>
+<ul>
+<li>Every switch shows no difference between applied and startup.</li>
+<li>Auto-save is enabled (the default in Cumulus Linux 5.x).</li>
+<li>Server addresses are persistent (netplan), or you have noted which ones you will re-add after a restart.</li>
+</ul>
+<div class="admonition tip">
+<p class="admonition-title">Exam focus (2.4)</p>
+<p>A checkpoint is only as good as what is on disk. The NVUE answer to "what makes a change survive a reboot?" is that it is in the <strong>startup</strong> revision (<code>/etc/nvue.d/startup.yaml</code>). <code>nv config save</code> writes the applied configuration to startup. It does <strong>not</strong> apply pending changes.</p>
+</div>
+<h3 id="task-2-stop-the-simulation-and-store-a-checkpoint">Task 2 — Stop the simulation and store a checkpoint<a class="headerlink" href="#task-2-stop-the-simulation-and-store-a-checkpoint" title="Permanent link">&para;</a></h3>
+<ol>
+<li>In the Air UI, open the <strong>helix-b-air</strong> simulation.</li>
+<li>In the action bar at the top of the page, click <strong>Stop Simulation and Store Checkpoint</strong>.</li>
+<li>Watch the status move through <strong>Shutting Down</strong> and <strong>Saving</strong> to <strong>Inactive</strong>. This can take several minutes for 13 nodes.</li>
+<li>
+<p>Open the <strong>Checkpoints</strong> tab. You should see one checkpoint with the time you stopped the simulation.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The drop-down next to the stop button also offers <strong>Stop Simulation Without Checkpoint</strong>. That discards everything since the last checkpoint. Use it only when you really want to throw work away, for example after a destructive test.</p>
+</div>
+</li>
+</ol>
+<p><strong>Checkpoint:</strong></p>
+<ul>
+<li>The simulation state is <strong>Inactive</strong>.</li>
+<li>The <strong>Checkpoints</strong> tab shows a new checkpoint of type <strong>standard</strong>.</li>
+</ul>
+<h3 id="task-3-mark-a-favourite-and-start-from-a-checkpoint">Task 3 — Mark a favourite and start from a checkpoint<a class="headerlink" href="#task-3-mark-a-favourite-and-start-from-a-checkpoint" title="Permanent link">&para;</a></h3>
+<p>Air keeps at most three checkpoints per simulation. When a fourth is saved, the oldest checkpoint that isn't a favourite is deleted. Protect your "known good after Lab 5" state now.</p>
+<ol>
+<li>On the <strong>Checkpoints</strong> tab, mark the checkpoint you just created as a favourite (use the favourite control on its row). Its <strong>Type</strong> column changes from <strong>standard</strong> to <strong>Favorites</strong>. If you can rename it, call it <code>lab05-evpn-good</code>.</li>
+<li>Click the drop-down arrow next to <strong>Start Simulation</strong>. A list of checkpoints appears.</li>
+<li>Select the checkpoint and start the simulation.</li>
+<li>
+<p>When the state is <strong>Active</strong>, log in to a leaf and check that the EVPN configuration from Lab 5 is present:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv config diff applied startup
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>cumulus@hxb-leaf-r1:mgmt:~$ sudo vtysh -c &quot;show bgp summary&quot;
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>cumulus@hxb-leaf-r1:mgmt:~$ sudo vtysh -c &quot;show evpn vni&quot;
+</code></pre></div>
+<p><strong>Expected output (illustrative):</strong> the BGP summary lists both unnumbered neighbours (<code>swp31</code>, <code>swp32</code>) as Established and <code>show evpn vni</code> lists L2 VNIs 10110, 10111, 10210, 10211 and L3 VNIs 104001, 104002.</p>
+</li>
+</ol>
+<p><strong>Checkpoint:</strong></p>
+<ul>
+<li>The favourite checkpoint is marked and named.</li>
+<li>The simulation came back with the Lab 5 configuration intact.</li>
+</ul>
+<div class="admonition info">
+<p class="admonition-title">Field note</p>
+<p>Checkpoint before every risky lab, not only at the end of the day. Before Lab 12 (Ansible) or Lab 13 (capstone faults), stop with a checkpoint, favourite it, and start again. It costs a few minutes and saves an evening of rebuilding.</p>
+</div>
+<figure>
+<p><img alt="Figure 6.2: Checkpoint lifecycle in Air" loading="lazy" src="../img/fig-6_2.png" /></p>
+<figcaption><strong>Figure 6.2: Checkpoint lifecycle in Air.</strong> Stopping with a checkpoint saves disks and frees resources. Starting from any stored checkpoint restores that state. Revert rolls an inactive simulation back to a checkpoint. When a fourth checkpoint is saved, the oldest non-favourite one is removed.</figcaption>
+</figure>
+<h3 id="task-4-break-something-then-revert">Task 4 — Break something, then revert<a class="headerlink" href="#task-4-break-something-then-revert" title="Permanent link">&para;</a></h3>
+<p>Revert rolls the simulation back to a checkpoint. It needs the simulation to be <strong>Inactive</strong> and to have at least one checkpoint.</p>
+<ol>
+<li>
+<p>With the simulation active, make a deliberate mess on <code>hxb-leaf-r1</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv unset vrf default router bgp neighbor swp31
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv unset vrf default router bgp neighbor swp32
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv config apply -y
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>cumulus@hxb-leaf-r1:mgmt:~$ sudo vtysh -c &quot;show bgp summary&quot;
+</code></pre></div>
+<p><strong>Expected output (illustrative):</strong> no neighbours listed. Leaf-r1 has dropped out of the fabric, and auto-save has written the broken configuration to startup.</p>
+</li>
+<li>
+<p>Stop the simulation <strong>without</strong> a checkpoint (drop-down next to the stop button → <strong>Stop Simulation Without Checkpoint</strong>). You don't want to keep the broken state.</p>
+</li>
+<li>When the simulation is <strong>Inactive</strong>, click the <strong>revert</strong> icon in the action bar, choose the <code>lab05-evpn-good</code> checkpoint, and press and hold <strong>Hold to Revert</strong> until it completes.</li>
+<li>Start the simulation and re-check <code>show bgp summary</code> on <code>hxb-leaf-r1</code>.</li>
+</ol>
+<p><strong>Checkpoint:</strong></p>
+<ul>
+<li>Both BGP neighbours on <code>hxb-leaf-r1</code> are Established again.</li>
+<li>You understand the difference: <em>start from a checkpoint</em> picks a state for this run; <em>revert</em> rolls the simulation back to that checkpoint.</li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>You can't revert an active simulation, and the revert option needs at least one checkpoint. If the revert icon is greyed out, check the state first.</p>
+</div>
+<h3 id="task-5-clone-the-simulation">Task 5 — Clone the simulation<a class="headerlink" href="#task-5-clone-the-simulation" title="Permanent link">&para;</a></h3>
+<p>A clone is a second, independent copy of the simulation. It's useful for a "what if" test that you might want to throw away, while the original stays safe.</p>
+<ol>
+<li>From the simulation list (or the simulation's action menu), choose the clone option. At the time of writing, Air added "clone a simulation directly from the UI" in its August 2026 release. Look for <strong>Clone</strong> or <strong>Duplicate</strong> in the simulation's menu (check on your release).</li>
+<li>Name the clone <code>helix-b-air-whatif</code>.</li>
+<li>
+<p><strong>Don't start both at once.</strong> Check the quota arithmetic first:</p>
+<table>
+<thead>
+<tr>
+<th>Resource</th>
+<th>helix-b-air (approx.)</th>
+<th>Two copies</th>
+<th>Free-trial limit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>vCPU</td>
+<td>26</td>
+<td>52</td>
+<td>60</td>
+</tr>
+<tr>
+<td>Memory</td>
+<td>about 46–48 GiB</td>
+<td>about 94 GiB</td>
+<td>60 GiB</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ol>
+<p>Two copies fit the vCPU limit but not the memory limit. Stop the original with a checkpoint before starting the clone.</p>
+<p><strong>Checkpoint:</strong></p>
+<ul>
+<li>The clone appears in your simulation list.</li>
+<li>You know that only one copy of this topology can run at a time on a free-trial account.</li>
+</ul>
+<div class="admonition info">
+<p class="admonition-title">Field note</p>
+<p>If your UI has no clone option, the same result comes from exporting the topology (Task 6) and importing it as a new simulation. An imported topology starts from fresh images, not from your checkpoints, so re-apply configuration from saved <code>startup.yaml</code> files or your Lab 11/12 automation.</p>
+</div>
+<h3 id="task-6-export-the-topology">Task 6 — Export the topology<a class="headerlink" href="#task-6-export-the-topology" title="Permanent link">&para;</a></h3>
+<ol>
+<li>Open the <strong>Topology</strong> tab of the original simulation.</li>
+<li>Click the <strong>Export</strong> icon in the toolbar. Air downloads the topology as a JSON file.</li>
+<li>Open the file in a text editor and find <code>hxb-leaf-r1</code>, its OS image, its vCPU and memory, and its links.</li>
+<li>Commit the file to the Git repository you will use for Lab 11 and Lab 12, for example as <code>air/helix-b-air.json</code>.</li>
+</ol>
+<p><strong>Checkpoint:</strong></p>
+<ul>
+<li>You have a JSON file that describes the nodes and links (not the configuration inside them).</li>
+<li>It is under version control next to your templates and playbooks.</li>
+</ul>
+<div class="admonition tip">
+<p class="admonition-title">Exam focus (2.4)</p>
+<p>Air simulations can be built with the UI builder, from a <strong>DOT</strong> or <strong>JSON</strong> topology file, or from a pre-built demo. An exported topology file is how a digital twin stays in step with the production design (Chapter 9).</p>
+</div>
+<h3 id="task-7-read-the-history-tab-and-estimate-credits">Task 7 — Read the History tab and estimate credits<a class="headerlink" href="#task-7-read-the-history-tab-and-estimate-credits" title="Permanent link">&para;</a></h3>
+<ol>
+<li>Open the <strong>History</strong> tab of the simulation. Each entry has a <strong>Timestamp</strong>, <strong>Actor</strong>, <strong>Category</strong> (INFO, WARNING or ERROR) and <strong>Description</strong>.</li>
+<li>Find the events from Tasks 2–4: the stop, the checkpoint save, the revert and the start. Note who (<strong>Actor</strong>) did each one.</li>
+<li>
+<p>Estimate what one hour of this lab costs. DSX Air bills in <strong>compute hours</strong>. One compute hour is <strong>1 vCPU for 1 hour</strong>, or <strong>8 GB of memory for 1 hour</strong>, and the two are counted separately.</p>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Working</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>vCPU per hour</td>
+<td>12 nodes × 2 vCPU + <code>oob-mgmt-switch</code> ≈ <strong>26 vCPU</strong> → about 26 compute hours per hour</td>
+</tr>
+<tr>
+<td>Memory per hour</td>
+<td>about 46–48 GB ÷ 8 ≈ <strong>6</strong> compute hours per hour</td>
+</tr>
+<tr>
+<td>Total</td>
+<td>about <strong>32 compute hours per running hour</strong></td>
+</tr>
+<tr>
+<td>Free-trial allowance</td>
+<td>10,000 ÷ 32 ≈ <strong>310 hours</strong> of running time</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ol>
+<p>A simple rule of thumb for planning is <strong>vCPU × hours</strong>, and then add about a quarter for memory on this topology. An evening of three hours uses about 100 compute hours. Leaving it running for a week by mistake uses over 5,000.</p>
+<ol>
+<li>Look for the rate or usage display in the UI. Air's August 2026 release notes say the UI "now shows the rate required to run a simulation" (check where it appears on your release). Compare it with your estimate.</li>
+<li>Open the simulation's <strong>Edit</strong> dialog and look at <strong>Sleep date</strong>. Free-trial simulations get an automatic sleep date that can't be removed. When it is reached, Air saves the simulation's state and stops it.</li>
+</ol>
+<p><strong>Checkpoint:</strong></p>
+<ul>
+<li>You can find a stop, checkpoint and revert event in <strong>History</strong>.</li>
+<li>You have a credit estimate for one hour and one evening of work.</li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The <strong>Sleep date</strong> is a safety net, not a plan. Stop the simulation yourself at the end of each session, with a checkpoint.</p>
+</div>
+<h3 id="task-8-ssh-from-your-laptop-with-a-service">Task 8 — SSH from your laptop with a Service<a class="headerlink" href="#task-8-ssh-from-your-laptop-with-a-service" title="Permanent link">&para;</a></h3>
+<p>The console in the browser works, but a proper SSH session from your laptop is faster and lets you copy and paste freely. Password authentication is disabled on <code>oob-mgmt-server</code> by default, so you must add a public key first.</p>
+<ol>
+<li>
+<p>On your laptop, create a key if you don't have one, and print the public half:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>you@laptop:~$ ssh-keygen -t ed25519 -C &quot;helix-air&quot;
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>you@laptop:~$ cat ~/.ssh/id_ed25519.pub
+</code></pre></div>
+</li>
+<li>
+<p>In the Air UI, click your user name, choose <strong>Settings</strong>, and find the SSH keys section. Fill in <strong>Name</strong> (for example <code>laptop</code>) and <strong>Public Key</strong> (paste the whole <code>ssh-ed25519 …</code> line), then select <strong>Add</strong>.</p>
+</li>
+<li>Keys you add are included automatically in the simulation's authorised keys on <code>oob-mgmt-server</code>. If the simulation was already running, stop and start it (or restart <code>oob-mgmt-server</code>) if the key doesn't work straight away (check on your release).</li>
+<li>Open the simulation's <strong>Services</strong> tab and click <strong>Enable SSH</strong>. This is only available when the OOB network is enabled. (The same tab has <strong>+ New Service</strong> for other ports, with the fields <strong>Service Name</strong>, <strong>Interface</strong>, <strong>Service Type</strong> and <strong>Service Port</strong>.)</li>
+<li>
+<p>Air shows an external host name and port for the service, with a ready-made command. It looks like this (illustrative):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>you@laptop:~$ ssh -p 24562 ubuntu@worker07.air.nvidia.com
+</code></pre></div>
+</li>
+<li>
+<p>Run the command shown in <strong>your</strong> Services tab. From <code>oob-mgmt-server</code>, go on to any node by name:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>ubuntu@oob-mgmt-server:~$ ssh cumulus@hxb-spine01
+</code></pre></div>
+</li>
+</ol>
+<p><strong>Checkpoint:</strong></p>
+<ul>
+<li>You can SSH from your laptop straight to <code>oob-mgmt-server</code> with your key.</li>
+<li>From there, you can reach every node by host name.</li>
+</ul>
+<figure>
+<p><img alt="Figure 6.3: Reaching the simulation from your laptop" loading="lazy" src="../img/fig-6_3.png" /></p>
+<figcaption><strong>Figure 6.3: Reaching the simulation from your laptop.</strong> The SSH service publishes port 22 on oob-mgmt-server at an external host name and port. Your laptop's public key, added in Settings, is installed on oob-mgmt-server. Every other node is reached over the OOB network by host name.</figcaption>
+</figure>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>A published SSH service is reachable from the internet. Keep password authentication disabled, use keys only, and disable the service when you no longer need it.</p>
+</div>
+<h3 id="task-9-configure-servers-automatically-node-instructions-and-cloud-init">Task 9 — Configure servers automatically: node instructions and cloud-init<a class="headerlink" href="#task-9-configure-servers-automatically-node-instructions-and-cloud-init" title="Permanent link">&para;</a></h3>
+<p>In Labs 3 and 5 you configured each server by hand. Air offers two ways to do this automatically.</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>When it runs</th>
+<th>How you add it</th>
+<th>Best for</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Node instructions</strong></td>
+<td>After the node boots, run by the Air agent on the node</td>
+<td>UI: <strong>Nodes</strong> tab → ⋮ menu on the node → <strong>Node Instructions</strong> (or right-click the node on the <strong>Topology</strong> canvas). Also the instructions API</td>
+<td>Changes to an existing, running simulation</td>
+</tr>
+<tr>
+<td><strong>Cloud-init</strong></td>
+<td>On the node's first boot (NoCloud data source)</td>
+<td>API or SDK: create <strong>UserConfig</strong> objects (user-data, meta-data) and assign them to nodes</td>
+<td>Building servers from scratch, reproducibly</td>
+</tr>
+</tbody>
+</table>
+<p>Air-provided <code>generic/ubuntu</code> images include cloud-init. Assign cloud-init configuration <strong>before</strong> a node's first boot. Assignments made after a node has booted take effect only when the node is rebuilt.</p>
+<p><strong>Part A — a node instruction for hxb-gpu01</strong></p>
+<ol>
+<li>In the <strong>Nodes</strong> tab, open the ⋮ menu for <code>hxb-gpu01</code> and choose <strong>Node Instructions</strong>.</li>
+<li>
+<p>Create a shell-type instruction (choose the shell or script option the dialog offers; executor names vary by release) with this content. It makes the Lab 5 AURORA addresses persistent and installs the RDMA tools used in Labs 3 and 9:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>#!/bin/bash
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>cat &gt; /etc/netplan/60-helix.yaml &lt;&lt;&#39;EOF&#39;
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>network:
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>  version: 2
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>  ethernets:
+<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>    eth1:
+<a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a>      addresses: [172.16.10.101/24]
+<a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a>      routes: [{to: 172.16.0.0/16, via: 172.16.10.1}]
+<a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a>    eth2:
+<a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a>      addresses: [172.16.11.101/24]
+<a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a>EOF
+<a id="__codelineno-11-12" name="__codelineno-11-12" href="#__codelineno-11-12"></a>chmod 600 /etc/netplan/60-helix.yaml
+<a id="__codelineno-11-13" name="__codelineno-11-13" href="#__codelineno-11-13"></a>netplan apply
+<a id="__codelineno-11-14" name="__codelineno-11-14" href="#__codelineno-11-14"></a>apt-get update &amp;&amp; apt-get install -y rdma-core ibverbs-utils perftest
+</code></pre></div>
+</li>
+<li>
+<p>Leave <strong>wait for network</strong> at its default (enabled). With the OOB network enabled, the Air agent waits until it can reach <code>oob-mgmt-server</code> before it runs the instruction. These network-readiness settings can't be changed after the instruction is created.</p>
+</li>
+<li>Save the instruction and watch it run (the node's instruction status shows when it has completed).</li>
+<li>
+<p>Check the result:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>ubuntu@oob-mgmt-server:~$ ssh ubuntu@hxb-gpu01 &quot;ip -br addr show eth1; dpkg -l perftest | tail -1&quot;
+</code></pre></div>
+<p><strong>Expected output (illustrative):</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>eth1             UP             172.16.10.101/24 fe80::…/64
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>ii  perftest     24.x…    amd64    Infiniband verbs performance tests
+</code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The routes in the example assume the AURORA design from Lab 5 (a route to the other tenant subnets through the anycast gateway). Adjust them to match what you built. If eth1 and eth2 already have these addresses in another netplan file, remove the duplicate first.</p>
+</div>
+</li>
+</ol>
+<p><strong>Part B — cloud-init with the SDK (optional, for a new simulation)</strong></p>
+<p>Cloud-init is the cleaner choice when you build a new simulation, for example the clone from Task 5 before its first start, or a CI simulation in Lab 12. The user-data file is standard <code>#cloud-config</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>#cloud-config
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>package_update: true
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>packages: [rdma-core, ibverbs-utils, perftest, jq]
+<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>write_files:
+<a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a>  - path: /etc/netplan/60-helix.yaml
+<a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a>    permissions: &#39;0600&#39;
+<a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a>    content: |
+<a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a>      network:
+<a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a>        version: 2
+<a id="__codelineno-14-10" name="__codelineno-14-10" href="#__codelineno-14-10"></a>        ethernets:
+<a id="__codelineno-14-11" name="__codelineno-14-11" href="#__codelineno-14-11"></a>          eth1: {addresses: [172.16.10.102/24]}
+<a id="__codelineno-14-12" name="__codelineno-14-12" href="#__codelineno-14-12"></a>          eth2: {addresses: [172.16.11.102/24]}
+<a id="__codelineno-14-13" name="__codelineno-14-13" href="#__codelineno-14-13"></a>runcmd:
+<a id="__codelineno-14-14" name="__codelineno-14-14" href="#__codelineno-14-14"></a>  - netplan apply
+</code></pre></div>
+<p>The SDK (Task 10) creates the configuration and assigns it to a node. This follows the DSX Air SDK cloud-init example:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>from pathlib import Path
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>from air_sdk import AirApi
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>from air_sdk.endpoints import UserConfig
+<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a>
+<a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a>api = AirApi.with_ngc_config()
+<a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a>sim = next(s for s in api.simulations.list() if s.name == &quot;helix-b-air-whatif&quot;)
+<a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a>node = next(n for n in sim.nodes.list() if n.name == &quot;hxb-gpu02&quot;)
+<a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a>
+<a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a>user_data = api.user_configs.create(
+<a id="__codelineno-15-10" name="__codelineno-15-10" href="#__codelineno-15-10"></a>    name=&quot;hxb-gpu02-userdata&quot;,
+<a id="__codelineno-15-11" name="__codelineno-15-11" href="#__codelineno-15-11"></a>    kind=UserConfig.KIND_CLOUD_INIT_USER_DATA,
+<a id="__codelineno-15-12" name="__codelineno-15-12" href="#__codelineno-15-12"></a>    content=Path(&quot;hxb-gpu02-user-data.yaml&quot;),
+<a id="__codelineno-15-13" name="__codelineno-15-13" href="#__codelineno-15-13"></a>)
+<a id="__codelineno-15-14" name="__codelineno-15-14" href="#__codelineno-15-14"></a>meta_data = api.user_configs.create(
+<a id="__codelineno-15-15" name="__codelineno-15-15" href="#__codelineno-15-15"></a>    name=&quot;hxb-gpu02-metadata&quot;,
+<a id="__codelineno-15-16" name="__codelineno-15-16" href="#__codelineno-15-16"></a>    kind=UserConfig.KIND_CLOUD_INIT_META_DATA,
+<a id="__codelineno-15-17" name="__codelineno-15-17" href="#__codelineno-15-17"></a>    content=&quot;instance-id: hxb-gpu02\nlocal-hostname: hxb-gpu02\n&quot;,
+<a id="__codelineno-15-18" name="__codelineno-15-18" href="#__codelineno-15-18"></a>)
+<a id="__codelineno-15-19" name="__codelineno-15-19" href="#__codelineno-15-19"></a>sim.node_bulk_assign(nodes=[{&quot;node&quot;: node, &quot;user_data&quot;: user_data, &quot;meta_data&quot;: meta_data}])
+</code></pre></div>
+<p><strong>Checkpoint:</strong></p>
+<ul>
+<li><code>hxb-gpu01</code> has its tenant addresses and the RDMA tools installed by a node instruction.</li>
+<li>You can explain when to use node instructions (running simulation) and when to use cloud-init (first boot).</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Version note</p>
+<p>The <code>sim.nodes.list()</code> call and the node <code>name</code> attribute follow the SDK's naming pattern, but this exact combination was not tested for this guide (check on your release, at docs.nvidia.com/dsx-air/sdk). The rest of the example is taken from NVIDIA's cloud-init SDK example.</p>
+</div>
+<h3 id="task-10-drive-air-from-python-with-the-sdk">Task 10 — Drive Air from Python with the SDK<a class="headerlink" href="#task-10-drive-air-from-python-with-the-sdk" title="Permanent link">&para;</a></h3>
+<p>The DSX Air SDK is the <code>nv-air-sdk</code> package. It needs Python 3.10 or later and authenticates with an <strong>NGC API key</strong> that has the <strong>NVIDIA Air</strong> service selected.</p>
+<ol>
+<li>
+<p><strong>Create an API key.</strong> Sign in to NGC, generate a Personal API key (see the NGC user guide, "Generating a Personal API Key"), and select <strong>NVIDIA Air</strong> in the services list. The key starts <code>nvapi-</code>. Copy it once; NGC doesn't show it again.</p>
+<div class="admonition note">
+<p class="admonition-title">Version note</p>
+<p>Older Air documentation and the older <code>air-sdk</code> package used an API token created in the Air UI and a user name and password style login. The current DSX Air SDK uses NGC keys: <code>AirApi.with_api_key(…)</code>, <code>AirApi.with_ngc_config()</code> (reads <code>~/.ngc/config</code>), or <code>AirApi.with_device_login(…)</code>. Confirm the method for your account at docs.nvidia.com/dsx-air/authentication and docs.nvidia.com/dsx-air/sdk.</p>
+</div>
+</li>
+<li>
+<p><strong>Install the SDK on your laptop</strong>, in a virtual environment. Run it on your laptop, not on <code>oob-mgmt-server</code>: a script that sleeps the simulation would cut off the machine it runs on.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>you@laptop:~$ python3 -m venv ~/air-venv
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>you@laptop:~$ source ~/air-venv/bin/activate
+<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>(air-venv) you@laptop:~$ pip install nv-air-sdk
+<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a>(air-venv) you@laptop:~$ export AIR_API_KEY=&#39;nvapi-…your key…&#39;
+</code></pre></div>
+<p><code>AIR_API_KEY</code> is simply the variable name this lab uses. It keeps the key out of the script and out of Git.</p>
+</li>
+<li>
+<p><strong>Write the script.</strong> Save it as <code>helix_air.py</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>#!/usr/bin/env python3
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>&quot;&quot;&quot;List, start and sleep DSX Air simulations (Lab 6).&quot;&quot;&quot;
+<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>import os
+<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a>import sys
+<a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a>
+<a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a>from air_sdk import AirApi, SimState
+<a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a>
+<a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a>api = AirApi.with_api_key(api_key=os.environ[&quot;AIR_API_KEY&quot;])
+<a id="__codelineno-17-9" name="__codelineno-17-9" href="#__codelineno-17-9"></a>
+<a id="__codelineno-17-10" name="__codelineno-17-10" href="#__codelineno-17-10"></a>
+<a id="__codelineno-17-11" name="__codelineno-17-11" href="#__codelineno-17-11"></a>def list_sims():
+<a id="__codelineno-17-12" name="__codelineno-17-12" href="#__codelineno-17-12"></a>    for sim in api.simulations.list():
+<a id="__codelineno-17-13" name="__codelineno-17-13" href="#__codelineno-17-13"></a>        print(f&quot;{sim.name:&lt;28} {str(sim.state):&lt;12} {sim.id}&quot;)
+<a id="__codelineno-17-14" name="__codelineno-17-14" href="#__codelineno-17-14"></a>
+<a id="__codelineno-17-15" name="__codelineno-17-15" href="#__codelineno-17-15"></a>
+<a id="__codelineno-17-16" name="__codelineno-17-16" href="#__codelineno-17-16"></a>def find(name):
+<a id="__codelineno-17-17" name="__codelineno-17-17" href="#__codelineno-17-17"></a>    for sim in api.simulations.list():
+<a id="__codelineno-17-18" name="__codelineno-17-18" href="#__codelineno-17-18"></a>        if sim.name == name:
+<a id="__codelineno-17-19" name="__codelineno-17-19" href="#__codelineno-17-19"></a>            return sim
+<a id="__codelineno-17-20" name="__codelineno-17-20" href="#__codelineno-17-20"></a>    sys.exit(f&quot;No simulation called {name!r}&quot;)
+<a id="__codelineno-17-21" name="__codelineno-17-21" href="#__codelineno-17-21"></a>
+<a id="__codelineno-17-22" name="__codelineno-17-22" href="#__codelineno-17-22"></a>
+<a id="__codelineno-17-23" name="__codelineno-17-23" href="#__codelineno-17-23"></a>def start(name):
+<a id="__codelineno-17-24" name="__codelineno-17-24" href="#__codelineno-17-24"></a>    sim = find(name)
+<a id="__codelineno-17-25" name="__codelineno-17-25" href="#__codelineno-17-25"></a>    sim.start()
+<a id="__codelineno-17-26" name="__codelineno-17-26" href="#__codelineno-17-26"></a>    sim.wait_for_state(SimState.ACTIVE, error_states=SimState.INACTIVE)
+<a id="__codelineno-17-27" name="__codelineno-17-27" href="#__codelineno-17-27"></a>    print(f&quot;{name} is ACTIVE&quot;)
+<a id="__codelineno-17-28" name="__codelineno-17-28" href="#__codelineno-17-28"></a>
+<a id="__codelineno-17-29" name="__codelineno-17-29" href="#__codelineno-17-29"></a>
+<a id="__codelineno-17-30" name="__codelineno-17-30" href="#__codelineno-17-30"></a>def sleep(name):
+<a id="__codelineno-17-31" name="__codelineno-17-31" href="#__codelineno-17-31"></a>    sim = find(name)
+<a id="__codelineno-17-32" name="__codelineno-17-32" href="#__codelineno-17-32"></a>    sim.shutdown()  # stores a checkpoint unless create_checkpoint=False
+<a id="__codelineno-17-33" name="__codelineno-17-33" href="#__codelineno-17-33"></a>    sim.wait_for_state(SimState.INACTIVE)
+<a id="__codelineno-17-34" name="__codelineno-17-34" href="#__codelineno-17-34"></a>    print(f&quot;{name} is INACTIVE, checkpoint stored&quot;)
+<a id="__codelineno-17-35" name="__codelineno-17-35" href="#__codelineno-17-35"></a>    for cp in sim.checkpoints.list():
+<a id="__codelineno-17-36" name="__codelineno-17-36" href="#__codelineno-17-36"></a>        print(f&quot;  checkpoint {cp.name} (id={cp.id}) state={cp.state}&quot;)
+<a id="__codelineno-17-37" name="__codelineno-17-37" href="#__codelineno-17-37"></a>
+<a id="__codelineno-17-38" name="__codelineno-17-38" href="#__codelineno-17-38"></a>
+<a id="__codelineno-17-39" name="__codelineno-17-39" href="#__codelineno-17-39"></a>if __name__ == &quot;__main__&quot;:
+<a id="__codelineno-17-40" name="__codelineno-17-40" href="#__codelineno-17-40"></a>    if len(sys.argv) &lt; 2 or sys.argv[1] not in (&quot;list&quot;, &quot;start&quot;, &quot;sleep&quot;):
+<a id="__codelineno-17-41" name="__codelineno-17-41" href="#__codelineno-17-41"></a>        sys.exit(&quot;usage: helix_air.py list | start &lt;sim&gt; | sleep &lt;sim&gt;&quot;)
+<a id="__codelineno-17-42" name="__codelineno-17-42" href="#__codelineno-17-42"></a>    if sys.argv[1] == &quot;list&quot;:
+<a id="__codelineno-17-43" name="__codelineno-17-43" href="#__codelineno-17-43"></a>        list_sims()
+<a id="__codelineno-17-44" name="__codelineno-17-44" href="#__codelineno-17-44"></a>    elif sys.argv[1] == &quot;start&quot;:
+<a id="__codelineno-17-45" name="__codelineno-17-45" href="#__codelineno-17-45"></a>        start(sys.argv[2])
+<a id="__codelineno-17-46" name="__codelineno-17-46" href="#__codelineno-17-46"></a>    else:
+<a id="__codelineno-17-47" name="__codelineno-17-47" href="#__codelineno-17-47"></a>        sleep(sys.argv[2])
+</code></pre></div>
+</li>
+<li>
+<p><strong>Run it.</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>(air-venv) you@laptop:~$ python3 helix_air.py list
+</code></pre></div>
+<p><strong>Expected output (illustrative):</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>helix-b-air                  ACTIVE       3f6c1d2e-…
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>helix-b-air-whatif           INACTIVE     9a41b7c0-…
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>(air-venv) you@laptop:~$ python3 helix_air.py sleep helix-b-air
+<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>(air-venv) you@laptop:~$ python3 helix_air.py start helix-b-air
+</code></pre></div>
+<p><strong>Expected output (illustrative):</strong> the sleep command waits several minutes, prints <code>helix-b-air is INACTIVE, checkpoint stored</code> and lists the checkpoints. The start command waits until the nodes are up and prints <code>helix-b-air is ACTIVE</code>.</p>
+</li>
+<li>
+<p>Open the <strong>History</strong> tab. The API calls appear as events with your account as the <strong>Actor</strong>.</p>
+</li>
+</ol>
+<p><strong>Checkpoint:</strong></p>
+<ul>
+<li><code>list</code> shows your simulations with their state.</li>
+<li><code>sleep</code> creates a checkpoint, the same as <strong>Stop Simulation and Store Checkpoint</strong> in the UI.</li>
+<li>You know the other SDK calls that exist for CI: <code>sim.shutdown(create_checkpoint=False)</code>, <code>sim.rebuild(checkpoint=cp.id)</code>, <code>sim.export()</code>, <code>sim.get_history()</code>, and <code>cp.update(name=…, favorite=True)</code>.</li>
+</ul>
+<figure>
+<p><img alt="Figure 6.4: Air in a CI pipeline with the SDK" loading="lazy" src="../img/fig-6_4.png" /></p>
+<figcaption><strong>Figure 6.4: Air in a CI pipeline with the SDK.</strong> A pipeline authenticates with an NGC API key, starts the twin, runs automation and tests against it, then sleeps it with a checkpoint. The same calls you used by hand in this lab are the building blocks of Chapter 22's Air CI workflow.</figcaption>
+</figure>
+<div class="admonition info">
+<p class="admonition-title">Field note</p>
+<p>Put a <code>sleep</code> step in the pipeline's clean-up stage so it runs even when tests fail. A failed CI run that leaves a 26 vCPU simulation running overnight uses around 400 compute hours.</p>
+</div>
+<h2 id="verify">Verify<a class="headerlink" href="#verify" title="Permanent link">&para;</a></h2>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Every switch shows no difference in <code>nv config diff applied startup</code>.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> You stopped the simulation with <strong>Stop Simulation and Store Checkpoint</strong> and saw a new checkpoint.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> One checkpoint is a favourite, named <code>lab05-evpn-good</code>.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> You started from a checkpoint, and reverted an inactive simulation to one.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> A clone exists, and you know that only one copy can run at a time on a trial account.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> The topology JSON is exported and committed to Git.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> You can find stop, checkpoint and revert events in <strong>History</strong>, and you have a credit estimate.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> You can SSH from your laptop to <code>oob-mgmt-server</code> through the SSH service.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> A node instruction configured <code>hxb-gpu01</code>.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <code>helix_air.py list</code>, <code>start</code> and <code>sleep</code> work.</li>
+</ul>
+<h2 id="break-and-fix">Break and fix<a class="headerlink" href="#break-and-fix" title="Permanent link">&para;</a></h2>
+<h3 id="fault-1-my-changes-disappeared-after-the-restart">Fault 1 — "My changes disappeared after the restart"<a class="headerlink" href="#fault-1-my-changes-disappeared-after-the-restart" title="Permanent link">&para;</a></h3>
+<p><strong>Symptom:</strong> You changed <code>hxb-leaf-r2</code> (for example <code>nv set interface swp1 link mtu 9000</code>), stopped the simulation with a checkpoint, and started it the next day. The MTU is back to 9216.</p>
+<p><strong>Diagnosis:</strong></p>
+<ol>
+<li><code>nv config history</code> on the leaf shows no revision with the change, or <code>nv config diff applied startup</code> shows it was never saved.</li>
+<li><code>nv show system config auto-save</code> shows <code>disabled</code>. Someone turned auto-save off (the fault injection for this exercise is <code>nv set system config auto-save state disabled</code> followed by <code>nv config apply -y</code>, run before the change).</li>
+<li>
+<p>The checkpoint faithfully saved a disk whose <code>startup.yaml</code> didn't contain the change.</p>
+<p><strong>Fix:</strong> Re-apply the change, run <code>nv config save</code>, and turn auto-save back on with <code>nv set system config auto-save state enabled</code> and <code>nv config apply -y</code>. Then stop with a checkpoint again. The lesson: Air checkpoints save disks, and the switch decides what is on disk.</p>
+</li>
+</ol>
+<h3 id="fault-2-permission-denied-publickey">Fault 2 — "Permission denied (publickey)"<a class="headerlink" href="#fault-2-permission-denied-publickey" title="Permanent link">&para;</a></h3>
+<p><strong>Symptom:</strong> The SSH command from the <strong>Services</strong> tab fails with <code>Permission denied (publickey)</code>.</p>
+<p><strong>Diagnosis:</strong></p>
+<ol>
+<li>Password authentication is disabled on <code>oob-mgmt-server</code>, so only a key works.</li>
+<li>Check the key in <strong>Settings</strong>: a common mistake is pasting the private key, or a public key with a line break in the middle.</li>
+<li>Run <code>ssh -v -p &lt;port&gt; ubuntu@&lt;host&gt;</code> and check which key file your SSH client offers. If you created a non-default key, add <code>-i ~/.ssh/&lt;keyfile&gt;</code>.</li>
+<li>
+<p>If the key was added while the simulation was running, it may not have reached <code>oob-mgmt-server</code> yet.</p>
+<p><strong>Fix:</strong> Paste the single-line public key (<code>ssh-ed25519 AAAA… comment</code>), select <strong>Add</strong>, restart the simulation or <code>oob-mgmt-server</code> if needed, and connect with the right <code>-i</code> key file.</p>
+</li>
+</ol>
+<h2 id="clean-up-save-state">Clean-up / save state<a class="headerlink" href="#clean-up-save-state" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Make sure every switch is saved (Task 1 loop).</li>
+<li>Stop the simulation with <strong>Stop Simulation and Store Checkpoint</strong>, or run <code>python3 helix_air.py sleep helix-b-air</code>.</li>
+<li>Mark this checkpoint as a favourite if it's the state you want Lab 7 to start from. With three slots, keep: <code>lab05-evpn-good</code> (favourite), the latest working state, and one spare.</li>
+<li>If you don't need the clone, delete it so it doesn't confuse your SDK scripts.</li>
+<li>Disable the SSH service if you won't use it for a while.</li>
+</ol>
+<h2 id="exam-tie-in">Exam tie-in<a class="headerlink" href="#exam-tie-in" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>2.4 Use NVIDIA Air:</strong> know the lifecycle words (start, stop with or without checkpoint, sleep date, checkpoints, revert, rebuild) and what each keeps.</li>
+<li><strong>2.4:</strong> simulations are built from the UI, from DOT/JSON topology files, or from demos, and can be exported as JSON. Air adds an OOB network with <code>oob-mgmt-server</code> and <code>oob-mgmt-switch</code>.</li>
+<li><strong>2.4:</strong> Air is automated through the API/SDK (<code>nv-air-sdk</code>, <code>from air_sdk import AirApi</code>, NGC API key). That is how a digital twin fits into CI.</li>
+<li><strong>6.1/6.2:</strong> templates and playbooks are tested against an Air twin started and stopped by a pipeline (Chapters 21–22).</li>
+<li><strong>Chapter 4 link:</strong> a change survives a reboot only if it is in <code>startup.yaml</code>. <code>nv config save</code> saves; <code>nv config apply</code> applies.</li>
+</ul>
+<h2 id="review-questions">Review questions<a class="headerlink" href="#review-questions" title="Permanent link">&para;</a></h2>
+<ol>
+<li>What does <strong>Stop Simulation and Store Checkpoint</strong> save, and what happens to the compute resources?</li>
+<li>A simulation has three standard checkpoints and one favourite. You stop it with a checkpoint again. What happens?</li>
+<li>Why must you run <code>nv config save</code> (or have auto-save enabled) before you stop a simulation with a checkpoint?</li>
+<li>Your simulation uses 26 vCPU and about 48 GB of memory. Roughly how many compute hours does a 4-hour session use?</li>
+<li>You add a cloud-init configuration to a server that has already booted. Why doesn't it take effect, and what should you use instead?</li>
+</ol>
+<h3 id="answers">Answers<a class="headerlink" href="#answers" title="Permanent link">&para;</a></h3>
+<ol>
+<li>It shuts the nodes down, saves a checkpoint of every node's disk state, and releases the compute resources, so an inactive simulation doesn't use compute hours. The status moves through Shutting Down and Saving to Inactive.</li>
+<li>A new checkpoint is saved and the oldest <strong>non-favourite</strong> checkpoint is deleted automatically. The favourite is kept. (Wording in the docs: up to 3 checkpoints per simulation; favourites are protected from automatic deletion.)</li>
+<li>A checkpoint saves disks. At boot, a Cumulus switch loads <code>/etc/nvue.d/startup.yaml</code>. A change that is applied but not saved to startup is lost after the restart, even though the checkpoint itself worked.</li>
+<li>About 26 vCPU-hours per hour plus about 6 for memory (48 ÷ 8), so about 32 per hour, or roughly <strong>130 compute hours</strong> for 4 hours. The quick vCPU × hours estimate gives 104.</li>
+<li>Cloud-init runs on first boot; assignments made after a node has booted take effect only when the node is rebuilt. On a running simulation, use a <strong>node instruction</strong>, which the Air agent runs after boot.</li>
+</ol>
+<hr />
+<div class="admonition abstract">
+<p class="admonition-title">Go deeper</p>
+<p>The matching book chapters cover the exam objectives for this lab in full, with a Q&amp;A pack of about 40 exam-style questions per chapter. <a class="md-button md-button--primary" href="../../book/">Get the book</a> <a class="md-button" href="https://github.com/Cloudfoxy-Ltd/ncp-ain-guide/issues/new?template=erratum.yml">Report a problem with this lab</a></p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../lab05/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Lab 5 — BGP-EVPN multi-tenancy">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Lab 5 — BGP-EVPN multi-tenancy
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../lab07/" class="md-footer__link md-footer__link--next" aria-label="Next: Lab 7 — Monitoring and troubleshooting">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Lab 7 — Monitoring and troubleshooting
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      © 2026 Vakeesan Thevarajah · Cloudfoxy Ltd · Lab guide CC BY-NC-SA 4.0 · Independent, not endorsed by NVIDIA
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.footer", "navigation.top", "content.code.copy", "search.highlight", "search.suggest", "toc.follow"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

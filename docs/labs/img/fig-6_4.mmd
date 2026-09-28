@@ -1,0 +1,12 @@
+flowchart TB
+    K["NGC API key<br/>NVIDIA Air service"]:::ctl --> A["AirApi.with_api_key()"]:::ctl
+    A --> S["sim.start()<br/>wait ACTIVE"]:::eth
+    S --> T["Run Ansible / templates<br/>tests over SSH service"]:::gpu
+    T --> R{"Tests pass?"}:::ctl
+    R -->|"Yes"| SL["sim.shutdown()<br/>checkpoint · favourite"]:::sto
+    R -->|"No"| RB["sim.rebuild(checkpoint=…)<br/>or keep for debugging"]:::bad
+    classDef gpu fill:#DCEBFA,stroke:#1F5FAD,color:#0B2545
+    classDef eth fill:#DDF2DC,stroke:#2E7D32,color:#123B14
+    classDef ctl fill:#FDE8CF,stroke:#D9730D,color:#4A2604
+    classDef sto fill:#D5F0EE,stroke:#00796B,color:#07332E
+    classDef bad fill:#FADBD8,stroke:#C62828,color:#5B0F0F

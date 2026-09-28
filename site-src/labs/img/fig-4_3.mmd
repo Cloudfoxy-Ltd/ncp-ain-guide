@@ -1,0 +1,10 @@
+flowchart TB
+    subgraph LEAF["hxb-leaf-r1 · nv set system telemetry"]
+        direction LR
+        A["interface-stats<br/>1 s samples"]:::eth --- B["buffer-stats"]:::eth --- C["histograms<br/>egress TC 3 · tx-byte"]:::eth --- D["platform · router<br/>stats"]:::eth
+    end
+    LEAF -->|"OTLP / gRPC :4317<br/>vrf mgmt · insecure (lab)"| COL["oob-mgmt-server<br/>192.168.200.1<br/>(collector in production)"]:::oob
+    COL --> DASH["Dashboards · alerts<br/>(Chapter 10)"]:::ctl
+    classDef eth fill:#DDF2DC,stroke:#2E7D32,color:#123B14
+    classDef ctl fill:#FDE8CF,stroke:#D9730D,color:#4A2604
+    classDef oob fill:#ECECEC,stroke:#6B6B6B,color:#2A2A2A

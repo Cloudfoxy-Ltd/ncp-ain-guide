@@ -1,0 +1,2355 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Free hands-on labs on NVIDIA DSX Air, errata and study files for the NCP-AIN Certification Guide by Vakeesan Thevarajah (Cloudfoxy Ltd).">
+      
+      
+        <meta name="author" content="Vakeesan Thevarajah">
+      
+      
+        <link rel="canonical" href="https://cloudfoxy-ltd.github.io/ncp-ain-guide/labs/lab03/">
+      
+      
+        <link rel="prev" href="../lab02/">
+      
+      
+        <link rel="next" href="../lab04/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Lab 3 — Lossless RoCE and Soft-RoCE - NCP-AIN Certification Guide — Labs & Errata</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="cyan" data-md-color-accent="purple">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#lab-3-lossless-roce-qos-and-soft-roce-hosts" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="NCP-AIN Certification Guide — Labs &amp; Errata" class="md-header__button md-logo" aria-label="NCP-AIN Certification Guide — Labs & Errata" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            NCP-AIN Certification Guide — Labs & Errata
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Lab 3 — Lossless RoCE and Soft-RoCE
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="cyan" data-md-color-accent="purple"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="cyan" data-md-color-accent="purple"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Cloudfoxy-Ltd/ncp-ain-guide" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Cloudfoxy-Ltd/ncp-ain-guide
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
+          
+  
+  
+  Hands-On Labs
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../book/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  The Book
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../errata/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Errata
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../flashcards/" class="md-tabs__link">
+          
+  
+  
+  Study Files
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../license/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Licence
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="NCP-AIN Certification Guide — Labs &amp; Errata" class="md-nav__button md-logo" aria-label="NCP-AIN Certification Guide — Labs & Errata" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    NCP-AIN Certification Guide — Labs & Errata
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Cloudfoxy-Ltd/ncp-ain-guide" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Cloudfoxy-Ltd/ncp-ain-guide
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hands-On Labs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Hands-On Labs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab00/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 0 — Air and topology
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab01/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 1 — NVUE essentials
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab02/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 2 — eBGP unnumbered underlay
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 3 — Lossless RoCE and Soft-RoCE
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 3 — Lossless RoCE and Soft-RoCE
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#lab-at-a-glance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lab at a glance
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#objectives" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Objectives
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#background" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Background
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-by-step" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step-by-step
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Step-by-step">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#task-1-build-temporary-vlan-100-on-hxb-leaf-r1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 1 — Build temporary VLAN 100 on hxb-leaf-r1
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-2-enable-the-roce-qos-profile" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 2 — Enable the RoCE QoS profile
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-3-optional-roll-the-profile-out-to-every-switch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 3 — Optional: roll the profile out to every switch
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-4-install-rdma-tools-and-create-a-soft-roce-device" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 4 — Install RDMA tools and create a Soft-RoCE device
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-5-mark-roce-traffic-with-traffic-class-106" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 5 — Mark RoCE traffic with traffic class 106
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-6-run-perftest-and-prove-the-marking-on-the-wire" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 6 — Run perftest and prove the marking on the wire
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#verify" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verify
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#break-and-fix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Break and fix
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Break and fix">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fault-1-the-host-sends-dscp-0" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fault 1 — The host sends DSCP 0
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fault-2-one-switch-drops-to-lossy-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fault 2 — One switch drops to lossy mode
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#clean-up-save-state" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Clean-up / save state
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exam-tie-in" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exam tie-in
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#review-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Review questions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Review questions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#answers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Answers
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab04/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 4 — AR, ECMP and telemetry
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab05/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 5 — BGP-EVPN multi-tenancy
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab06/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 6 — Air power skills
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab07/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 7 — Monitoring and troubleshooting
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab08/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 8 — InfiniBand with ibsim
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab09/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 9 — perftest over Soft-RoCE
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab10/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 10 — Kubernetes Network Operator
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab11/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 11 — NVUE templates
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab12/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 12 — Ansible automation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab13/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 13 — Capstone challenge
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../appendix/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Appendices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../book/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The Book
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../errata/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Errata
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Study Files
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Study Files
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../flashcards/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Flashcards
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lab-files/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab files
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../license/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Licence
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#lab-at-a-glance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lab at a glance
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#objectives" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Objectives
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#background" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Background
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-by-step" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step-by-step
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Step-by-step">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#task-1-build-temporary-vlan-100-on-hxb-leaf-r1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 1 — Build temporary VLAN 100 on hxb-leaf-r1
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-2-enable-the-roce-qos-profile" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 2 — Enable the RoCE QoS profile
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-3-optional-roll-the-profile-out-to-every-switch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 3 — Optional: roll the profile out to every switch
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-4-install-rdma-tools-and-create-a-soft-roce-device" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 4 — Install RDMA tools and create a Soft-RoCE device
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-5-mark-roce-traffic-with-traffic-class-106" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 5 — Mark RoCE traffic with traffic class 106
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-6-run-perftest-and-prove-the-marking-on-the-wire" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 6 — Run perftest and prove the marking on the wire
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#verify" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verify
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#break-and-fix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Break and fix
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Break and fix">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fault-1-the-host-sends-dscp-0" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fault 1 — The host sends DSCP 0
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fault-2-one-switch-drops-to-lossy-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fault 2 — One switch drops to lossy mode
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#clean-up-save-state" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Clean-up / save state
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exam-tie-in" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exam tie-in
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#review-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Review questions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Review questions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#answers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Answers
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="lab-3-lossless-roce-qos-and-soft-roce-hosts">Lab 3 — Lossless RoCE QoS and Soft-RoCE Hosts<a class="headerlink" href="#lab-3-lossless-roce-qos-and-soft-roce-hosts" title="Permanent link">&para;</a></h1>
+<div class="admonition abstract">
+<p class="admonition-title">Companion to the NCP-AIN Certification Guide</p>
+<p>This free lab is part of the hands-on companion to <em>NCP-AIN Certification Guide</em> by Vakeesan Thevarajah (Cloudfoxy Ltd). The book explains the theory, design choices and hardware behaviour behind every step. <a class="md-button md-button--primary" href="../../book/">Get the book</a> <a class="md-button" href="../../sample/NCP-AIN_Sample.pdf">Free sample</a></p>
+</div>
+<h2 id="lab-at-a-glance">Lab at a glance<a class="headerlink" href="#lab-at-a-glance" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Detail</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Book chapters</td>
+<td>Chapter 5 (Lossless RoCE: QoS, PFC and ECN) · Chapter 3 (RDMA and RoCE basics) · Chapter 19 (perftest flags)</td>
+</tr>
+<tr>
+<td>Exam objectives</td>
+<td><strong>2.1</strong> Configure Spectrum-X switches for RoCE · <strong>2.2</strong> Enable QoS, ECN and PFC · supports <strong>5.5</strong> (perftest)</td>
+</tr>
+<tr>
+<td>Time</td>
+<td>About 90 minutes</td>
+</tr>
+<tr>
+<td>Air resources used</td>
+<td>hxb-leaf-r1, hxb-gpu01, hxb-gpu03 (plus oob-mgmt-server as jump host). Optional roll-out task touches every switch</td>
+</tr>
+<tr>
+<td>Prerequisite labs</td>
+<td>Lab 0 (topology running), Lab 1 (NVUE essentials), Lab 2 (underlay)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="objectives">Objectives<a class="headerlink" href="#objectives" title="Permanent link">&para;</a></h2>
+<p>By the end of this lab you will be able to:</p>
+<ul>
+<li>Build a temporary test VLAN on a leaf so two servers can exchange RoCE traffic without any routing.</li>
+<li>Enable the NVIDIA RoCE QoS profile with <code>nv set qos roce</code> and read back every default it sets: trust, DSCP to switch-priority mapping, PFC, ECN and buffers.</li>
+<li>Turn an Ubuntu server into a RoCE endpoint with Soft-RoCE (<code>rdma_rxe</code>), and inspect the RDMA device, port and GID table.</li>
+<li>Mark RoCE traffic with traffic class byte 106 (DSCP 26 + ECT), both per test and as the RDMA-CM default.</li>
+<li>Prove the marking on the wire with <code>tcpdump</code>, and recognise the "host sends DSCP 0" fault.</li>
+<li>Explain plainly what Cumulus VX in Air can and cannot show you about lossless behaviour.</li>
+</ul>
+<h2 id="background">Background<a class="headerlink" href="#background" title="Permanent link">&para;</a></h2>
+<p>Chapter 5 described the Spectrum QoS pipeline: the switch <strong>trusts</strong> a marking, maps it to a <strong>switch priority</strong>, maps that to a <strong>traffic class</strong> (egress queue), places the packet in a <strong>buffer pool</strong>, and applies <strong>PFC</strong> or <strong>ECN</strong> when thresholds are crossed. On Cumulus Linux one command, <code>nv set qos roce</code>, builds the whole NVIDIA-validated profile: DSCP 24–31 lands in switch priority 3 (lossless, PFC on), and DSCP 48–55 (CNPs) lands in switch priority 6 (strict priority).</p>
+<p>The switch only does half the job. The <strong>host</strong> must mark RoCE packets so they fall into the lossless class. The usual Helix-B value is traffic class byte <strong>106</strong>: DSCP 26 × 4 = 104, plus ECT(0) = 2. If the host sends DSCP 0, the switch classifies the traffic into lossy TC 0, and everything on the switch still "looks configured". That mismatch is the most common real-world RoCE QoS fault, and this lab makes you see it on the wire.</p>
+<p>Air has no Spectrum ASIC and no ConnectX NICs. So you use <strong>Soft-RoCE</strong> (<code>rdma_rxe</code>), a Linux kernel driver that implements RoCEv2 in software over any Ethernet interface. It produces genuine RoCEv2 packets (UDP destination port 4791) with a real IP header, so the DSCP marking is exactly what you would check on hardware. On Cumulus VX the <code>swp</code> ports are ordinary Linux interfaces and bridging is done by the Linux kernel, so you can run <code>tcpdump</code> on the leaf port itself. On a real Spectrum switch the data plane is in the ASIC and <code>tcpdump</code> on a <code>swp</code> only sees traffic punted to the CPU.</p>
+<figure>
+<p><img alt="Figure 3.1: Lab 3 test topology" loading="lazy" src="../img/fig-3_1.png" /></p>
+<figcaption><strong>Figure 3.1: Lab 3 test topology.</strong> For this lab only, hxb-gpu01 eth1 and hxb-gpu03 eth1 sit in a plain VLAN 100 on the hxb-leaf-r1 bridge, so Soft-RoCE traffic between them crosses one switch with no routing. The RoCE QoS profile is enabled on the leaf, and you capture on swp1 to read the DSCP value. VLAN 100 is removed at the end because Lab 5 puts these ports into their EVPN tenants.</figcaption>
+</figure>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Cumulus VX has no Spectrum ASIC. It has no real buffers, no hardware queues, no PFC pause generation and no ECN marking under load. The RoCE QoS commands are accepted and <code>nv show qos roce</code> displays the intended configuration, but no packet is ever paused or ECN-marked by VX. In this lab you learn to <strong>configure and verify intent</strong> on the switch and to <strong>verify marking</strong> on the host and on the wire. Counters that depend on the ASIC (per-priority pause, ECN marks, buffer occupancy) are expected to stay at zero or be absent.</p>
+</div>
+<h2 id="step-by-step">Step-by-step<a class="headerlink" href="#step-by-step" title="Permanent link">&para;</a></h2>
+<h3 id="task-1-build-temporary-vlan-100-on-hxb-leaf-r1">Task 1 — Build temporary VLAN 100 on hxb-leaf-r1<a class="headerlink" href="#task-1-build-temporary-vlan-100-on-hxb-leaf-r1" title="Permanent link">&para;</a></h3>
+<ol>
+<li>
+<p>From the oob-mgmt-server, log in to the leaf.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>ubuntu@oob-mgmt-server:~$ ssh cumulus@hxb-leaf-r1
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>cumulus@hxb-leaf-r1:mgmt:~$
+</code></pre></div>
+</li>
+<li>
+<p>Put swp1 and swp2 into the default bridge as access ports in VLAN 100, then review and apply.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv set bridge domain br_default vlan 100
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv set interface swp1-2 bridge domain br_default access 100
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv set interface swp1-2 description &quot;LAB3-TEMP VLAN100&quot;
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv config diff
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv config apply -y
+</code></pre></div>
+</li>
+<li>
+<p>Check the bridge membership.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv show bridge domain br_default vlan
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv show interface swp1-2 link
+</code></pre></div>
+<p><strong>Expected output (illustrative):</strong> VLAN 100 is listed in <code>br_default</code>, and swp1 and swp2 show <code>oper-status up</code> with access VLAN 100.</p>
+</li>
+<li>
+<p>On each server, bring up eth1 and give it a Lab 3 address. These addresses are not persistent, which is what you want for a temporary VLAN.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>ubuntu@oob-mgmt-server:~$ ssh ubuntu@hxb-gpu01
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>ubuntu@hxb-gpu01:~$ sudo ip link set eth1 up
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>ubuntu@hxb-gpu01:~$ sudo ip addr add 172.16.100.101/24 dev eth1
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>ubuntu@oob-mgmt-server:~$ ssh ubuntu@hxb-gpu03
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>ubuntu@hxb-gpu03:~$ sudo ip link set eth1 up
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>ubuntu@hxb-gpu03:~$ sudo ip addr add 172.16.100.103/24 dev eth1
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>ubuntu@hxb-gpu03:~$ ping -c 3 172.16.100.101
+</code></pre></div>
+<p><strong>Expected output (illustrative):</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>64 bytes from 172.16.100.101: icmp_seq=1 ttl=64 time=0.912 ms
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>64 bytes from 172.16.100.101: icmp_seq=2 ttl=64 time=0.644 ms
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>64 bytes from 172.16.100.101: icmp_seq=3 ttl=64 time=0.701 ms
+</code></pre></div>
+</li>
+</ol>
+<p><strong>Checkpoint</strong></p>
+<ul>
+<li>VLAN 100 exists on hxb-leaf-r1 and swp1–2 are access ports in it.</li>
+<li>hxb-gpu03 pings hxb-gpu01 on 172.16.100.0/24. <code>ttl=64</code> confirms there is no router in the path.</li>
+</ul>
+<h3 id="task-2-enable-the-roce-qos-profile">Task 2 — Enable the RoCE QoS profile<a class="headerlink" href="#task-2-enable-the-roce-qos-profile" title="Permanent link">&para;</a></h3>
+<ol>
+<li>
+<p>Enable RoCE in its default mode and state the mode explicitly, so the intent is readable in the configuration.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv set qos roce
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv set qos roce mode lossless
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv config diff
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv config apply -y
+</code></pre></div>
+<p><strong>Expected output (illustrative):</strong> <code>nv config diff</code> shows a small block under <code>qos: roce:</code> with <code>enable: on</code> and <code>mode: lossless</code>. One NVUE line expands into the whole profile when NVUE renders the switch configuration.</p>
+<div class="admonition note">
+<p class="admonition-title">Version note</p>
+<p>On Cumulus VX, <code>nv config apply</code> normally accepts the RoCE profile (check on your release). If apply returns an error about the platform or <code>switchd</code>, copy the message into your lab notes, run <code>nv config detach</code> to drop the pending change, and continue with the read-only parts of this task using the book's reference output in Chapter 5. The host tasks (3 to 6) do not depend on it.</p>
+</div>
+</li>
+<li>
+<p>Read the full profile.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv show qos roce
+</code></pre></div>
+<p><strong>Expected output (illustrative, trimmed):</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>                     operational    applied
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>-------------------  -------------  --------
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>enable               on             on
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>mode                 lossless       lossless
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>congestion-control
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>  congestion-mode    ECN
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>  enabled-tc         0,3
+<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>  max-threshold      1.43 MB
+<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>  min-threshold      146.48 KB
+<a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a>  probability        100
+<a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a>pfc
+<a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a>  pfc-priority       3
+<a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a>  rx-enabled         enabled
+<a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a>  tx-enabled         enabled
+<a id="__codelineno-8-15" name="__codelineno-8-15" href="#__codelineno-8-15"></a>trust
+<a id="__codelineno-8-16" name="__codelineno-8-16" href="#__codelineno-8-16"></a>  trust-mode         pcp,dscp
+<a id="__codelineno-8-17" name="__codelineno-8-17" href="#__codelineno-8-17"></a>RoCE PCP/DSCP-&gt;SP mapping configurations
+<a id="__codelineno-8-18" name="__codelineno-8-18" href="#__codelineno-8-18"></a>  pcp  dscp                     switch-prio
+<a id="__codelineno-8-19" name="__codelineno-8-19" href="#__codelineno-8-19"></a>  3    24,25,26,27,28,29,30,31  3
+<a id="__codelineno-8-20" name="__codelineno-8-20" href="#__codelineno-8-20"></a>  6    48,49,50,51,52,53,54,55  6
+<a id="__codelineno-8-21" name="__codelineno-8-21" href="#__codelineno-8-21"></a>  ...
+<a id="__codelineno-8-22" name="__codelineno-8-22" href="#__codelineno-8-22"></a>RoCE SP-&gt;TC mapping and ETS configurations
+<a id="__codelineno-8-23" name="__codelineno-8-23" href="#__codelineno-8-23"></a>  switch-prio  traffic-class  scheduler-weight
+<a id="__codelineno-8-24" name="__codelineno-8-24" href="#__codelineno-8-24"></a>  3            3              DWRR-50%
+<a id="__codelineno-8-25" name="__codelineno-8-25" href="#__codelineno-8-25"></a>  6            6              strict-priority
+<a id="__codelineno-8-26" name="__codelineno-8-26" href="#__codelineno-8-26"></a>  ...
+<a id="__codelineno-8-27" name="__codelineno-8-27" href="#__codelineno-8-27"></a>RoCE pool config
+<a id="__codelineno-8-28" name="__codelineno-8-28" href="#__codelineno-8-28"></a>  name                   mode     size
+<a id="__codelineno-8-29" name="__codelineno-8-29" href="#__codelineno-8-29"></a>  lossy-default-ingress  Dynamic  50%
+<a id="__codelineno-8-30" name="__codelineno-8-30" href="#__codelineno-8-30"></a>  roce-reserved-ingress  Dynamic  50%
+<a id="__codelineno-8-31" name="__codelineno-8-31" href="#__codelineno-8-31"></a>  lossy-default-egress   Dynamic  50%
+<a id="__codelineno-8-32" name="__codelineno-8-32" href="#__codelineno-8-32"></a>  roce-reserved-egress   Dynamic  inf
+</code></pre></div>
+</li>
+<li>
+<p>Record your own values in this table. It is the same table as Chapter 5, and the exam expects you to know it.</p>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Default (book)</th>
+<th>Your output</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Mode</td>
+<td>lossless</td>
+<td></td>
+</tr>
+<tr>
+<td>Trust</td>
+<td>pcp,dscp</td>
+<td></td>
+</tr>
+<tr>
+<td>DSCP 26 maps to</td>
+<td>switch priority 3, TC 3</td>
+<td></td>
+</tr>
+<tr>
+<td>DSCP 48 maps to</td>
+<td>switch priority 6, TC 6</td>
+<td></td>
+</tr>
+<tr>
+<td>PFC priority</td>
+<td>3 (RX and TX)</td>
+<td></td>
+</tr>
+<tr>
+<td>ECN enabled on</td>
+<td>TC 0 and TC 3</td>
+<td></td>
+</tr>
+<tr>
+<td>ECN min / max / probability</td>
+<td>146.48 KB / 1.43 MB / 100%</td>
+<td></td>
+</tr>
+<tr>
+<td>RoCE TC 3 scheduling</td>
+<td>DWRR 50%</td>
+<td></td>
+</tr>
+<tr>
+<td>CNP TC 6 scheduling</td>
+<td>Strict priority</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>
+<p>Look at the same settings through the individual QoS objects. The RoCE profile populates the standard QoS profiles (<code>default-global</code>), so you can inspect each stage of the pipeline separately.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv show qos mapping default-global
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv show qos mapping default-global dscp 26
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv show qos mapping default-global dscp 48
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv show qos pfc default-global
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv show qos congestion-control default-global
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv show qos traffic-pool
+</code></pre></div>
+<p><strong>Expected output (illustrative):</strong> <code>dscp 26</code> shows <code>switch-priority 3</code>, <code>dscp 48</code> shows <code>switch-priority 6</code>, PFC lists switch priority 3, and congestion control lists traffic classes 0 and 3 with ECN enabled. If one of these paths is not available on your release, <code>nv show qos</code> lists the objects that are (check on your release).</p>
+</li>
+<li>
+<p>For reference only, these are the standard QoS commands that the RoCE profile saves you from typing. <strong>Do not apply them</strong> on top of <code>nv set qos roce</code>: NVIDIA's profile is validated per ASIC, and mixing manual changes into it is how fabrics drift.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>nv set qos mapping default-global trust l3
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>nv set qos mapping default-global dscp 26 switch-priority 3
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>nv set qos mapping default-global dscp 48 switch-priority 6
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>nv set qos pfc default-global switch-priority 3
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>nv set qos pfc default-global tx enable
+<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>nv set qos pfc default-global rx enable
+<a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a>nv set qos congestion-control default-global traffic-class 3 min-threshold &lt;bytes&gt;
+<a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a>nv set qos congestion-control default-global traffic-class 3 max-threshold &lt;bytes&gt;
+<a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a>nv set qos congestion-control default-global traffic-class 3 ecn enable
+<a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a>nv set qos traffic-pool &lt;pool-name&gt; memory-percent &lt;percent&gt;
+</code></pre></div>
+</li>
+<li>
+<p>Check the per-port view on the two server-facing ports.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv show interface swp1 qos roce status
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv show interface swp1 qos roce counters
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv show interface qos-roce-status-pool-map
+</code></pre></div>
+<p><strong>Expected output:</strong> On hardware, <code>status</code> shows the profile active on the port with PFC on priority 3, and <code>counters</code> shows RoCE bytes, pause frames and ECN marks. On VX, status may show the configured intent while counters are zero or not supported. That is expected: the counters come from the ASIC.</p>
+</li>
+</ol>
+<figure>
+<p><img alt="Figure 3.2: What VX shows and what it cannot" loading="lazy" src="../img/fig-3_2.png" /></p>
+<figcaption><strong>Figure 3.2: What VX shows and what it cannot.</strong> The configuration plane (NVUE, the rendered QoS files and `nv show`) behaves as on Spectrum hardware. Everything below it depends on the ASIC, so on VX it is absent: no hardware queues, no pause frames, no ECN marks and no buffer occupancy. Marking is still real because the hosts generate it.</figcaption>
+</figure>
+<p><strong>Checkpoint</strong></p>
+<ul>
+<li><code>nv show qos roce</code> shows mode <code>lossless</code>, trust <code>pcp,dscp</code>, PFC priority 3 and ECN on TC 0 and 3.</li>
+<li>You can state which switch priority and TC DSCP 26 and DSCP 48 map to.</li>
+<li>You can say which of these settings VX can actually enforce (none of the data-plane ones).</li>
+</ul>
+<h3 id="task-3-optional-roll-the-profile-out-to-every-switch">Task 3 — Optional: roll the profile out to every switch<a class="headerlink" href="#task-3-optional-roll-the-profile-out-to-every-switch" title="Permanent link">&para;</a></h3>
+<p>RoCE QoS must be consistent on every hop. Chapter 22 and Lab 12 automate this with Ansible. For now, a shell loop from the oob-mgmt-server is enough. It runs non-interactively because NVUE commands work over <code>ssh</code>.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>ubuntu@oob-mgmt-server:~$ for sw in hxb-spine01 hxb-spine02 hxb-leaf-r2 hxb-leaf-r3 hxb-leaf-r4; do
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>&gt;   echo &quot;== $sw&quot;; ssh cumulus@$sw &quot;nv set qos roce &amp;&amp; nv config apply -y &amp;&amp; nv show qos roce | grep -E &#39;^mode|pfc-priority&#39;&quot;
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>&gt; done
+</code></pre></div>
+<p><strong>Expected output (illustrative):</strong> each switch prints <code>mode lossless</code> and <code>pfc-priority 3</code>.</p>
+<p><strong>Checkpoint</strong></p>
+<ul>
+<li>Every switch in helix-b-air reports the same RoCE mode. A single switch left in its default QoS state is the classic "one hop is lossy" fault.</li>
+</ul>
+<h3 id="task-4-install-rdma-tools-and-create-a-soft-roce-device">Task 4 — Install RDMA tools and create a Soft-RoCE device<a class="headerlink" href="#task-4-install-rdma-tools-and-create-a-soft-roce-device" title="Permanent link">&para;</a></h3>
+<p>Do steps 1–6 on <strong>both</strong> hxb-gpu01 and hxb-gpu03. hxb-gpu01 is shown.</p>
+<ol>
+<li>
+<p>Install the RDMA user space, the verbs utilities and perftest.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>ubuntu@hxb-gpu01:~$ sudo apt-get update
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>ubuntu@hxb-gpu01:~$ sudo apt-get install -y rdma-core ibverbs-utils ibverbs-providers perftest
+</code></pre></div>
+<div class="admonition info">
+<p class="admonition-title">Field note</p>
+<p>Air servers normally reach the Ubuntu mirrors through the OOB network. If <code>apt-get update</code> cannot resolve or reach the mirror, check the internet setting of your simulation in the Air UI before troubleshooting anything else.</p>
+</div>
+</li>
+<li>
+<p>Load the Soft-RoCE kernel module.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>ubuntu@hxb-gpu01:~$ sudo modprobe rdma_rxe
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>ubuntu@hxb-gpu01:~$ lsmod | grep rdma_rxe
+</code></pre></div>
+<p><strong>Expected output (illustrative):</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>rdma_rxe              204800  0
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>ib_uverbs             200704  2 rdma_rxe,rdma_ucm
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>ib_core               524288  6 rdma_cm,rdma_rxe,...
+</code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Version note</p>
+<p>On some Ubuntu kernel flavours <code>rdma_rxe</code> ships in the extra modules package. If <code>modprobe</code> reports <code>Module rdma_rxe not found</code>, install it with <code>sudo apt-get install -y linux-modules-extra-$(uname -r)</code> and try again (check on your release).</p>
+</div>
+</li>
+<li>
+<p>Bind a Soft-RoCE device called <code>rxe0</code> to eth1 and check the link.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>ubuntu@hxb-gpu01:~$ sudo rdma link add rxe0 type rxe netdev eth1
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>ubuntu@hxb-gpu01:~$ rdma link show
+</code></pre></div>
+<p><strong>Expected output (illustrative):</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>link rxe0/1 state ACTIVE physical_state LINK_UP netdev eth1
+</code></pre></div>
+</li>
+<li>
+<p>List RDMA devices and inspect the port.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>ubuntu@hxb-gpu01:~$ ibv_devices
+<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>ubuntu@hxb-gpu01:~$ ibv_devinfo -d rxe0
+</code></pre></div>
+<p><strong>Expected output (illustrative):</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>    device                 node GUID
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>    ------              ----------------
+<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>    rxe0                5054:00ff:fe12:3401
+<a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a>
+<a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a>hca_id: rxe0
+<a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a>        transport:                      InfiniBand (0)
+<a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a>        ...
+<a id="__codelineno-19-8" name="__codelineno-19-8" href="#__codelineno-19-8"></a>        port:   1
+<a id="__codelineno-19-9" name="__codelineno-19-9" href="#__codelineno-19-9"></a>                state:                  PORT_ACTIVE (4)
+<a id="__codelineno-19-10" name="__codelineno-19-10" href="#__codelineno-19-10"></a>                max_mtu:                4096 (5)
+<a id="__codelineno-19-11" name="__codelineno-19-11" href="#__codelineno-19-11"></a>                active_mtu:             1024 (3)
+<a id="__codelineno-19-12" name="__codelineno-19-12" href="#__codelineno-19-12"></a>                sm_lid:                 0
+<a id="__codelineno-19-13" name="__codelineno-19-13" href="#__codelineno-19-13"></a>                port_lid:               0
+<a id="__codelineno-19-14" name="__codelineno-19-14" href="#__codelineno-19-14"></a>                port_lmc:               0x00
+<a id="__codelineno-19-15" name="__codelineno-19-15" href="#__codelineno-19-15"></a>                link_layer:             Ethernet
+</code></pre></div>
+</li>
+</ol>
+<p>Note three things. <code>transport: InfiniBand</code> is normal for RoCE: the verbs transport is InfiniBand's, carried over Ethernet. <code>link_layer: Ethernet</code> tells you it is RoCE. <code>active_mtu 1024</code> follows from eth1's MTU of 1500 bytes, because a RoCE MTU must fit inside the Ethernet MTU with its headers (Lab 9 explores this).</p>
+<ol>
+<li>
+<p>Read the GID table. Ubuntu's rdma-core does not ship the <code>show_gids</code> script that comes with DOCA-OFED/MLNX_OFED, so use <code>ibv_devinfo -v</code> or read sysfs directly.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>ubuntu@hxb-gpu01:~$ ibv_devinfo -v -d rxe0 | grep GID
+<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>ubuntu@hxb-gpu01:~$ for i in 0 1 2 3; do
+<a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a>&gt;   g=$(cat /sys/class/infiniband/rxe0/ports/1/gids/$i 2&gt;/dev/null)
+<a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a>&gt;   t=$(cat /sys/class/infiniband/rxe0/ports/1/gid_attrs/types/$i 2&gt;/dev/null)
+<a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a>&gt;   echo &quot;$i $g $t&quot;
+<a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a>&gt; done
+</code></pre></div>
+<p><strong>Expected output (illustrative):</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>                        GID[  0]:       fe80::5054:ff:fe12:3401, RoCE v2
+<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>                        GID[  1]:       ::ffff:172.16.100.101, RoCE v2
+<a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a>0 fe80:0000:0000:0000:5054:00ff:fe12:3401 RoCE v2
+<a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a>1 0000:0000:0000:0000:0000:ffff:ac10:6465 RoCE v2
+<a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a>2 0000:0000:0000:0000:0000:0000:0000:0000
+<a id="__codelineno-21-6" name="__codelineno-21-6" href="#__codelineno-21-6"></a>3 0000:0000:0000:0000:0000:0000:0000:0000
+</code></pre></div>
+</li>
+</ol>
+<p>The <strong>RoCEv2 IPv4 GID</strong> is the one that embeds your IPv4 address as <code>::ffff:172.16.100.101</code> (<code>ac10:6465</code> is 172.16.100.101 in hex). Its index, usually <strong>1</strong> on Soft-RoCE, is what <code>-x</code> means in perftest. On ConnectX adapters the same address is often index 3, because the NIC also lists RoCE v1 GIDs. Always read the table rather than assume.</p>
+<ol>
+<li>Repeat steps 1–5 on hxb-gpu03 and record its RoCEv2 IPv4 GID index.</li>
+</ol>
+<p><strong>Checkpoint</strong></p>
+<ul>
+<li><code>rdma link show</code> reports <code>rxe0/1 state ACTIVE</code> bound to eth1 on both servers.</li>
+<li><code>ibv_devinfo</code> shows <code>PORT_ACTIVE</code> and <code>link_layer: Ethernet</code>.</li>
+<li>You know the GID index that holds <code>::ffff:172.16.100.10x</code> on each server.</li>
+</ul>
+<h3 id="task-5-mark-roce-traffic-with-traffic-class-106">Task 5 — Mark RoCE traffic with traffic class 106<a class="headerlink" href="#task-5-mark-roce-traffic-with-traffic-class-106" title="Permanent link">&para;</a></h3>
+<p>There are three places a RoCE application's marking can come from. Know all three, because the exam and real incidents use all three.</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Applies to</th>
+<th>How</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>perftest <code>--tclass=&lt;value&gt;</code></td>
+<td>Tests that connect without RDMA-CM (you give <code>-x &lt;GID index&gt;</code>). Sets the Traffic Class in the GRH, which becomes the IP ToS byte</td>
+<td><code>ib_write_bw -x 1 --tclass=106 …</code></td>
+</tr>
+<tr>
+<td>perftest <code>-T &lt;value&gt;</code> / <code>--tos=&lt;value&gt;</code></td>
+<td>Tests that connect with RDMA-CM (<code>-R</code>). perftest passes the ToS to RDMA-CM</td>
+<td><code>ib_write_bw -R -T 106 …</code></td>
+</tr>
+<tr>
+<td>RDMA-CM default ToS (configfs)</td>
+<td>Every RDMA-CM connection on that device and port that doesn't set its own ToS</td>
+<td><code>default_roce_tos</code> under <code>/sys/kernel/config/rdma_cm/</code></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Version note</p>
+<p>In current perftest, <code>--tclass</code> sets the GRH traffic class and <code>-T</code>/<code>--tos</code> is documented as "available only with -R". A command such as <code>ib_write_bw -R --tclass=106</code> may therefore <strong>not</strong> mark the packets on your version. Check <code>ib_write_bw --help | grep -iE 'tos|tclass'</code> on your release and use the table above. The <code>cma_roce_tos</code> helper script mentioned in Chapter 5 ships with DOCA-OFED/MLNX_OFED, not with Ubuntu's rdma-core, so here you use configfs directly.</p>
+</div>
+<ol>
+<li>
+<p>Check the perftest options on your installed version.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>ubuntu@hxb-gpu01:~$ ib_write_bw --help | grep -iE &#39;tos|tclass|rdma_cm|gid-index&#39;
+</code></pre></div>
+<p><strong>Expected output (illustrative):</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>  -R, --rdma_cm  Connect QPs with rdma_cm and run test on those QPs
+<a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a>  -T, --tos=&lt;tos value&gt;  Set &lt;tos_value&gt; to RDMA-CM QPs. available only with -R flag. values 0-256 (default off)
+<a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a>  -x, --gid-index=&lt;index&gt;  Test uses GID with GID index taken from command
+<a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a>      --tclass=&lt;value&gt;  Set the Traffic Class in GRH (if GRH is in use)
+</code></pre></div>
+</li>
+<li>
+<p>Set the RDMA-CM default ToS for rxe0 to 106 on <strong>both</strong> servers. Creating the directory under <code>rdma_cm</code> makes the kernel populate it with the device's ports.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a>ubuntu@hxb-gpu01:~$ sudo modprobe rdma_cm
+<a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a>ubuntu@hxb-gpu01:~$ mount | grep -q configfs || sudo mount -t configfs none /sys/kernel/config
+<a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a>ubuntu@hxb-gpu01:~$ sudo mkdir -p /sys/kernel/config/rdma_cm/rxe0
+<a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a>ubuntu@hxb-gpu01:~$ echo 106 | sudo tee /sys/kernel/config/rdma_cm/rxe0/ports/1/default_roce_tos
+<a id="__codelineno-24-5" name="__codelineno-24-5" href="#__codelineno-24-5"></a>ubuntu@hxb-gpu01:~$ cat /sys/kernel/config/rdma_cm/rxe0/ports/1/default_roce_tos
+</code></pre></div>
+<p><strong>Expected output:</strong> <code>106</code>. This setting is not persistent: it is lost when the server reboots or the rxe0 device is deleted.</p>
+</li>
+</ol>
+<p><strong>Checkpoint</strong></p>
+<ul>
+<li>You can explain why <code>--tclass</code> goes with <code>-x</code> and <code>-T</code> goes with <code>-R</code>.</li>
+<li><code>default_roce_tos</code> reads 106 on both servers.</li>
+</ul>
+<h3 id="task-6-run-perftest-and-prove-the-marking-on-the-wire">Task 6 — Run perftest and prove the marking on the wire<a class="headerlink" href="#task-6-run-perftest-and-prove-the-marking-on-the-wire" title="Permanent link">&para;</a></h3>
+<ol>
+<li>
+<p>On hxb-leaf-r1, start a capture on swp1 (the port facing hxb-gpu01). Leave it running.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ sudo tcpdump -i swp1 -nn -v -c 6 udp port 4791
+</code></pre></div>
+</li>
+<li>
+<p>On hxb-gpu03, start the <strong>server</strong> side of an RDMA WRITE bandwidth test using RDMA-CM.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>ubuntu@hxb-gpu03:~$ ib_write_bw -d rxe0 -R -T 106 -F --report_gbits
+</code></pre></div>
+</li>
+<li>
+<p>On hxb-gpu01, run the <strong>client</strong> against the server's IP.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>ubuntu@hxb-gpu01:~$ ib_write_bw -d rxe0 -R -T 106 -F --report_gbits 172.16.100.103
+</code></pre></div>
+<p><strong>Expected output (client, illustrative):</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a>                    RDMA_Write BW Test
+<a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a> Dual-port       : OFF          Device         : rxe0
+<a id="__codelineno-28-3" name="__codelineno-28-3" href="#__codelineno-28-3"></a> Number of qps   : 1            Transport type : IB
+<a id="__codelineno-28-4" name="__codelineno-28-4" href="#__codelineno-28-4"></a> Connection type : RC           Using SRQ      : OFF
+<a id="__codelineno-28-5" name="__codelineno-28-5" href="#__codelineno-28-5"></a> TX depth        : 128
+<a id="__codelineno-28-6" name="__codelineno-28-6" href="#__codelineno-28-6"></a> CQ Moderation   : 1
+<a id="__codelineno-28-7" name="__codelineno-28-7" href="#__codelineno-28-7"></a> Mtu             : 1024[B]
+<a id="__codelineno-28-8" name="__codelineno-28-8" href="#__codelineno-28-8"></a> Link type       : Ethernet
+<a id="__codelineno-28-9" name="__codelineno-28-9" href="#__codelineno-28-9"></a> GID index       : 1
+<a id="__codelineno-28-10" name="__codelineno-28-10" href="#__codelineno-28-10"></a> Max inline data : 0[B]
+<a id="__codelineno-28-11" name="__codelineno-28-11" href="#__codelineno-28-11"></a> rdma_cm QPs     : ON
+<a id="__codelineno-28-12" name="__codelineno-28-12" href="#__codelineno-28-12"></a> Data ex. method : rdma_cm      TOS    : 106
+<a id="__codelineno-28-13" name="__codelineno-28-13" href="#__codelineno-28-13"></a>---------------------------------------------------------------------------------------
+<a id="__codelineno-28-14" name="__codelineno-28-14" href="#__codelineno-28-14"></a> local address: LID 0000 QPN 0x0011 PSN 0x2c61a2
+<a id="__codelineno-28-15" name="__codelineno-28-15" href="#__codelineno-28-15"></a> GID: 00:00:00:00:00:00:00:00:00:00:255:255:172:16:100:101
+<a id="__codelineno-28-16" name="__codelineno-28-16" href="#__codelineno-28-16"></a> remote address: LID 0000 QPN 0x0012 PSN 0x9a01be
+<a id="__codelineno-28-17" name="__codelineno-28-17" href="#__codelineno-28-17"></a> GID: 00:00:00:00:00:00:00:00:00:00:255:255:172:16:100:103
+<a id="__codelineno-28-18" name="__codelineno-28-18" href="#__codelineno-28-18"></a>---------------------------------------------------------------------------------------
+<a id="__codelineno-28-19" name="__codelineno-28-19" href="#__codelineno-28-19"></a> #bytes     #iterations    BW peak[Gb/sec]    BW average[Gb/sec]   MsgRate[Mpps]
+<a id="__codelineno-28-20" name="__codelineno-28-20" href="#__codelineno-28-20"></a> 65536      5000             1.62               1.48                 0.002823
+<a id="__codelineno-28-21" name="__codelineno-28-21" href="#__codelineno-28-21"></a>---------------------------------------------------------------------------------------
+</code></pre></div>
+</li>
+</ol>
+<p>Ignore the bandwidth figure. Soft-RoCE runs on a virtual CPU, so a few Gb/s or less is normal (Lab 9 explains why). What matters here is <code>rdma_cm QPs : ON</code>, <code>GID index : 1</code> chosen automatically by RDMA-CM, and <code>TOS : 106</code>.</p>
+<ol>
+<li>
+<p>Read the capture on the leaf.</p>
+<p><strong>Expected output (illustrative):</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a>tcpdump: listening on swp1, link-type EN10MB (Ethernet), snapshot length 262144 bytes
+<a id="__codelineno-29-2" name="__codelineno-29-2" href="#__codelineno-29-2"></a>10:42:17.311508 IP (tos 0x6a,ECT(0), ttl 64, id 4412, offset 0, flags [DF], proto UDP (17), length 1080)
+<a id="__codelineno-29-3" name="__codelineno-29-3" href="#__codelineno-29-3"></a>    172.16.100.101.49153 &gt; 172.16.100.103.4791: UDP, length 1052
+<a id="__codelineno-29-4" name="__codelineno-29-4" href="#__codelineno-29-4"></a>...
+<a id="__codelineno-29-5" name="__codelineno-29-5" href="#__codelineno-29-5"></a>6 packets captured
+</code></pre></div>
+</li>
+</ol>
+<p>Decode the ToS byte: <code>0x6a</code> = 106 = binary <code>011010 10</code>. The top six bits <code>011010</code> are <strong>DSCP 26</strong>, and the bottom two bits <code>10</code> are <strong>ECT(0)</strong>. On a Spectrum switch with the RoCE profile, DSCP 26 falls in 24–31, so the packet goes to switch priority 3, TC 3, the lossless queue.</p>
+<ol>
+<li>
+<p>Now run the same test the other way: without RDMA-CM, with an explicit GID index and <code>--tclass</code>. Use the index you recorded in Task 4.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a>ubuntu@hxb-gpu03:~$ ib_write_bw -d rxe0 -x 1 --tclass=106 -F --report_gbits
+<a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a>ubuntu@hxb-gpu01:~$ ib_write_bw -d rxe0 -x 1 --tclass=106 -F --report_gbits 172.16.100.103
+</code></pre></div>
+</li>
+</ol>
+<p>Capture again on swp1. You should see the same <code>tos 0x6a</code>. In this mode perftest exchanges QP details over a TCP socket (port 18515) first, and you can see that TCP session if you capture without the UDP filter.</p>
+<figure>
+<p><img alt="Figure 3.3: Following the marking from host to queue" loading="lazy" src="../img/fig-3_3.png" /></p>
+<figcaption><strong>Figure 3.3: Following the marking from host to queue.</strong> The application (perftest) sets ToS 106 either with -T over RDMA-CM or with --tclass in the GRH. Soft-RoCE copies it into the IP header of every RoCEv2 packet (UDP 4791). The leaf reads DSCP 26 and, on Spectrum hardware, maps it to switch priority 3 and lossless TC 3.</figcaption>
+</figure>
+<p><strong>Checkpoint</strong></p>
+<ul>
+<li><code>tcpdump</code> on hxb-leaf-r1 swp1 shows RoCEv2 packets to UDP 4791 with <code>tos 0x6a,ECT(0)</code>.</li>
+<li>You can convert a ToS byte to DSCP (divide by 4, ignore the remainder) and back (DSCP × 4 + ECN bits).</li>
+<li>You have run perftest in both connection modes, <code>-R -T 106</code> and <code>-x &lt;index&gt; --tclass=106</code>.</li>
+</ul>
+<h2 id="verify">Verify<a class="headerlink" href="#verify" title="Permanent link">&para;</a></h2>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> VLAN 100 is up on hxb-leaf-r1 with swp1–2 as access ports, and the servers ping each other on 172.16.100.0/24.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <code>nv show qos roce</code> shows <code>lossless</code>, trust <code>pcp,dscp</code>, PFC priority 3, ECN on TC 0 and 3, and DSCP 26 → SP 3, DSCP 48 → SP 6.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <code>rdma link show</code> shows rxe0 ACTIVE on eth1 on hxb-gpu01 and hxb-gpu03.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> You know the RoCEv2 IPv4 GID index on each server.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <code>default_roce_tos</code> is 106 on both servers.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> A capture on swp1 shows RoCEv2 (UDP 4791) with ToS 0x6a (DSCP 26, ECT(0)).</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> You can list what VX cannot show: hardware TC classification, PFC pauses, ECN marks, buffer occupancy.</li>
+</ul>
+<h2 id="break-and-fix">Break and fix<a class="headerlink" href="#break-and-fix" title="Permanent link">&para;</a></h2>
+<h3 id="fault-1-the-host-sends-dscp-0">Fault 1 — The host sends DSCP 0<a class="headerlink" href="#fault-1-the-host-sends-dscp-0" title="Permanent link">&para;</a></h3>
+<p><strong>Inject.</strong> On both servers, set the RDMA-CM default back to 0, then run the test with <code>-R</code> and <strong>no</strong> <code>-T</code>, as an application that "forgot" its traffic class would.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a>ubuntu@hxb-gpu03:~$ echo 0 | sudo tee /sys/kernel/config/rdma_cm/rxe0/ports/1/default_roce_tos
+<a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a>ubuntu@hxb-gpu01:~$ echo 0 | sudo tee /sys/kernel/config/rdma_cm/rxe0/ports/1/default_roce_tos
+<a id="__codelineno-31-3" name="__codelineno-31-3" href="#__codelineno-31-3"></a>ubuntu@hxb-gpu03:~$ ib_write_bw -d rxe0 -R -F --report_gbits
+<a id="__codelineno-31-4" name="__codelineno-31-4" href="#__codelineno-31-4"></a>ubuntu@hxb-gpu01:~$ ib_write_bw -d rxe0 -R -F --report_gbits 172.16.100.103
+</code></pre></div>
+<p><strong>Symptoms.</strong> The test completes normally. Nothing on the switch has changed, and <code>nv show qos roce</code> is still perfect. On real hardware the job would be fine when idle and would suffer drops and erratic throughput under incast, while the RoCE priority-3 counters on the leaf stay almost empty.</p>
+<p><strong>Diagnosis.</strong> Capture on the leaf port.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ sudo tcpdump -i swp1 -nn -v -c 3 udp port 4791
+</code></pre></div>
+<p><strong>Expected output (illustrative):</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a>10:51:02.114873 IP (tos 0x0, ttl 64, id 5120, offset 0, flags [DF], proto UDP (17), length 1080)
+<a id="__codelineno-33-2" name="__codelineno-33-2" href="#__codelineno-33-2"></a>    172.16.100.101.49154 &gt; 172.16.100.103.4791: UDP, length 1052
+</code></pre></div>
+<p><code>tos 0x0</code> means DSCP 0 and Not-ECT. DSCP 0 maps to switch priority 0 and <strong>TC 0</strong>, which is lossy: no PFC, and packets can be dropped. It is also not ECN-capable, so DCQCN gets no early feedback. The client's own output confirms it: there is no <code>TOS : 106</code> on the <code>Data ex. method</code> line.</p>
+<figure>
+<p><img alt="Figure 3.4: Diagnosing 'RoCE configured but still dropping'" loading="lazy" src="../img/fig-3_4.png" /></p>
+<figcaption><strong>Figure 3.4: Diagnosing "RoCE configured but still dropping".</strong> Start from the wire, not the switch configuration. If the captured ToS is not DSCP 24–31, fix the host marking. Only if the marking is right do you move on to switch trust, mapping and PFC state.</figcaption>
+</figure>
+<p><strong>Fix.</strong> Restore the default ToS on both servers and re-run the capture to confirm <code>tos 0x6a</code>.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a>ubuntu@hxb-gpu01:~$ echo 106 | sudo tee /sys/kernel/config/rdma_cm/rxe0/ports/1/default_roce_tos
+<a id="__codelineno-34-2" name="__codelineno-34-2" href="#__codelineno-34-2"></a>ubuntu@hxb-gpu03:~$ echo 106 | sudo tee /sys/kernel/config/rdma_cm/rxe0/ports/1/default_roce_tos
+</code></pre></div>
+<p>Because the RDMA-CM default now applies, even <code>ib_write_bw -R</code> without <code>-T</code> marks the traffic with ToS 106. In production the equivalent fixes are <code>NCCL_IB_TC=106</code> for NCCL, the device's RDMA-CM default ToS, and trust <code>dscp</code> on the NIC (Chapter 5).</p>
+<h3 id="fault-2-one-switch-drops-to-lossy-mode">Fault 2 — One switch drops to lossy mode<a class="headerlink" href="#fault-2-one-switch-drops-to-lossy-mode" title="Permanent link">&para;</a></h3>
+<p><strong>Inject.</strong> On hxb-leaf-r1, change the mode and apply.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv set qos roce mode lossy
+<a id="__codelineno-35-2" name="__codelineno-35-2" href="#__codelineno-35-2"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv config apply -y
+</code></pre></div>
+<p><strong>Symptoms.</strong> On hardware, RoCE still reaches TC 3 and gets ECN, but the leaf no longer sends or honours PFC on priority 3, so incast bursts that outrun congestion control are dropped instead of paused. On VX there is no visible traffic effect.</p>
+<p><strong>Diagnosis.</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv show qos roce | grep -A3 -E &#39;^mode|^pfc&#39;
+<a id="__codelineno-36-2" name="__codelineno-36-2" href="#__codelineno-36-2"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv config history | head
+</code></pre></div>
+<p><code>mode lossy</code> and the missing PFC priority give it away. <code>nv config history</code> shows who applied the change and when.</p>
+<p><strong>Fix.</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-37-1" name="__codelineno-37-1" href="#__codelineno-37-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv set qos roce mode lossless
+<a id="__codelineno-37-2" name="__codelineno-37-2" href="#__codelineno-37-2"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv config apply -y
+<a id="__codelineno-37-3" name="__codelineno-37-3" href="#__codelineno-37-3"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv show qos roce | grep -E &#39;^mode|pfc-priority&#39;
+</code></pre></div>
+<h2 id="clean-up-save-state">Clean-up / save state<a class="headerlink" href="#clean-up-save-state" title="Permanent link">&para;</a></h2>
+<p>Lab 5 puts swp1 and swp2 into the AURORA and BOREALIS tenants, and the servers' eth1 addresses change to 172.16.10.101 and 172.17.10.103. Remove the temporary VLAN now, but <strong>keep the RoCE QoS profile</strong>: every later lab assumes it.</p>
+<ol>
+<li>
+<p>On hxb-leaf-r1, remove VLAN 100 and the temporary port settings, then save.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-38-1" name="__codelineno-38-1" href="#__codelineno-38-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv unset interface swp1-2 bridge
+<a id="__codelineno-38-2" name="__codelineno-38-2" href="#__codelineno-38-2"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv unset interface swp1-2 description
+<a id="__codelineno-38-3" name="__codelineno-38-3" href="#__codelineno-38-3"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv unset bridge domain br_default vlan 100
+<a id="__codelineno-38-4" name="__codelineno-38-4" href="#__codelineno-38-4"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv config diff
+<a id="__codelineno-38-5" name="__codelineno-38-5" href="#__codelineno-38-5"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv config apply -y
+<a id="__codelineno-38-6" name="__codelineno-38-6" href="#__codelineno-38-6"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv config save
+<a id="__codelineno-38-7" name="__codelineno-38-7" href="#__codelineno-38-7"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv show qos roce | grep -E &#39;^mode&#39;
+</code></pre></div>
+<p><strong>Expected output:</strong> <code>mode lossless</code>. If <code>br_default</code> has no other members, NVUE may also remove the bridge. Lab 5 re-creates it.</p>
+</li>
+<li>
+<p>On each server, remove the Lab 3 address. Leave rxe0 in place: Lab 9 reuses it on the same eth1 interface, and its GID table follows the new address automatically.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-39-1" name="__codelineno-39-1" href="#__codelineno-39-1"></a>ubuntu@hxb-gpu01:~$ sudo ip addr del 172.16.100.101/24 dev eth1
+<a id="__codelineno-39-2" name="__codelineno-39-2" href="#__codelineno-39-2"></a>ubuntu@hxb-gpu03:~$ sudo ip addr del 172.16.100.103/24 dev eth1
+</code></pre></div>
+</li>
+<li>
+<p>If you are stopping here, sleep the simulation from the Air UI to save compute-hour credits. Note that the rxe0 device and the configfs ToS are <strong>not persistent</strong>: after a server reboot, repeat Task 4 steps 2–3 and Task 5 step 2.</p>
+</li>
+</ol>
+<h2 id="exam-tie-in">Exam tie-in<a class="headerlink" href="#exam-tie-in" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>2.1:</strong> <code>nv set qos roce</code> (then <code>nv config apply</code>) enables the RoCE profile, default mode <code>lossless</code>. <code>nv set qos roce mode lossy</code> removes PFC but keeps classification and ECN. Verify with <code>nv show qos roce</code> and <code>nv show interface &lt;if&gt; qos roce status</code>/<code>counters</code>.</li>
+<li><strong>2.2:</strong> Know the defaults: trust PCP+DSCP, DSCP 24–31 → SP 3 → TC 3 (DWRR 50%, PFC, ECN), DSCP 48–55 → SP 6 → TC 6 (strict, CNPs), ECN 146.48 KB / 1.43 MB / 100% on TC 0 and 3.</li>
+<li><strong>2.1 and 2.2 (host side):</strong> Traffic class 106 = DSCP 26 × 4 + ECT(0). A host sending DSCP 0 lands in lossy TC 0 even when every switch is correct.</li>
+<li><strong>5.5:</strong> perftest on RoCE needs the right GID (<code>-x</code>, or <code>-R</code> to let RDMA-CM resolve it) and the right marking (<code>--tclass</code> with <code>-x</code>, <code>-T</code> with <code>-R</code>).</li>
+</ul>
+<h2 id="review-questions">Review questions<a class="headerlink" href="#review-questions" title="Permanent link">&para;</a></h2>
+<ol>
+<li>A captured RoCEv2 packet shows <code>tos 0x6a</code>. What DSCP and ECN values does it carry, and which switch priority and traffic class does the default RoCE profile give it?</li>
+<li>Which command changes an existing lossless RoCE configuration to lossy, and what is the single behavioural difference between the two modes?</li>
+<li>You run <code>ib_write_bw -x 1 -T 106 172.16.100.103</code> and the capture shows <code>tos 0x0</code>. Why?</li>
+<li>On hxb-leaf-r1 in Air, <code>nv show qos roce</code> is correct but <code>nv show interface swp1 qos roce counters</code> shows no pause frames or ECN marks after a perftest run. Is the fabric broken?</li>
+<li>Why does <code>ibv_devinfo</code> report <code>active_mtu 1024</code> for rxe0 when eth1 has an MTU of 1500?</li>
+</ol>
+<h3 id="answers">Answers<a class="headerlink" href="#answers" title="Permanent link">&para;</a></h3>
+<ol>
+<li><code>0x6a</code> = 106 = DSCP 26 (106 ÷ 4 = 26 remainder 2) with ECN bits <code>10</code>, ECT(0). DSCP 26 is in 24–31, so switch priority 3 and traffic class 3, the lossless RoCE queue with PFC and ECN.</li>
+<li><code>nv set qos roce mode lossy</code> followed by <code>nv config apply</code>. Lossy mode keeps trust, mappings, scheduling and ECN, but does not enable PFC on priority 3.</li>
+<li><code>-T</code>/<code>--tos</code> only applies to RDMA-CM connections (<code>-R</code>). Without <code>-R</code>, perftest connects over its TCP socket with the GID from <code>-x</code>, and the marking must be set with <code>--tclass=106</code>.</li>
+<li>No. Cumulus VX has no Spectrum ASIC, so there are no hardware queues, pause frames or ECN marks to count. You verify intent with <code>nv show</code> and marking with <code>tcpdump</code>. Data-plane counters must be validated on hardware.</li>
+<li>The RoCE MTU is one of the InfiniBand sizes (256, 512, 1024, 2048, 4096), and the whole RoCEv2 packet (Ethernet, IP, UDP, BTH headers plus payload) must fit in the Ethernet MTU. 2048 does not fit in 1500, so the largest valid value is 1024. With a 9000-byte MTU it becomes 4096 (Lab 9).</li>
+</ol>
+<hr />
+<div class="admonition abstract">
+<p class="admonition-title">Go deeper</p>
+<p>The matching book chapters cover the exam objectives for this lab in full, with a Q&amp;A pack of about 40 exam-style questions per chapter. <a class="md-button md-button--primary" href="../../book/">Get the book</a> <a class="md-button" href="https://github.com/Cloudfoxy-Ltd/ncp-ain-guide/issues/new?template=erratum.yml">Report a problem with this lab</a></p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../lab02/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Lab 2 — eBGP unnumbered underlay">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Lab 2 — eBGP unnumbered underlay
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../lab04/" class="md-footer__link md-footer__link--next" aria-label="Next: Lab 4 — AR, ECMP and telemetry">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Lab 4 — AR, ECMP and telemetry
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      © 2026 Vakeesan Thevarajah · Cloudfoxy Ltd · Lab guide CC BY-NC-SA 4.0 · Independent, not endorsed by NVIDIA
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.footer", "navigation.top", "content.code.copy", "search.highlight", "search.suggest", "toc.follow"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

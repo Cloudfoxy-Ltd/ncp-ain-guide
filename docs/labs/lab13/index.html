@@ -1,0 +1,2944 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Free hands-on labs on NVIDIA DSX Air, errata and study files for the NCP-AIN Certification Guide by Vakeesan Thevarajah (Cloudfoxy Ltd).">
+      
+      
+        <meta name="author" content="Vakeesan Thevarajah">
+      
+      
+        <link rel="canonical" href="https://cloudfoxy-ltd.github.io/ncp-ain-guide/labs/lab13/">
+      
+      
+        <link rel="prev" href="../lab12/">
+      
+      
+        <link rel="next" href="../appendix/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Lab 13 — Capstone challenge - NCP-AIN Certification Guide — Labs & Errata</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="cyan" data-md-color-accent="purple">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#lab-13-capstone-troubleshooting-challenge" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="NCP-AIN Certification Guide — Labs &amp; Errata" class="md-header__button md-logo" aria-label="NCP-AIN Certification Guide — Labs & Errata" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            NCP-AIN Certification Guide — Labs & Errata
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Lab 13 — Capstone challenge
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="cyan" data-md-color-accent="purple"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="cyan" data-md-color-accent="purple"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Cloudfoxy-Ltd/ncp-ain-guide" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Cloudfoxy-Ltd/ncp-ain-guide
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
+          
+  
+  
+  Hands-On Labs
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../book/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  The Book
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../errata/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Errata
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../flashcards/" class="md-tabs__link">
+          
+  
+  
+  Study Files
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../license/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Licence
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="NCP-AIN Certification Guide — Labs &amp; Errata" class="md-nav__button md-logo" aria-label="NCP-AIN Certification Guide — Labs & Errata" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    NCP-AIN Certification Guide — Labs & Errata
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Cloudfoxy-Ltd/ncp-ain-guide" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Cloudfoxy-Ltd/ncp-ain-guide
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hands-On Labs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Hands-On Labs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab00/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 0 — Air and topology
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab01/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 1 — NVUE essentials
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab02/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 2 — eBGP unnumbered underlay
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab03/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 3 — Lossless RoCE and Soft-RoCE
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab04/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 4 — AR, ECMP and telemetry
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab05/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 5 — BGP-EVPN multi-tenancy
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab06/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 6 — Air power skills
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab07/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 7 — Monitoring and troubleshooting
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab08/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 8 — InfiniBand with ibsim
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab09/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 9 — perftest over Soft-RoCE
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab10/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 10 — Kubernetes Network Operator
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab11/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 11 — NVUE templates
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab12/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 12 — Ansible automation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 13 — Capstone challenge
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 13 — Capstone challenge
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#lab-at-a-glance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lab at a glance
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#objectives" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Objectives
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#background" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Background
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-by-step" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step-by-step
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Step-by-step">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#task-1-capture-a-baseline-and-take-a-checkpoint" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 1 — Capture a baseline and take a checkpoint
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-2-install-the-fault-injector-instructor-or-study-partner" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 2 — Install the fault injector (instructor or study partner)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-3-run-the-challenge" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 3 — Run the challenge
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-4-keep-troubleshooting-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 4 — Keep troubleshooting notes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-5-score-yourself" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 5 — Score yourself
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#break-and-fix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Break and fix
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Break and fix">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#f1-rail-3-is-running-on-one-leg" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        F1 — "Rail 3 is running on one leg"
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#f2-small-pings-work-big-transfers-hang" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        F2 — "Small pings work, big transfers hang"
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#f3-gpu02-cant-see-gpu01-on-vlan-111" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        F3 — "gpu02 can't see gpu01 on VLAN 111"
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#f4-one-server-cant-leave-its-subnet" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        F4 — "One server can't leave its subnet"
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#f5-roce-audit-failed-on-rail-2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        F5 — "RoCE audit failed on rail 2"
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#f6-borealis-host-sees-aurora-broadcast-traffic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        F6 — "BOREALIS host sees AURORA broadcast traffic"
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#f7-confirm-subnet-manager-ha-before-the-change-freeze" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        F7 — "Confirm Subnet Manager HA before the change freeze"
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#f8-one-production-node-cant-join-the-job" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        F8 — "One PRODUCTION node can't join the job"
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#f9-errors-climbing-on-an-su1-uplink" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        F9 — "Errors climbing on an SU1 uplink"
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#f10-su2-lost-bandwidth-to-the-spines" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        F10 — "SU2 lost bandwidth to the spines"
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#solutions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Solutions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Solutions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#f1-solution-wrong-remote-as-on-spine02" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        F1 solution — wrong remote-as on spine02
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#f2-solution-mtu-mismatch-on-spine01-swp2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        F2 solution — MTU mismatch on spine01 swp2
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#f3-solution-vni-mismatch-on-leaf-r4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        F3 solution — VNI mismatch on leaf-r4
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#f4-solution-missing-vrr-on-leaf-r3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        F4 solution — missing VRR on leaf-r3
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#f5-solution-roce-lossy-on-leaf-r2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        F5 solution — RoCE lossy on leaf-r2
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#f6-solution-ansible-pushed-the-wrong-access-vlan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        F6 solution — Ansible pushed the wrong access VLAN
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#f7-solution-standby-sm-missing-then-master-failure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        F7 solution — standby SM missing, then master failure
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#f8-solution-missing-partition-member" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        F8 solution — missing partition member
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#f9-solution-rising-symbol-errors-on-an-uplink" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        F9 solution — rising symbol errors on an uplink
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#f10-solution-failed-spine-uplink-on-su2-leaf-r2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        F10 solution — failed spine uplink on SU2 leaf-r2
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#verify" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verify
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#clean-up-save-state" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Clean-up / save state
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exam-tie-in" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exam tie-in
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#review-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Review questions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Review questions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#answers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Answers
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../appendix/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Appendices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../book/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The Book
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../errata/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Errata
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Study Files
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Study Files
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../flashcards/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Flashcards
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lab-files/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab files
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../license/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Licence
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#lab-at-a-glance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lab at a glance
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#objectives" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Objectives
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#background" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Background
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-by-step" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step-by-step
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Step-by-step">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#task-1-capture-a-baseline-and-take-a-checkpoint" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 1 — Capture a baseline and take a checkpoint
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-2-install-the-fault-injector-instructor-or-study-partner" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 2 — Install the fault injector (instructor or study partner)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-3-run-the-challenge" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 3 — Run the challenge
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-4-keep-troubleshooting-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 4 — Keep troubleshooting notes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-5-score-yourself" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 5 — Score yourself
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#break-and-fix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Break and fix
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Break and fix">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#f1-rail-3-is-running-on-one-leg" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        F1 — "Rail 3 is running on one leg"
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#f2-small-pings-work-big-transfers-hang" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        F2 — "Small pings work, big transfers hang"
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#f3-gpu02-cant-see-gpu01-on-vlan-111" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        F3 — "gpu02 can't see gpu01 on VLAN 111"
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#f4-one-server-cant-leave-its-subnet" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        F4 — "One server can't leave its subnet"
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#f5-roce-audit-failed-on-rail-2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        F5 — "RoCE audit failed on rail 2"
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#f6-borealis-host-sees-aurora-broadcast-traffic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        F6 — "BOREALIS host sees AURORA broadcast traffic"
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#f7-confirm-subnet-manager-ha-before-the-change-freeze" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        F7 — "Confirm Subnet Manager HA before the change freeze"
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#f8-one-production-node-cant-join-the-job" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        F8 — "One PRODUCTION node can't join the job"
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#f9-errors-climbing-on-an-su1-uplink" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        F9 — "Errors climbing on an SU1 uplink"
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#f10-su2-lost-bandwidth-to-the-spines" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        F10 — "SU2 lost bandwidth to the spines"
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#solutions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Solutions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Solutions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#f1-solution-wrong-remote-as-on-spine02" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        F1 solution — wrong remote-as on spine02
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#f2-solution-mtu-mismatch-on-spine01-swp2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        F2 solution — MTU mismatch on spine01 swp2
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#f3-solution-vni-mismatch-on-leaf-r4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        F3 solution — VNI mismatch on leaf-r4
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#f4-solution-missing-vrr-on-leaf-r3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        F4 solution — missing VRR on leaf-r3
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#f5-solution-roce-lossy-on-leaf-r2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        F5 solution — RoCE lossy on leaf-r2
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#f6-solution-ansible-pushed-the-wrong-access-vlan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        F6 solution — Ansible pushed the wrong access VLAN
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#f7-solution-standby-sm-missing-then-master-failure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        F7 solution — standby SM missing, then master failure
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#f8-solution-missing-partition-member" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        F8 solution — missing partition member
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#f9-solution-rising-symbol-errors-on-an-uplink" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        F9 solution — rising symbol errors on an uplink
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#f10-solution-failed-spine-uplink-on-su2-leaf-r2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        F10 solution — failed spine uplink on SU2 leaf-r2
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#verify" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verify
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#clean-up-save-state" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Clean-up / save state
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exam-tie-in" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exam tie-in
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#review-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Review questions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Review questions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#answers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Answers
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="lab-13-capstone-troubleshooting-challenge">Lab 13 — Capstone: Troubleshooting Challenge<a class="headerlink" href="#lab-13-capstone-troubleshooting-challenge" title="Permanent link">&para;</a></h1>
+<div class="admonition abstract">
+<p class="admonition-title">Companion to the NCP-AIN Certification Guide</p>
+<p>This free lab is part of the hands-on companion to <em>NCP-AIN Certification Guide</em> by Vakeesan Thevarajah (Cloudfoxy Ltd). The book explains the theory, design choices and hardware behaviour behind every step. <a class="md-button md-button--primary" href="../../book/">Get the book</a> <a class="md-button" href="../../sample/NCP-AIN_Sample.pdf">Free sample</a></p>
+</div>
+<h2 id="lab-at-a-glance">Lab at a glance<a class="headerlink" href="#lab-at-a-glance" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Book chapters</td>
+<td>Chapter 4 (NVUE) · 5 (RoCE QoS) · 7 (BGP-EVPN) · 11–13 (InfiniBand, SM HA, PKeys) · 17 (IB diagnostic tools) · 22 (Ansible) · 23 (exam strategy)</td>
+</tr>
+<tr>
+<td>Exam objectives</td>
+<td>Domain 5 Troubleshooting (<strong>5.4</strong>, <strong>5.5</strong>) plus the objectives behind each fault: <strong>2.1</strong>, <strong>2.2</strong>, <strong>2.3</strong>, <strong>3.1</strong>, <strong>3.2</strong>, <strong>3.4</strong>, <strong>6.1</strong>, <strong>6.2</strong></td>
+</tr>
+<tr>
+<td>Time</td>
+<td>3–4 hours for all ten scenarios (about 15–20 minutes each), or run them in two sessions</td>
+</tr>
+<tr>
+<td>Air resources used</td>
+<td>The whole helix-b-air simulation (about 26 vCPU while running). A favourite checkpoint taken before you start</td>
+</tr>
+<tr>
+<td>Prerequisite labs</td>
+<td>Labs 0–5, Lab 6 (checkpoints), Lab 8 (ibsim set up in <code>~/ibsim</code> on <code>hxa-ibsim</code>), Lab 12 (Ansible project). Labs 7, 9 and 11 help</td>
+</tr>
+</tbody>
+</table>
+<h2 id="objectives">Objectives<a class="headerlink" href="#objectives" title="Permanent link">&para;</a></h2>
+<p>By the end of this lab you will be able to:</p>
+<ol>
+<li>Work a fault from a vague ticket to a verified fix using a layer-by-layer method, not guesswork.</li>
+<li>Diagnose Ethernet faults on the Helix-B twin: a BGP unnumbered neighbour that won't establish, an MTU mismatch, a VNI mismatch, a missing anycast gateway, a disabled lossless RoCE profile, and a wrong VLAN pushed by Ansible.</li>
+<li>Diagnose InfiniBand faults in ibsim: a missing standby Subnet Manager and SM failover, a missing partition member, rising symbol errors on an uplink, and a failed link.</li>
+<li>Prove every fix with the same commands that showed the fault.</li>
+<li>Write troubleshooting notes that a colleague (or an examiner) can follow.</li>
+</ol>
+<h2 id="background">Background<a class="headerlink" href="#background" title="Permanent link">&para;</a></h2>
+<p>This lab turns everything you built in Labs 0–12 into a practice ground. An instructor, a study partner or a script breaks one thing at a time. You get only a short <strong>ticket</strong>, written the way a user would report it. Your job is to find the fault, fix it, and prove the fix. The exam's troubleshooting domain (20%) tests exactly this skill in multiple-choice form: given symptoms and command output, pick the cause and the next step.</p>
+<p>There are <strong>ten scenarios</strong>: six on the Helix-B Ethernet twin and four on the Helix-A InfiniBand simulator. Each scenario lists how the fault is injected (instructor only), what the student sees, three hints that give away progressively more, and the exam objective it practises. Full solutions are in a separate section so you don't read them by accident.</p>
+<p>Use the same method every time. Start from the symptom and the scope (one host? one rail? one tenant? whole fabric?). Then work <strong>up the layers</strong>: physical link, then L2 (VLAN, MTU), then the underlay control plane (BGP), then the overlay (EVPN, VNIs, VRFs, gateways), then QoS and policy, and last the automation that put the configuration there. On InfiniBand the order is link state, then SM and LIDs, then partitions, then counters and routes. At every step, compare the broken device with a healthy peer: in a rail-optimised fabric there is always a twin that should look the same.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Cumulus VX has no Spectrum ASIC, and ibsim has no real links. Some faults don't produce the traffic symptoms they would in production (for example, lossy RoCE on VX doesn't drop anything, and ibsim symbol errors only rise when someone sets them). In those scenarios you diagnose from configuration and counters, which is also what most exam questions show you.</p>
+</div>
+<figure>
+<p><img alt="Figure 13.1: The capstone troubleshooting method" loading="lazy" src="../img/fig-13_1.png" /></p>
+<figcaption><strong>Figure 13.1: The capstone troubleshooting method.</strong> Every scenario follows the same loop. Scope the problem, compare with a healthy twin, work up the layers, change one thing, and verify with the command that first showed the fault. Write notes as you go, not afterwards.</figcaption>
+</figure>
+<figure>
+<p><img alt="Figure 13.2: Where the Ethernet faults are injected" loading="lazy" src="../img/fig-13_2.png" /></p>
+<figcaption><strong>Figure 13.2: Where the Ethernet faults are injected.</strong> F1 breaks the spine02–leaf-r3 BGP session, F2 lowers the MTU on the spine01–leaf-r2 link, F3 changes VLAN 111's VNI on leaf-r4, F4 removes the VLAN 110 gateway on leaf-r3, F5 switches leaf-r2 RoCE to lossy, and F6 moves gpu03's access port on leaf-r2 into the wrong VLAN.</figcaption>
+</figure>
+<p>The figure shows only the links involved in the faults. Every leaf connects to both spines (swp31 to hxb-spine01, swp32 to hxb-spine02).</p>
+<h2 id="step-by-step">Step-by-step<a class="headerlink" href="#step-by-step" title="Permanent link">&para;</a></h2>
+<h3 id="task-1-capture-a-baseline-and-take-a-checkpoint">Task 1 — Capture a baseline and take a checkpoint<a class="headerlink" href="#task-1-capture-a-baseline-and-take-a-checkpoint" title="Permanent link">&para;</a></h3>
+<p>You can only recognise "broken" if you have recorded "working". Capture a baseline from the healthy fabric before any fault is injected.</p>
+<ol>
+<li>
+<p>On <code>oob-mgmt-server</code>, create a working folder and capture the Ethernet baseline:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>ubuntu@oob-mgmt-server:~$ mkdir -p ~/capstone/baseline &amp;&amp; cd ~/capstone/baseline
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>ubuntu@oob-mgmt-server:~/capstone/baseline$ for sw in hxb-spine01 hxb-spine02 hxb-leaf-r1 hxb-leaf-r2 hxb-leaf-r3 hxb-leaf-r4; do
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>  ssh cumulus@$sw &quot;sudo vtysh -c &#39;show bgp summary&#39;; sudo vtysh -c &#39;show evpn vni&#39;; nv show qos roce; nv config show&quot; &gt; $sw.txt 2&gt;&amp;1
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>done
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>ubuntu@oob-mgmt-server:~/capstone/baseline$ ls
+</code></pre></div>
+<p><strong>Expected output (illustrative):</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>hxb-leaf-r1.txt  hxb-leaf-r2.txt  hxb-leaf-r3.txt  hxb-leaf-r4.txt  hxb-spine01.txt  hxb-spine02.txt
+</code></pre></div>
+</li>
+<li>
+<p>Record the host reachability matrix. From <code>hxb-gpu01</code>, every AURORA address should answer:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>ubuntu@hxb-gpu01:~$ for ip in 172.16.10.1 172.16.10.102 172.16.11.1 172.16.11.102; do ping -c 2 -W 1 $ip &gt;/dev/null &amp;&amp; echo &quot;$ip ok&quot; || echo &quot;$ip FAIL&quot;; done
+</code></pre></div>
+<p><strong>Expected output (illustrative):</strong> four lines ending in <code>ok</code>. Repeat from <code>hxb-gpu03</code> for the BOREALIS addresses (172.17.10.1, 172.17.10.104, 172.17.11.1, 172.17.11.104). Check that a cross-tenant ping (for example <code>ping 172.17.10.103</code> from <code>hxb-gpu01</code>) fails, as Lab 5 intended.</p>
+</li>
+<li>
+<p>Capture the InfiniBand baseline on <code>hxa-ibsim</code>. Start ibsim and OpenSM the way Lab 8 does, then:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>ubuntu@hxa-ibsim:~$ cd ~/ibsim
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>ubuntu@hxa-ibsim:~/ibsim$ ibsim-run sminfo &gt; base-sminfo.txt
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>ubuntu@hxa-ibsim:~/ibsim$ ibsim-run saquery -s &gt; base-sm-ports.txt
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>ubuntu@hxa-ibsim:~/ibsim$ ibsim-run ibnetdiscover &gt; base-topo.txt
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>ubuntu@hxa-ibsim:~/ibsim$ ibsim-run iblinkinfo --switches-only -l &gt; base-links.txt
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>ubuntu@hxa-ibsim:~/ibsim$ ibsim-run ibqueryerrors &gt; base-errors.txt
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>ubuntu@hxa-ibsim:~/ibsim$ cp partitions.conf base-partitions.conf
+</code></pre></div>
+<p><code>saquery -s</code> lists the ports that are SM-capable. With Lab 8's HA set-up it should show both SM hosts, so you know the master's and the standby's LIDs.</p>
+</li>
+<li>
+<p>Save everything and take a checkpoint. On every switch, <code>nv config diff applied startup</code> should be empty (Lab 6, Task 1). Then in Air use <strong>Stop Simulation and Store Checkpoint</strong>, mark the checkpoint as a favourite, and name it <code>pre-capstone</code>. Start the simulation from it.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>An Air checkpoint saves disks, not running processes. After starting from a checkpoint, restart ibsim and the OpenSM instances as in Lab 8 before you do any InfiniBand scenario.</p>
+</div>
+</li>
+</ol>
+<p><strong>Checkpoint:</strong></p>
+<ul>
+<li>Baseline files exist in <code>~/capstone/baseline</code> and <code>~/ibsim/base-*</code>.</li>
+<li>A favourite checkpoint called <code>pre-capstone</code> exists.</li>
+</ul>
+<h3 id="task-2-install-the-fault-injector-instructor-or-study-partner">Task 2 — Install the fault injector (instructor or study partner)<a class="headerlink" href="#task-2-install-the-fault-injector-instructor-or-study-partner" title="Permanent link">&para;</a></h3>
+<p>The student should not read this task. If you work alone, ask a friend to install the script, or install it without reading the <code>case</code> block and use <code>random</code> mode (Task 3).</p>
+<ol>
+<li>
+<p>On <code>oob-mgmt-server</code>, create <code>~/capstone/inject.sh</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>#!/bin/bash
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a># Lab 13 fault injector. Usage: inject.sh F1..F10 | F7b | random
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>set -euo pipefail
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>SVI_AF=ipv4                     # use &quot;ip&quot; if Lab 5 used the pre-5.15 SVI syntax
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>ANSIBLE_DIR=~/helix-ansible     # your Lab 12 Ansible project
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>SIM=hxa-ibsim
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>VICTIM_GUID=0x0000000000000000  # port GUID of one PRODUCTION member (F8), from partitions.conf
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>nv_on() { local sw=$1; shift; ssh -o BatchMode=yes cumulus@&quot;$sw&quot; &quot;$* &amp;&amp; nv config apply -y&quot; &gt;/dev/null; }
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>sim_cmd() { ssh -o BatchMode=yes ubuntu@&quot;$SIM&quot; &quot;echo &#39;$1&#39; &gt; ~/ibsim/simcmd&quot;; }
+<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>
+<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>id=${1:?usage: inject.sh F1..F10|F7b|random}
+<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>if [ &quot;$id&quot; = random ]; then
+<a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a>  id=F$(( (RANDOM % 10) + 1 ))
+<a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a>  echo &quot;$id $(date)&quot; | sudo tee -a /root/capstone-answers &gt;/dev/null
+<a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a>  echo &quot;A fault has been injected. Good luck.&quot;
+<a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a>fi
+<a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a>
+<a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a>case $id in
+<a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a>  F1) nv_on hxb-spine02 &quot;nv set vrf default router bgp neighbor swp3 remote-as 65200&quot; ;;
+<a id="__codelineno-4-21" name="__codelineno-4-21" href="#__codelineno-4-21"></a>  F2) nv_on hxb-spine01 &quot;nv set interface swp2 link mtu 1500&quot; ;;
+<a id="__codelineno-4-22" name="__codelineno-4-22" href="#__codelineno-4-22"></a>  F3) nv_on hxb-leaf-r4 &quot;nv unset bridge domain br_default vlan 111 vni 10111 &amp;&amp; nv set bridge domain br_default vlan 111 vni 10101&quot; ;;
+<a id="__codelineno-4-23" name="__codelineno-4-23" href="#__codelineno-4-23"></a>  F4) nv_on hxb-leaf-r3 &quot;nv unset interface vlan110 $SVI_AF vrr&quot; ;;
+<a id="__codelineno-4-24" name="__codelineno-4-24" href="#__codelineno-4-24"></a>  F5) nv_on hxb-leaf-r2 &quot;nv set qos roce mode lossy&quot; ;;
+<a id="__codelineno-4-25" name="__codelineno-4-25" href="#__codelineno-4-25"></a>  F6) cd &quot;$ANSIBLE_DIR&quot;
+<a id="__codelineno-4-26" name="__codelineno-4-26" href="#__codelineno-4-26"></a>      cat &gt; playbooks/access-ports.yml &lt;&lt;&#39;EOF&#39;
+<a id="__codelineno-4-27" name="__codelineno-4-27" href="#__codelineno-4-27"></a>- name: Tidy leaf access ports
+<a id="__codelineno-4-28" name="__codelineno-4-28" href="#__codelineno-4-28"></a>  hosts: hxb-leaf-r2
+<a id="__codelineno-4-29" name="__codelineno-4-29" href="#__codelineno-4-29"></a>  gather_facts: false
+<a id="__codelineno-4-30" name="__codelineno-4-30" href="#__codelineno-4-30"></a>  tasks:
+<a id="__codelineno-4-31" name="__codelineno-4-31" href="#__codelineno-4-31"></a>    - name: Set access VLAN on swp2
+<a id="__codelineno-4-32" name="__codelineno-4-32" href="#__codelineno-4-32"></a>      nvidia.nvue.api:
+<a id="__codelineno-4-33" name="__codelineno-4-33" href="#__codelineno-4-33"></a>        operation: set
+<a id="__codelineno-4-34" name="__codelineno-4-34" href="#__codelineno-4-34"></a>        force: true
+<a id="__codelineno-4-35" name="__codelineno-4-35" href="#__codelineno-4-35"></a>        wait: 15
+<a id="__codelineno-4-36" name="__codelineno-4-36" href="#__codelineno-4-36"></a>        data:
+<a id="__codelineno-4-37" name="__codelineno-4-37" href="#__codelineno-4-37"></a>          interface:
+<a id="__codelineno-4-38" name="__codelineno-4-38" href="#__codelineno-4-38"></a>            swp2:
+<a id="__codelineno-4-39" name="__codelineno-4-39" href="#__codelineno-4-39"></a>              bridge:
+<a id="__codelineno-4-40" name="__codelineno-4-40" href="#__codelineno-4-40"></a>                domain:
+<a id="__codelineno-4-41" name="__codelineno-4-41" href="#__codelineno-4-41"></a>                  br_default:
+<a id="__codelineno-4-42" name="__codelineno-4-42" href="#__codelineno-4-42"></a>                    access: 111
+<a id="__codelineno-4-43" name="__codelineno-4-43" href="#__codelineno-4-43"></a>EOF
+<a id="__codelineno-4-44" name="__codelineno-4-44" href="#__codelineno-4-44"></a>      git add playbooks/access-ports.yml &amp;&amp; git commit -qm &quot;Tidy access ports&quot;
+<a id="__codelineno-4-45" name="__codelineno-4-45" href="#__codelineno-4-45"></a>      ansible-playbook playbooks/access-ports.yml &gt;/dev/null ;;
+<a id="__codelineno-4-46" name="__codelineno-4-46" href="#__codelineno-4-46"></a>  F7)  ssh ubuntu@&quot;$SIM&quot; &quot;pkill -f &#39;[o]pensm.*-p 12&#39;&quot; ;;   # standby SM disappears
+<a id="__codelineno-4-47" name="__codelineno-4-47" href="#__codelineno-4-47"></a>  F7b) ssh ubuntu@&quot;$SIM&quot; &quot;pkill -f &#39;[o]pensm.*-p 14&#39;&quot; ;;   # later: master fails too
+<a id="__codelineno-4-48" name="__codelineno-4-48" href="#__codelineno-4-48"></a>  F8) ssh ubuntu@&quot;$SIM&quot; &quot;cd ~/ibsim &amp;&amp; sed -i.bak &#39;s/${VICTIM_GUID}[^,;]*, *//; s/, *${VICTIM_GUID}[^,;]*//&#39; partitions.conf &amp;&amp; pkill -HUP -f &#39;[o]pensm.*-p 14&#39;&quot; ;;
+<a id="__codelineno-4-49" name="__codelineno-4-49" href="#__codelineno-4-49"></a>  F9) ( for n in 400 1500 4200 9800; do
+<a id="__codelineno-4-50" name="__codelineno-4-50" href="#__codelineno-4-50"></a>          sim_cmd &quot;PerformanceSet \&quot;hxa-su1-leaf-r1\&quot;[33] PortCounters.SymbolErrorCounter=$n&quot;; sleep 120
+<a id="__codelineno-4-51" name="__codelineno-4-51" href="#__codelineno-4-51"></a>        done ) &gt;/dev/null 2&gt;&amp;1 &amp; ;;
+<a id="__codelineno-4-52" name="__codelineno-4-52" href="#__codelineno-4-52"></a>  F10) sim_cmd &#39;Unlink &quot;hxa-su2-leaf-r2&quot;[34]&#39; ;;
+<a id="__codelineno-4-53" name="__codelineno-4-53" href="#__codelineno-4-53"></a>  *) echo &quot;unknown fault $id&quot;; exit 1 ;;
+<a id="__codelineno-4-54" name="__codelineno-4-54" href="#__codelineno-4-54"></a>esac
+</code></pre></div>
+</li>
+<li>
+<p>Make it executable and check it parses:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>ubuntu@oob-mgmt-server:~$ chmod +x ~/capstone/inject.sh
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>ubuntu@oob-mgmt-server:~$ bash -n ~/capstone/inject.sh &amp;&amp; echo syntax ok
+</code></pre></div>
+</li>
+</ol>
+<p><strong>Notes on the script (check on your set-up):</strong></p>
+<ul>
+<li><code>nv_on</code> assumes the passwordless SSH from <code>oob-mgmt-server</code> to the switches that Lab 0 and Lab 12 set up. Without it, <code>BatchMode=yes</code> makes the script fail instead of hanging on a password prompt.</li>
+<li><code>SVI_AF</code> must match the SVI syntax you used in Lab 5. From Cumulus Linux 5.15, NVUE uses <code>interface vlan110 ipv4 vrr</code>. Earlier 5.x releases use <code>ip vrr</code>.</li>
+<li>F6 uses the Lab 12 connection settings (<code>nvidia.nvue.api</code> over the NVUE REST API on port 8765). If your Lab 12 inventory uses a different project path or host names, adjust <code>ANSIBLE_DIR</code> and <code>hosts</code>.</li>
+<li>F7, F7b and F8 assume that Lab 8 started the master OpenSM with priority 14 (<code>-p 14</code>) and the standby with priority 12 (<code>-p 12</code>), and that the partition file is <code>~/ibsim/partitions.conf</code>. The <code>[o]pensm</code> pattern stops <code>pkill</code> from matching its own shell. OpenSM re-reads the partition file on its next heavy sweep, which <code>SIGHUP</code> triggers (check on your OpenSM version; if the change doesn't appear, restart the master OpenSM the Lab 8 way).</li>
+<li>The ibsim console reads commands from the named pipe <code>~/ibsim/simcmd</code> that Lab 8 creates. If nothing is reading the pipe, <code>echo … &gt; simcmd</code> blocks. In the Lab 8 topology, leaf ports 33 and above are spine uplinks; confirm the port numbers in <code>~/ibsim/base-links.txt</code>.</li>
+</ul>
+<h3 id="task-3-run-the-challenge">Task 3 — Run the challenge<a class="headerlink" href="#task-3-run-the-challenge" title="Permanent link">&para;</a></h3>
+<p><strong>With an instructor:</strong> the instructor runs one scenario at a time (<code>~/capstone/inject.sh F3</code>, for example), hands the student the ticket text from the <strong>Break and fix</strong> section, and starts a timer.</p>
+<p><strong>On your own:</strong> run <code>~/capstone/inject.sh random</code>. The script picks a fault, writes the answer to <code>/root/capstone-answers</code> (readable only with <code>sudo</code>), and tells you nothing else. Read the ticket list in <strong>Break and fix</strong>, decide which ticket matches what you see, and start.</p>
+<p>Rules:</p>
+<ol>
+<li>Target 15–20 minutes per scenario. After 10 minutes stuck, take Hint 1; after 15, Hint 2.</li>
+<li>Change <strong>one thing at a time</strong>. On switches, review <code>nv config diff</code> before every <code>nv config apply</code>.</li>
+<li>Prove the fix with the same test that showed the fault.</li>
+<li>Restore before the next scenario. Either apply the fix from the solution, or start again from the <code>pre-capstone</code> checkpoint (Lab 6). A checkpoint restore is the only guaranteed clean slate, but it takes several minutes and you must restart ibsim afterwards.</li>
+</ol>
+<figure>
+<p><img alt="Figure 13.3: How the InfiniBand faults reach ibsim" loading="lazy" src="../img/fig-13_3.png" /></p>
+<figcaption><strong>Figure 13.3: How the InfiniBand faults reach ibsim.</strong> The injector on oob-mgmt-server writes simulator commands into the named pipe that Lab 8 feeds to the ibsim console, or signals the OpenSM processes. Students see the effects only through the diagnostic tools run with ibsim-run.</figcaption>
+</figure>
+<h3 id="task-4-keep-troubleshooting-notes">Task 4 — Keep troubleshooting notes<a class="headerlink" href="#task-4-keep-troubleshooting-notes" title="Permanent link">&para;</a></h3>
+<p>Good notes are part of the score. Copy this template into <code>~/capstone/notes-F&lt;n&gt;.md</code> at the start of each scenario and fill it in <strong>as you go</strong>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a># Ticket F&lt;n&gt; — &lt;one-line summary in your own words&gt;
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>Start: 14:05   Finish: 14:22   Hints used: 0
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>## Symptom and scope
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>- What fails:      gpu02 eth1 (172.16.10.102) cannot reach its gateway 172.16.10.1
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>- What still works: gpu02 → gpu01 172.16.10.101 (same VLAN, other leaf)
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>- Scope:           one leaf (hxb-leaf-r3), one VLAN (110); leaf-r1 VLAN 110 fine
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>## Evidence (command → key line)
+<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>- gpu02: ip neigh show 172.16.10.1          → FAILED
+<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a>- leaf-r3: nv show interface vlan110         → no vrr address
+<a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a>- leaf-r1: nv show interface vlan110         → vrr 172.16.10.1/24, 00:00:5e:00:01:01
+<a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a>
+<a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a>## Root cause
+<a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a>VRR (anycast gateway) removed from vlan110 on hxb-leaf-r3 (nv config history: rev 41).
+<a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a>
+<a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a>## Fix (exact commands)
+<a id="__codelineno-6-18" name="__codelineno-6-18" href="#__codelineno-6-18"></a>nv set interface vlan110 ipv4 vrr address 172.16.10.1/24 ... ; nv config diff ; nv config apply
+<a id="__codelineno-6-19" name="__codelineno-6-19" href="#__codelineno-6-19"></a>
+<a id="__codelineno-6-20" name="__codelineno-6-20" href="#__codelineno-6-20"></a>## Verification (same test as the symptom)
+<a id="__codelineno-6-21" name="__codelineno-6-21" href="#__codelineno-6-21"></a>- gpu02: ping 172.16.10.1 → 0% loss; ping 172.16.11.101 → 0% loss
+<a id="__codelineno-6-22" name="__codelineno-6-22" href="#__codelineno-6-22"></a>
+<a id="__codelineno-6-23" name="__codelineno-6-23" href="#__codelineno-6-23"></a>## Prevention
+<a id="__codelineno-6-24" name="__codelineno-6-24" href="#__codelineno-6-24"></a>Gateway settings come from the Lab 11 template; add a post-change ping check to the pipeline.
+</code></pre></div>
+<p>What makes notes good:</p>
+<table>
+<thead>
+<tr>
+<th>Good notes</th>
+<th>Weak notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>State scope: what works as well as what fails</td>
+<td>"Network is broken"</td>
+</tr>
+<tr>
+<td>Quote the one line of output that proves each point</td>
+<td>Paste 200 lines of output with no comment</td>
+</tr>
+<tr>
+<td>Name the device, interface, VLAN/VNI or port and LID</td>
+<td>"Something on the leaf"</td>
+</tr>
+<tr>
+<td>Separate the root cause from the symptom</td>
+<td>"Fixed by rebooting"</td>
+</tr>
+<tr>
+<td>Show the exact fix and the exact verification</td>
+<td>"Changed config, works now"</td>
+</tr>
+<tr>
+<td>End with prevention: template, check or alert</td>
+<td>No lesson recorded</td>
+</tr>
+</tbody>
+</table>
+<h3 id="task-5-score-yourself">Task 5 — Score yourself<a class="headerlink" href="#task-5-score-yourself" title="Permanent link">&para;</a></h3>
+<p>Score each scenario out of 10 with this rubric. An instructor scores from the student's notes and a short verbal walk-through.</p>
+<table>
+<thead>
+<tr>
+<th>Criterion</th>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Scope and isolation</strong> (max 2)</td>
+<td>No scope stated</td>
+<td>Right area (Ethernet or IB, one tenant or rail)</td>
+<td>Exact device and interface, VLAN or port</td>
+<td>—</td>
+</tr>
+<tr>
+<td><strong>Root cause</strong> (max 3)</td>
+<td>Wrong or none</td>
+<td>Right layer, wrong detail</td>
+<td>Right cause, weak evidence</td>
+<td>Right cause, proved with the key output line</td>
+</tr>
+<tr>
+<td><strong>Fix</strong> (max 2)</td>
+<td>None, or it broke something else</td>
+<td>Worked but untidy (several changes, no diff review)</td>
+<td>Minimal, reviewed with <code>nv config diff</code> or equivalent</td>
+<td>—</td>
+</tr>
+<tr>
+<td><strong>Verification</strong> (max 2)</td>
+<td>None</td>
+<td>A different test from the symptom</td>
+<td>Same test as the symptom, plus a check that nothing else broke</td>
+<td>—</td>
+</tr>
+<tr>
+<td><strong>Notes</strong> (max 1)</td>
+<td>Missing or unreadable</td>
+<td>Complete template, including prevention</td>
+<td>—</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Adjustment</th>
+<th>Points</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Each hint used</td>
+<td>−1 (Hint 3 counts as two)</td>
+</tr>
+<tr>
+<td>Solved in under 10 minutes</td>
+<td>+1</td>
+</tr>
+<tr>
+<td>Needed the solution</td>
+<td>Score the notes and verification only</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Total over ten scenarios</th>
+<th>Rating</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>85–110</td>
+<td>Exam-ready for Domain 5: fast, evidence-based, tidy</td>
+</tr>
+<tr>
+<td>65–84</td>
+<td>Solid. Revisit the chapters for the scenarios where you lost points</td>
+</tr>
+<tr>
+<td>Below 65</td>
+<td>Repeat the lowest-scoring scenarios after re-reading their chapters and labs</td>
+</tr>
+</tbody>
+</table>
+<h2 id="break-and-fix">Break and fix<a class="headerlink" href="#break-and-fix" title="Permanent link">&para;</a></h2>
+<p>Each scenario is written in four parts: <strong>Ticket</strong> (all the student gets), <strong>Injection</strong> (instructor only), <strong>Symptoms</strong> (what the student should find), and <strong>Hints</strong>. Full solutions follow in the next section.</p>
+<h3 id="f1-rail-3-is-running-on-one-leg">F1 — "Rail 3 is running on one leg"<a class="headerlink" href="#f1-rail-3-is-running-on-one-leg" title="Permanent link">&para;</a></h3>
+<p><strong>Ticket:</strong> "Monitoring says <code>hxb-leaf-r3</code> has only one path to the spines. Jobs still run. Can you check before tonight's training run?"</p>
+<p><strong>Injection:</strong> <code>inject.sh F1</code>. On <code>hxb-spine02</code>, the unnumbered neighbour on <code>swp3</code> (the link to <code>hxb-leaf-r3</code> <code>swp32</code>) is changed from <code>remote-as external</code> to <code>remote-as 65200</code>.</p>
+<p><strong>Symptoms:</strong></p>
+<ul>
+<li>On <code>hxb-leaf-r3</code>, <code>sudo vtysh -c "show bgp summary"</code> shows <code>swp31</code> Established but <code>swp32</code> in <code>Active</code>, <code>Connect</code> or <code>Idle</code>, with 0 prefixes received.</li>
+<li><code>sudo vtysh -c "show ip route 10.255.0.11"</code> on leaf-r3 shows one next hop (via swp31) instead of two.</li>
+<li>The physical link is up: <code>nv show interface swp32</code> shows <code>up</code>, and LLDP shows <code>hxb-spine02 swp3</code>.</li>
+<li>On <code>hxb-spine02</code>, <code>show bgp neighbor swp3</code> shows an OPEN error / bad peer AS as the last reset reason (wording varies by FRR version).</li>
+</ul>
+<p><strong>Hints:</strong></p>
+<ol>
+<li>The link is up. Which layer is left, and which end would you look at?</li>
+<li>Compare <code>nv show vrf default router bgp neighbor swp3</code> on spine02 with <code>swp1</code> on the same spine.</li>
+<li>With BGP unnumbered, both ends normally say <code>remote-as external</code>. What happens if one end expects a specific AS?</li>
+</ol>
+<p><strong>Exam objective:</strong> <strong>2.3</strong> (the BGP underlay that EVPN runs on) · <strong>6.1</strong> (finding the change with <code>nv config history</code>) · <strong>1.2</strong> (rail-optimised design: why ECMP to both spines matters).</p>
+<h3 id="f2-small-pings-work-big-transfers-hang">F2 — "Small pings work, big transfers hang"<a class="headerlink" href="#f2-small-pings-work-big-transfers-hang" title="Permanent link">&para;</a></h3>
+<p><strong>Ticket:</strong> "From <code>hxb-gpu01</code> to <code>hxb-gpu02</code> on AURORA VLAN 111, ping works but copying a large file with <code>scp</code> stalls. Other pairs seem fine."</p>
+<p><strong>Injection:</strong> <code>inject.sh F2</code>. On <code>hxb-spine01</code>, <code>swp2</code> (the link to <code>hxb-leaf-r2</code> <code>swp31</code>) gets <code>link mtu 1500</code>. The leaf side stays at 9216.</p>
+<p><strong>Symptoms:</strong></p>
+<ul>
+<li><code>ping 172.16.11.102</code> from <code>hxb-gpu01</code> (over eth2, leaf-r2 → spine → leaf-r4) works with default-size packets.</li>
+<li>A full-size, don't-fragment ping fails or partly fails: <code>ping -M do -s 1472 -c 5 172.16.11.102</code>. VXLAN adds 50 bytes, so a 1500-byte host packet becomes a 1550-byte underlay packet, which doesn't fit a 1500-byte link. Whether it fails depends on which spine the flow hashes to.</li>
+<li><strong>BGP stays Established</strong> on every link. Unlike OSPF, BGP doesn't check MTU, so the control plane looks healthy.</li>
+<li>An underlay test from <code>hxb-leaf-r2</code> to <code>hxb-spine01</code>'s loopback with a jumbo packet fails, while the same test to <code>hxb-spine02</code> works.</li>
+</ul>
+<p><strong>Hints:</strong></p>
+<ol>
+<li>Small works, large fails: think about packet size before you think about routing.</li>
+<li>Test the underlay between leaf-r2 and each spine with <code>ping -M do -s 8972</code> to the spine loopbacks.</li>
+<li>Compare the MTU on <strong>both ends</strong> of each leaf-r2 uplink.</li>
+</ol>
+<p><strong>Exam objective:</strong> <strong>2.1</strong> (link settings on Spectrum-X switches, MTU 9216) · <strong>2.3</strong> (VXLAN overhead in an EVPN fabric) · <strong>5.3</strong> (verifying the data path, not just the control plane).</p>
+<h3 id="f3-gpu02-cant-see-gpu01-on-vlan-111">F3 — "gpu02 can't see gpu01 on VLAN 111"<a class="headerlink" href="#f3-gpu02-cant-see-gpu01-on-vlan-111" title="Permanent link">&para;</a></h3>
+<p><strong>Ticket:</strong> "After last night's maintenance on rail 4, <code>hxb-gpu02</code> eth2 (172.16.11.102) can't reach <code>hxb-gpu01</code> eth2 (172.16.11.101). It can reach its gateway."</p>
+<p><strong>Injection:</strong> <code>inject.sh F3</code>. On <code>hxb-leaf-r4</code>, VLAN 111 is re-mapped from VNI 10111 to VNI 10101.</p>
+<p><strong>Symptoms:</strong></p>
+<ul>
+<li>From <code>hxb-gpu02</code>: <code>ping 172.16.11.1</code> works (the gateway is local VRR on leaf-r4). <code>ping 172.16.11.101</code> fails.</li>
+<li>Traffic between different subnets may still work (for example gpu02 eth2 to 172.16.10.101), because symmetric routing uses the L3 VNI 104001, not the L2 VNI. That partial success is a strong clue.</li>
+<li>On leaf-r4, <code>sudo vtysh -c "show evpn vni"</code> lists VNI <strong>10101</strong> with no remote VTEPs, and no 10111.</li>
+<li>On leaf-r2, <code>sudo vtysh -c "show evpn vni 10111"</code> lists remote VTEPs 10.255.0.11 and .13 as usual, but not 10.255.0.14.</li>
+</ul>
+<p><strong>Hints:</strong></p>
+<ol>
+<li>Same subnet fails, gateway works. Which part of EVPN carries same-subnet traffic between leaves?</li>
+<li>Run <code>show evpn vni</code> on leaf-r4 and on leaf-r2 and compare the VNI lists.</li>
+<li>Look at <code>nv show bridge domain br_default vlan 111</code> on leaf-r4.</li>
+</ol>
+<p><strong>Exam objective:</strong> <strong>2.3</strong> (L2 VNI mapping, route type 2/3, symmetric IRB).</p>
+<h3 id="f4-one-server-cant-leave-its-subnet">F4 — "One server can't leave its subnet"<a class="headerlink" href="#f4-one-server-cant-leave-its-subnet" title="Permanent link">&para;</a></h3>
+<p><strong>Ticket:</strong> "<code>hxb-gpu02</code> eth1 (172.16.10.102) can't reach anything outside 172.16.10.0/24. It can still ping <code>hxb-gpu01</code> on 172.16.10.101."</p>
+<p><strong>Injection:</strong> <code>inject.sh F4</code>. On <code>hxb-leaf-r3</code>, the VRR (anycast gateway) configuration is removed from <code>vlan110</code>.</p>
+<p><strong>Symptoms:</strong></p>
+<ul>
+<li>From <code>hxb-gpu02</code>: <code>ping 172.16.10.101</code> works (L2 across VNI 10110). <code>ping 172.16.10.1</code> and <code>ping 172.16.11.101</code> fail.</li>
+<li><code>ip neigh show 172.16.10.1</code> on <code>hxb-gpu02</code> shows <code>FAILED</code> or <code>INCOMPLETE</code>: nothing answers ARP for the gateway on leaf-r3.</li>
+<li>On leaf-r3, <code>nv show interface vlan110</code> has no VRR address. On leaf-r1, the same command shows <code>172.16.10.1/24</code> and MAC <code>00:00:5e:00:01:01</code>.</li>
+<li>BGP and EVPN sessions are all healthy.</li>
+</ul>
+<p><strong>Hints:</strong></p>
+<ol>
+<li>The host can bridge but not route. Who is the host's router?</li>
+<li>Check the host's ARP entry for 172.16.10.1.</li>
+<li>Compare <code>nv show interface vlan110</code> on leaf-r3 and leaf-r1.</li>
+</ol>
+<p><strong>Exam objective:</strong> <strong>2.3</strong> (distributed anycast gateway with VRR on every leaf).</p>
+<h3 id="f5-roce-audit-failed-on-rail-2">F5 — "RoCE audit failed on rail 2"<a class="headerlink" href="#f5-roce-audit-failed-on-rail-2" title="Permanent link">&para;</a></h3>
+<p><strong>Ticket:</strong> "The weekly RoCE audit flagged <code>hxb-leaf-r2</code>. perftest still runs. Is it a real problem?"</p>
+<p><strong>Injection:</strong> <code>inject.sh F5</code>. On <code>hxb-leaf-r2</code>, <code>nv set qos roce mode lossy</code> is applied. (Variant for a harder round: change the switch's QoS trust so DSCP is no longer trusted, for example <code>nv set qos mapping default-global trust l2</code>; check on your release whether VX accepts it and how it interacts with the RoCE profile.)</p>
+<p><strong>Symptoms:</strong></p>
+<ul>
+<li>Soft-RoCE perftest still works. VX has no Spectrum ASIC, so there is no PFC, pause or buffer behaviour to observe, and nothing drops.</li>
+<li><code>nv show qos roce</code> on leaf-r2 shows <code>mode lossy</code> and no PFC on switch priority 3. Leaf-r1 shows <code>mode lossless</code> with PFC on priority 3, ECN enabled and trust <code>pcp,dscp</code>.</li>
+<li><code>nv config history</code> on leaf-r2 shows a recent revision that changed it.</li>
+</ul>
+<p><strong>Hints:</strong></p>
+<ol>
+<li>VX can't show you drops. What can it show you?</li>
+<li>Diff <code>nv show qos roce</code> between leaf-r2 and leaf-r1.</li>
+<li>Which single NVUE command sets the lossless defaults, and what does <code>mode lossy</code> remove?</li>
+</ol>
+<p><strong>Exam objective:</strong> <strong>2.1</strong> (configure RoCE with <code>nv set qos roce</code>) · <strong>2.2</strong> (PFC and ECN) · <strong>5.3</strong> (verify the low-latency, lossless configuration end to end).</p>
+<h3 id="f6-borealis-host-sees-aurora-broadcast-traffic">F6 — "BOREALIS host sees AURORA broadcast traffic"<a class="headerlink" href="#f6-borealis-host-sees-aurora-broadcast-traffic" title="Permanent link">&para;</a></h3>
+<p><strong>Ticket:</strong> "<code>hxb-gpu03</code> eth2 (BOREALIS, 172.17.11.103) lost its gateway this morning. <code>tcpdump</code> on it shows ARP requests for 172.16.11.x addresses, which belong to another tenant."</p>
+<p><strong>Injection:</strong> <code>inject.sh F6</code>. A new playbook, committed to the Lab 12 Git repository as "Tidy access ports", sets <code>hxb-leaf-r2</code> <code>swp2</code> to access VLAN <strong>111</strong> (AURORA) instead of <strong>211</strong> (BOREALIS).</p>
+<p><strong>Symptoms:</strong></p>
+<ul>
+<li>From <code>hxb-gpu03</code>: <code>ping 172.17.11.1</code> and <code>ping 172.17.11.104</code> fail.</li>
+<li><code>sudo tcpdump -ni eth2 arp</code> on <code>hxb-gpu03</code> shows ARP for 172.16.11.x. The host is in the wrong broadcast domain, which is a <strong>tenant isolation breach</strong>, not only an outage.</li>
+<li>On leaf-r2, <code>nv show interface swp2 bridge domain br_default</code> shows access VLAN 111. On leaf-r1, <code>swp2</code> shows 210, and on leaf-r4, <code>swp2</code> shows 211.</li>
+<li><code>nv config history</code> on leaf-r2 shows a revision applied through the API by the automation user, not an interactive CLI user.</li>
+<li><code>git log --oneline -3</code> in the Ansible project shows the "Tidy access ports" commit.</li>
+</ul>
+<p><strong>Hints:</strong></p>
+<ol>
+<li>Which VLAN is gpu03's port in, and which should it be in?</li>
+<li>Who changed it? <code>nv config history</code> tells you whether it came from a person or from the API.</li>
+<li>Fix the source of truth, not just the switch. Otherwise the next playbook run puts the fault back.</li>
+</ol>
+<p><strong>Exam objective:</strong> <strong>6.2</strong> (Ansible playbooks for VLANs) · <strong>6.1</strong> (NVUE configuration management and history) · <strong>2.3</strong> (tenant isolation).</p>
+<h3 id="f7-confirm-subnet-manager-ha-before-the-change-freeze">F7 — "Confirm Subnet Manager HA before the change freeze"<a class="headerlink" href="#f7-confirm-subnet-manager-ha-before-the-change-freeze" title="Permanent link">&para;</a></h3>
+<p><strong>Ticket:</strong> "Change freeze starts tomorrow. Please confirm the Helix-A SM pair is healthy: one master, one standby." (If the student reports HA as healthy, the instructor later runs <code>inject.sh F7b</code> and sends a second ticket: "New nodes on Helix-A are stuck in Initializing and <code>sminfo</code> times out.")</p>
+<p><strong>Injection:</strong> <code>inject.sh F7</code> stops the <strong>standby</strong> OpenSM (priority 12). <code>inject.sh F7b</code> later stops the <strong>master</strong> (priority 14).</p>
+<p><strong>Symptoms (stage 1):</strong></p>
+<ul>
+<li><code>ibsim-run sminfo</code> still shows a master (priority 14, state <code>SMINFO_MASTER</code>). Everything looks fine at first glance.</li>
+<li><code>ibsim-run sminfo &lt;standby LID&gt;</code> (the standby LID from <code>base-sm-ports.txt</code>) doesn't return a standby SM (it times out or shows it not active), and <code>ps -ef | grep [o]pensm</code> shows only one OpenSM.</li>
+</ul>
+<p><strong>Symptoms (stage 2, after F7b):</strong></p>
+<ul>
+<li><code>ibsim-run sminfo</code> times out. There is no master SM.</li>
+<li>Existing routes keep working, because the switches keep their programmed forwarding tables, but ports that come up now stay in <code>Initializing</code>.</li>
+</ul>
+<p><strong>Hints:</strong></p>
+<ol>
+<li>"One master" is only half the question. How do you query a specific SM rather than the master?</li>
+<li>Compare <code>ps -ef | grep [o]pensm</code> with how Lab 8 started the HA pair.</li>
+<li>SM election uses the highest priority, then the lowest GUID. Which priority must the restarted standby have so that it doesn't take over?</li>
+</ol>
+<p><strong>Exam objective:</strong> <strong>3.1</strong> (SM high availability) · <strong>5.4</strong> (SM and UFM health) · <strong>5.5</strong> (<code>sminfo</code>, <code>saquery</code>).</p>
+<h3 id="f8-one-production-node-cant-join-the-job">F8 — "One PRODUCTION node can't join the job"<a class="headerlink" href="#f8-one-production-node-cant-join-the-job" title="Permanent link">&para;</a></h3>
+<p><strong>Ticket:</strong> "A node on Helix-A can't talk to the other PRODUCTION nodes over the PRODUCTION partition. Everything else about it looks normal."</p>
+<p><strong>Injection:</strong> <code>inject.sh F8</code> removes one member (<code>VICTIM_GUID</code>) from the PRODUCTION line of <code>~/ibsim/partitions.conf</code> and makes the master SM re-read the file.</p>
+<p><strong>Symptoms:</strong></p>
+<ul>
+<li>The node's port is <code>Active</code> in <code>ibsim-run iblinkinfo</code>, and it has a LID.</li>
+<li><code>ibsim-run smpquery pkeys &lt;LID&gt;</code> for that node lists the default partition but <strong>not 0x8002</strong> (PRODUCTION, full member). A healthy PRODUCTION node lists <code>0x8002</code>.</li>
+<li><code>diff ~/ibsim/base-partitions.conf ~/ibsim/partitions.conf</code> shows the missing GUID (and there is a <code>partitions.conf.bak</code>).</li>
+</ul>
+<p><strong>Hints:</strong></p>
+<ol>
+<li>The port is up and has a LID, so the SM has seen it. What else does the SM program into a port?</li>
+<li>Read the node's PKey table with <code>smpquery pkeys</code> and compare it with a healthy PRODUCTION node.</li>
+<li>Where does OpenSM get partition membership from?</li>
+</ol>
+<p><strong>Exam objective:</strong> <strong>3.2</strong> (configure PKeys: <code>partitions.conf</code>, full and limited membership, 0x8002 = full member of 0x0002).</p>
+<h3 id="f9-errors-climbing-on-an-su1-uplink">F9 — "Errors climbing on an SU1 uplink"<a class="headerlink" href="#f9-errors-climbing-on-an-su1-uplink" title="Permanent link">&para;</a></h3>
+<p><strong>Ticket:</strong> "UFM-style health alerts every few minutes about <code>hxa-su1-leaf-r1</code>. No outage yet."</p>
+<p><strong>Injection:</strong> <code>inject.sh F9</code> sets <code>SymbolErrorCounter</code> on <code>hxa-su1-leaf-r1</code> port 33 (a spine uplink) to 400, 1500, 4200 and 9800 at two-minute intervals, using the ibsim console command <code>PerformanceSet "hxa-su1-leaf-r1"[33] PortCounters.SymbolErrorCounter=N</code>.</p>
+<p><strong>Symptoms:</strong></p>
+<ul>
+<li><code>ibsim-run ibqueryerrors</code> lists <code>hxa-su1-leaf-r1</code> port 33 with a non-zero <code>SymbolErrorCounter</code>. Running it again a few minutes later shows a higher value.</li>
+<li>The link is still <code>LinkUp</code> / <code>Active</code> at full width in <code>ibsim-run iblinkinfo --switches-only -l</code>.</li>
+<li><code>base-errors.txt</code> from Task 1 shows no errors on that port.</li>
+</ul>
+<p><strong>Hints:</strong></p>
+<ol>
+<li>The link is up. Which tool lists only ports with non-zero error counters?</li>
+<li>One reading tells you little. What does a <strong>rising</strong> symbol error count mean?</li>
+<li>Which end of the link, and which cable, would you replace, and how do you confirm the fix in the simulator?</li>
+</ol>
+<p><strong>Exam objective:</strong> <strong>5.5</strong> (<code>ibqueryerrors</code>, <code>perfquery</code>, <code>iblinkinfo</code>) · <strong>3.4</strong> and <strong>5.4</strong> (monitoring link health and acting on alerts).</p>
+<h3 id="f10-su2-lost-bandwidth-to-the-spines">F10 — "SU2 lost bandwidth to the spines"<a class="headerlink" href="#f10-su2-lost-bandwidth-to-the-spines" title="Permanent link">&para;</a></h3>
+<p><strong>Ticket:</strong> "Jobs spanning both SUs slowed down about 3% after lunch. Nothing is down, as far as we can see."</p>
+<p><strong>Injection:</strong> <code>inject.sh F10</code> sends <code>Unlink "hxa-su2-leaf-r2"[34]</code> to the ibsim console through the named pipe (<code>echo 'Unlink "hxa-su2-leaf-r2"[34]' &gt; ~/ibsim/simcmd</code>).</p>
+<p><strong>Symptoms:</strong></p>
+<ul>
+<li><code>ibsim-run iblinkinfo --switches-only -l</code> shows <code>hxa-su2-leaf-r2</code> port 34 as <code>Down</code> (physical state <code>Polling</code> or <code>Disabled</code>, depending on the ibsim build), with no peer.</li>
+<li><code>diff ~/ibsim/base-links.txt &lt;(ibsim-run iblinkinfo --switches-only -l)</code> highlights that one line.</li>
+<li><code>ibsim-run ibqueryerrors</code> may show nothing useful: in the simulator, unlinking doesn't necessarily raise error counters. That is why the baseline diff matters.</li>
+<li>The fabric keeps working. After its next sweep, the SM routes around the missing uplink, so only bandwidth drops.</li>
+</ul>
+<p><strong>Hints:</strong></p>
+<ol>
+<li>"Slower, nothing down" often means a missing link in an ECMP-like fabric. Which tool shows every link?</li>
+<li>Compare the current <code>iblinkinfo --switches-only -l</code> with your baseline.</li>
+<li>Which spine and port was leaf-r2 port 34 connected to? Your baseline knows.</li>
+</ol>
+<p><strong>Exam objective:</strong> <strong>5.5</strong> (<code>iblinkinfo</code>, <code>ibnetdiscover</code>) · <strong>3.1</strong> (fabric provisioning and link validation).</p>
+<h2 id="solutions">Solutions<a class="headerlink" href="#solutions" title="Permanent link">&para;</a></h2>
+<h3 id="f1-solution-wrong-remote-as-on-spine02">F1 solution — wrong remote-as on spine02<a class="headerlink" href="#f1-solution-wrong-remote-as-on-spine02" title="Permanent link">&para;</a></h3>
+<ol>
+<li>Scope: only leaf-r3's <code>swp32</code> session is down. Its other uplink is fine, and other leaves' sessions to spine02 are fine, so the problem is this one link or its two ends.</li>
+<li>The physical layer is fine (<code>nv show interface swp32</code> is up, LLDP shows the right neighbour).</li>
+<li>
+<p>On <code>hxb-spine02</code>, compare neighbours:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>cumulus@hxb-spine02:mgmt:~$ nv show vrf default router bgp neighbor swp3
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>cumulus@hxb-spine02:mgmt:~$ nv show vrf default router bgp neighbor swp1
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>cumulus@hxb-spine02:mgmt:~$ nv config history
+</code></pre></div>
+<p><strong>Expected output (illustrative):</strong> <code>swp3</code> shows <code>remote-as 65200</code> and <code>swp1</code> shows <code>remote-as external</code>. The history shows the revision that changed it.</p>
+</li>
+<li>
+<p>Fix and verify:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>cumulus@hxb-spine02:mgmt:~$ nv set vrf default router bgp neighbor swp3 remote-as external
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>cumulus@hxb-spine02:mgmt:~$ nv config diff
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>cumulus@hxb-spine02:mgmt:~$ nv config apply -y
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>cumulus@hxb-leaf-r3:mgmt:~$ sudo vtysh -c &quot;show bgp summary&quot;
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>cumulus@hxb-leaf-r3:mgmt:~$ sudo vtysh -c &quot;show ip route 10.255.0.11&quot;
+</code></pre></div>
+</li>
+</ol>
+<p><strong>Checkpoint:</strong> swp32 is Established with prefixes received, and the route to 10.255.0.11 has two next hops again.</p>
+<p><strong>Root cause:</strong> the peer AS on spine02 swp3 didn't match leaf-r3's real AS (65103). The leaf's OPEN carried AS 65103, the spine expected 65200, and the session was rejected. <code>remote-as external</code> accepts any AS different from the local one, which is why unnumbered fabrics use it.</p>
+<h3 id="f2-solution-mtu-mismatch-on-spine01-swp2">F2 solution — MTU mismatch on spine01 swp2<a class="headerlink" href="#f2-solution-mtu-mismatch-on-spine01-swp2" title="Permanent link">&para;</a></h3>
+<ol>
+<li>
+<p>Prove it's size-related from the host:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>ubuntu@hxb-gpu01:~$ ping -c 3 172.16.11.102
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>ubuntu@hxb-gpu01:~$ ping -M do -s 1472 -c 5 172.16.11.102
+</code></pre></div>
+</li>
+<li>
+<p>Test the underlay from <code>hxb-leaf-r2</code> to each spine loopback. Your SSH session is in the management VRF (the <code>:mgmt:</code> in the prompt), so run the ping in the default VRF:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>cumulus@hxb-leaf-r2:mgmt:~$ sudo ip vrf exec default ping -M do -s 8972 -c 3 10.255.0.1
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>cumulus@hxb-leaf-r2:mgmt:~$ sudo ip vrf exec default ping -M do -s 8972 -c 3 10.255.0.2
+</code></pre></div>
+<p><strong>Expected output (illustrative):</strong> the ping to 10.255.0.2 (spine02) gets replies. The ping to 10.255.0.1 (spine01) shows 100% packet loss or <code>message too long</code>.</p>
+</li>
+<li>
+<p>Compare both ends of the leaf-r2 → spine01 link:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>cumulus@hxb-leaf-r2:mgmt:~$ nv show interface swp31 link | grep -i mtu
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>cumulus@hxb-spine01:mgmt:~$ nv show interface swp2 link | grep -i mtu
+</code></pre></div>
+<p><strong>Expected output (illustrative):</strong> leaf-r2 swp31 shows 9216, spine01 swp2 shows 1500.</p>
+</li>
+<li>
+<p>Fix and verify:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>cumulus@hxb-spine01:mgmt:~$ nv set interface swp2 link mtu 9216
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>cumulus@hxb-spine01:mgmt:~$ nv config apply -y
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>cumulus@hxb-leaf-r2:mgmt:~$ sudo ip vrf exec default ping -M do -s 8972 -c 3 10.255.0.1
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>ubuntu@hxb-gpu01:~$ ping -M do -s 1472 -c 5 172.16.11.102
+</code></pre></div>
+</li>
+</ol>
+<p><strong>Checkpoint:</strong> both pings succeed with no loss.</p>
+<p><strong>Root cause:</strong> one side of a routed link had MTU 1500. BGP stayed up because its packets are small and BGP doesn't negotiate MTU. VXLAN-encapsulated full-size frames were dropped on that link only, so failures depended on the ECMP hash.</p>
+<div class="admonition note">
+<p class="admonition-title">Version note</p>
+<p>How Cumulus VX handles an oversized received frame (drop, or accept) depends on the virtual NIC. If the jumbo ping from leaf-r2 to spine01 still works in your simulation, test in the other direction (from spine01 to 10.255.0.12), where spine01's 1500-byte egress MTU applies.</p>
+</div>
+<h3 id="f3-solution-vni-mismatch-on-leaf-r4">F3 solution — VNI mismatch on leaf-r4<a class="headerlink" href="#f3-solution-vni-mismatch-on-leaf-r4" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>cumulus@hxb-leaf-r4:mgmt:~$ sudo vtysh -c &quot;show evpn vni&quot;
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>cumulus@hxb-leaf-r4:mgmt:~$ nv show bridge domain br_default vlan 111
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>cumulus@hxb-leaf-r2:mgmt:~$ sudo vtysh -c &quot;show evpn vni 10111&quot;
+</code></pre></div>
+<p><strong>Expected output (illustrative):</strong> leaf-r4 lists VNI 10101 (L2, 0 remote VTEPs) and no 10111. Leaf-r2's VNI 10111 lists remote VTEPs 10.255.0.11 and 10.255.0.13 only.</p>
+<p>Fix and verify:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>cumulus@hxb-leaf-r4:mgmt:~$ nv unset bridge domain br_default vlan 111 vni 10101
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>cumulus@hxb-leaf-r4:mgmt:~$ nv set bridge domain br_default vlan 111 vni 10111
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>cumulus@hxb-leaf-r4:mgmt:~$ nv config diff
+<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>cumulus@hxb-leaf-r4:mgmt:~$ nv config apply -y
+<a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a>cumulus@hxb-leaf-r4:mgmt:~$ sudo vtysh -c &quot;show evpn vni 10111&quot;
+<a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a>ubuntu@hxb-gpu02:~$ ping -c 3 172.16.11.101
+</code></pre></div>
+<p><strong>Checkpoint:</strong> leaf-r4 shows VNI 10111 with remote VTEPs, and the same-subnet ping works.</p>
+<p><strong>Root cause:</strong> VLAN 111 on leaf-r4 was mapped to the wrong VNI, so its type-3 (inclusive multicast) and type-2 routes were in a VNI no other leaf used. Same-subnet traffic had no remote VTEPs to go to. Routed traffic could still work through the L3 VNI. This is exactly the typo from Chapter 22's opening story, and the reason for the Ansible <code>assert</code> in <code>site-vlans.yml</code>.</p>
+<h3 id="f4-solution-missing-vrr-on-leaf-r3">F4 solution — missing VRR on leaf-r3<a class="headerlink" href="#f4-solution-missing-vrr-on-leaf-r3" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>ubuntu@hxb-gpu02:~$ ip neigh show 172.16.10.1
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>cumulus@hxb-leaf-r3:mgmt:~$ nv show interface vlan110
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv show interface vlan110
+<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a>cumulus@hxb-leaf-r3:mgmt:~$ nv config history
+</code></pre></div>
+<p>Fix (use the same syntax family you used in Lab 5; the 5.15+ form is shown):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>cumulus@hxb-leaf-r3:mgmt:~$ nv set interface vlan110 ipv4 vrr address 172.16.10.1/24
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>cumulus@hxb-leaf-r3:mgmt:~$ nv set interface vlan110 ipv4 vrr mac-address 00:00:5e:00:01:01
+<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>cumulus@hxb-leaf-r3:mgmt:~$ nv set interface vlan110 ipv4 vrr state enabled
+<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a>cumulus@hxb-leaf-r3:mgmt:~$ nv config diff
+<a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a>cumulus@hxb-leaf-r3:mgmt:~$ nv config apply -y
+</code></pre></div>
+<p>On releases before 5.15, the equivalent is <code>nv set interface vlan110 ip vrr address 172.16.10.1/24</code>, <code>… ip vrr mac-address 00:00:5e:00:01:01</code> and <code>… ip vrr state up</code>.</p>
+<p>Verify:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>ubuntu@hxb-gpu02:~$ ping -c 3 172.16.10.1
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>ubuntu@hxb-gpu02:~$ ping -c 3 172.16.11.101
+</code></pre></div>
+<p><strong>Checkpoint:</strong> both pings work, and <code>ip neigh</code> shows 172.16.10.1 as <code>REACHABLE</code> with MAC 00:00:5e:00:01:01.</p>
+<p><strong>Root cause:</strong> the anycast gateway exists on every leaf, so each host's gateway is always its local leaf. Removing it from one leaf breaks routing only for hosts attached to that leaf, while bridging across the fabric still works.</p>
+<h3 id="f5-solution-roce-lossy-on-leaf-r2">F5 solution — RoCE lossy on leaf-r2<a class="headerlink" href="#f5-solution-roce-lossy-on-leaf-r2" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>cumulus@hxb-leaf-r2:mgmt:~$ nv show qos roce
+<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv show qos roce
+<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a>cumulus@hxb-leaf-r2:mgmt:~$ nv config history
+</code></pre></div>
+<p><strong>Expected output (illustrative):</strong> leaf-r2 shows <code>mode lossy</code> and no PFC on switch priority 3. Leaf-r1 shows <code>mode lossless</code>, PFC on priority 3, ECN enabled and trust <code>pcp,dscp</code>.</p>
+<p>Fix and verify:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>cumulus@hxb-leaf-r2:mgmt:~$ nv set qos roce mode lossless
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>cumulus@hxb-leaf-r2:mgmt:~$ nv config apply -y
+<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>cumulus@hxb-leaf-r2:mgmt:~$ nv show qos roce
+</code></pre></div>
+<p>For the trust variant, remove the trust override (<code>nv unset qos mapping default-global trust</code>) and confirm that <code>nv show qos roce</code> reports trust <code>pcp,dscp</code> again (check on your release).</p>
+<p><strong>Checkpoint:</strong> <code>nv show qos roce</code> on leaf-r2 matches leaf-r1 line for line.</p>
+<p><strong>Root cause:</strong> one leaf's RoCE profile had been changed to lossy (PFC removed from priority 3). On real Spectrum hardware, RoCE traffic through that leaf would lose its lossless guarantee and drop under congestion, which causes retransmissions and slow collectives. VX can't show that, so the audit (comparing configuration against the standard) is the right detection method. Chapter 5: hosts mark DSCP 26 (traffic class 106), switches trust DSCP and map it to switch priority 3 with PFC and ECN.</p>
+<h3 id="f6-solution-ansible-pushed-the-wrong-access-vlan">F6 solution — Ansible pushed the wrong access VLAN<a class="headerlink" href="#f6-solution-ansible-pushed-the-wrong-access-vlan" title="Permanent link">&para;</a></h3>
+<ol>
+<li>
+<p>Find what changed and who changed it:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>cumulus@hxb-leaf-r2:mgmt:~$ nv show interface swp2 bridge domain br_default
+<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>cumulus@hxb-leaf-r2:mgmt:~$ nv config history
+<a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a>cumulus@hxb-leaf-r2:mgmt:~$ nv config diff &lt;previous-rev&gt; &lt;latest-rev&gt;
+<a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a>ubuntu@oob-mgmt-server:~/helix-ansible$ git log --oneline -3
+<a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a>ubuntu@oob-mgmt-server:~/helix-ansible$ git show HEAD --stat
+</code></pre></div>
+<p><strong>Expected output (illustrative):</strong> access VLAN 111 on swp2. The history shows an API revision by the automation user. <code>git log</code> shows <code>Tidy access ports</code>, which added <code>playbooks/access-ports.yml</code>.</p>
+</li>
+<li>
+<p>Fix the source of truth first, then the switch. Revert the commit and correct the port through Ansible (or NVUE, if your Lab 12 project doesn't manage access ports):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>ubuntu@oob-mgmt-server:~/helix-ansible$ git revert --no-edit HEAD
+<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>cumulus@hxb-leaf-r2:mgmt:~$ nv set interface swp2 bridge domain br_default access 211
+<a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a>cumulus@hxb-leaf-r2:mgmt:~$ nv config apply -y
+</code></pre></div>
+</li>
+<li>
+<p>Verify the host and check that the automation now agrees with the fabric:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>ubuntu@hxb-gpu03:~$ ping -c 3 172.17.11.1
+<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a>ubuntu@hxb-gpu03:~$ ping -c 3 172.17.11.104
+<a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a>ubuntu@oob-mgmt-server:~/helix-ansible$ ansible-playbook playbooks/site-vlans.yml --check --diff
+</code></pre></div>
+</li>
+</ol>
+<p><strong>Checkpoint:</strong> gpu03 reaches its gateway and its BOREALIS peer. No AURORA ARP is seen on eth2. The check run reports no changes.</p>
+<p><strong>Root cause:</strong> an unreviewed playbook applied a wrong access VLAN to one port. It broke gpu03 and put a BOREALIS host into the AURORA broadcast domain. Prevention: peer review (pull requests) for playbooks, <code>--check --diff</code> in CI against the Air twin (Lab 6 SDK script), and an <code>assert</code> step that checks access ports against the tenant plan.</p>
+<h3 id="f7-solution-standby-sm-missing-then-master-failure">F7 solution — standby SM missing, then master failure<a class="headerlink" href="#f7-solution-standby-sm-missing-then-master-failure" title="Permanent link">&para;</a></h3>
+<p>Stage 1 (the proactive check):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>ubuntu@hxa-ibsim:~/ibsim$ ibsim-run sminfo
+<a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a>ubuntu@hxa-ibsim:~/ibsim$ cat base-sm-ports.txt
+<a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a>ubuntu@hxa-ibsim:~/ibsim$ ibsim-run sminfo &lt;standby LID&gt;
+<a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a>ubuntu@hxa-ibsim:~/ibsim$ ps -ef | grep [o]pensm
+</code></pre></div>
+<p><strong>Expected output (illustrative):</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a>sminfo: sm lid 1 sm guid 0x…a1, activity count 5120 priority 14 state 3 SMINFO_MASTER
+</code></pre></div>
+<p>The query to the standby's LID fails or doesn't show a standby state, and <code>ps</code> shows one OpenSM (priority 14).</p>
+<p>Fix: start the standby exactly as Lab 8 does, with <strong>priority 12</strong> on its own port GUID. Lab 8's command has this shape (use yours):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a>ubuntu@hxa-ibsim:~/ibsim$ ibsim-run opensm -g &lt;standby port GUID&gt; -p 12 -P ~/ibsim/partitions.conf -B
+<a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a>ubuntu@hxa-ibsim:~/ibsim$ ibsim-run sminfo &lt;standby LID&gt;
+</code></pre></div>
+<p><strong>Expected output (illustrative):</strong> <code>… priority 12 state 2 SMINFO_STANDBY</code>.</p>
+<p>Stage 2 (after F7b, if HA was missed): <code>ibsim-run sminfo</code> times out. Start the standby first, which becomes master because it is the only SM. Then prove the failover path works:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>ubuntu@hxa-ibsim:~/ibsim$ ibsim-run sminfo
+<a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a>ubuntu@hxa-ibsim:~/ibsim$ ibsim-run opensm -g &lt;master port GUID&gt; -p 14 -P ~/ibsim/partitions.conf -B
+<a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a>ubuntu@hxa-ibsim:~/ibsim$ ibsim-run sminfo
+</code></pre></div>
+<p><strong>Checkpoint:</strong> one <code>SMINFO_MASTER</code> (priority 14) and one <code>SMINFO_STANDBY</code> (priority 12). Optional: stop the master and confirm the standby takes over within a few sweeps, then restore it.</p>
+<p><strong>Root cause:</strong> HA had silently degraded to a single SM. Nobody noticed until the master failed. With no master, existing routes kept forwarding but new or flapping ports couldn't become Active. Prevention: alert on SM state (UFM health, Chapter 15), and check the standby explicitly, not only the master.</p>
+<div class="admonition info">
+<p class="admonition-title">Field note</p>
+<p>Watch priorities when you restart SMs. If the standby is restarted with a <strong>higher</strong> priority than the master (15, say), it takes over mastership. That is legal but not what the design says, and it makes the next failover go the wrong way. OpenSM's election rule is the highest priority, then the lowest GUID. OpenSM's <code>-p</code> accepts 0–15.</p>
+</div>
+<h3 id="f8-solution-missing-partition-member">F8 solution — missing partition member<a class="headerlink" href="#f8-solution-missing-partition-member" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>ubuntu@hxa-ibsim:~/ibsim$ ibsim-run iblinkinfo | grep &lt;node name&gt;
+<a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a>ubuntu@hxa-ibsim:~/ibsim$ ibsim-run smpquery pkeys &lt;LID of affected node&gt;
+<a id="__codelineno-27-3" name="__codelineno-27-3" href="#__codelineno-27-3"></a>ubuntu@hxa-ibsim:~/ibsim$ ibsim-run smpquery pkeys &lt;LID of a healthy PRODUCTION node&gt;
+<a id="__codelineno-27-4" name="__codelineno-27-4" href="#__codelineno-27-4"></a>ubuntu@hxa-ibsim:~/ibsim$ diff base-partitions.conf partitions.conf
+</code></pre></div>
+<p><strong>Expected output (illustrative):</strong> the healthy node lists <code>0xffff</code> (or <code>0x7fff</code>) and <code>0x8002</code>. The affected node lists only the default partition. The diff shows the node's GUID missing from the <code>PRODUCTION=0x0002</code> line.</p>
+<p>Fix: add the GUID back (restore the line from the baseline copy, or edit it), then make OpenSM re-read the file and check the PKey table:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a>ubuntu@hxa-ibsim:~/ibsim$ cp base-partitions.conf partitions.conf
+<a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a>ubuntu@hxa-ibsim:~/ibsim$ pkill -HUP -f &#39;[o]pensm.*-p 14&#39;
+<a id="__codelineno-28-3" name="__codelineno-28-3" href="#__codelineno-28-3"></a>ubuntu@hxa-ibsim:~/ibsim$ ibsim-run smpquery pkeys &lt;LID of affected node&gt;
+</code></pre></div>
+<p><strong>Checkpoint:</strong> <code>0x8002</code> appears in the node's PKey table. If it doesn't after a minute, restart the master OpenSM the Lab 8 way.</p>
+<p><strong>Root cause:</strong> the node's port GUID had been removed from the PRODUCTION partition, so the SM didn't program 0x8002 into its PKey table. Packets carrying PKey 0x8002 to or from it are dropped by PKey enforcement, while the port looks perfectly healthy. Remember the encoding: 0x8002 is partition 0x0002 with the full-membership bit set.</p>
+<h3 id="f9-solution-rising-symbol-errors-on-an-uplink">F9 solution — rising symbol errors on an uplink<a class="headerlink" href="#f9-solution-rising-symbol-errors-on-an-uplink" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a>ubuntu@hxa-ibsim:~/ibsim$ ibsim-run ibqueryerrors
+</code></pre></div>
+<p><strong>Expected output (illustrative):</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a>Errors for &quot;hxa-su1-leaf-r1&quot;
+<a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a>   GUID 0x… port 33: [SymbolErrorCounter == 1500]
+</code></pre></div>
+<p>Run it again two minutes later and the count has risen (4200). Confirm that the link is still up and find its far end:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a>ubuntu@hxa-ibsim:~/ibsim$ ibsim-run iblinkinfo --switches-only -l | grep -E &#39;&quot;hxa-su1-leaf-r1&quot;.*\b33\b&#39;
+<a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a>ubuntu@hxa-ibsim:~/ibsim$ ibsim-run perfquery &lt;leaf LID&gt; 33
+</code></pre></div>
+<p><strong>Diagnosis:</strong> a steadily rising <code>SymbolErrorCounter</code> on a link that is still up means a marginal physical link: a dirty or damaged cable or optic, or a bad port. Symbol errors are corrected or retried, so there's no outage yet, but throughput and latency suffer, and the link may go down or retrain at a lower width. In production you would check the physical layer with <code>mlxlink</code> (BER, eye), look at both ends, and replace the cable or optic in a maintenance window. UFM would flag it through its health checks.</p>
+<p>Fix in the simulator (the equivalent of "replace the cable and clear the counters"):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a>ubuntu@hxa-ibsim:~/ibsim$ echo &#39;PerformanceSet &quot;hxa-su1-leaf-r1&quot;[33] PortCounters.SymbolErrorCounter=0&#39; &gt; ~/ibsim/simcmd
+<a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a>ubuntu@hxa-ibsim:~/ibsim$ ibsim-run ibqueryerrors
+</code></pre></div>
+<p>The injection loop runs on <code>oob-mgmt-server</code>, so the instructor should also stop it there (<code>kill %1</code> in the shell that ran it, or wait until it finishes after eight minutes). Clearing counters with <code>perfquery -R &lt;LID&gt; 33</code> also works on real fabrics (check how your ibsim build handles it).</p>
+<p><strong>Checkpoint:</strong> <code>ibqueryerrors</code> shows no errors on port 33, and a second run a few minutes later is still clean.</p>
+<h3 id="f10-solution-failed-spine-uplink-on-su2-leaf-r2">F10 solution — failed spine uplink on SU2 leaf-r2<a class="headerlink" href="#f10-solution-failed-spine-uplink-on-su2-leaf-r2" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a>ubuntu@hxa-ibsim:~/ibsim$ ibsim-run iblinkinfo --switches-only -l &gt; now-links.txt
+<a id="__codelineno-33-2" name="__codelineno-33-2" href="#__codelineno-33-2"></a>ubuntu@hxa-ibsim:~/ibsim$ diff base-links.txt now-links.txt
+<a id="__codelineno-33-3" name="__codelineno-33-3" href="#__codelineno-33-3"></a>ubuntu@hxa-ibsim:~/ibsim$ grep -E &#39;&quot;hxa-su2-leaf-r2&quot;.*\b34\b&#39; base-links.txt
+</code></pre></div>
+<p><strong>Expected output (illustrative):</strong> the diff shows <code>hxa-su2-leaf-r2</code> port 34 changed from <code>4X … LinkUp</code> with a spine peer to <code>Down</code> with no peer. The baseline line names the peer, for example <code>"hxa-spine02"</code> port 2.</p>
+<p>Fix: reconnect the link through the ibsim console using the peer from your baseline:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a>ubuntu@hxa-ibsim:~/ibsim$ echo &#39;Link &quot;hxa-su2-leaf-r2&quot;[34] &quot;hxa-spine02&quot;[2]&#39; &gt; ~/ibsim/simcmd
+<a id="__codelineno-34-2" name="__codelineno-34-2" href="#__codelineno-34-2"></a>ubuntu@hxa-ibsim:~/ibsim$ sleep 15; ibsim-run iblinkinfo --switches-only -l | grep -E &#39;&quot;hxa-su2-leaf-r2&quot;.*\b34\b&#39;
+</code></pre></div>
+<p>Some ibsim builds also have <code>ReLink "hxa-su2-leaf-r2"</code>, which restores the node's disconnected links. Type <code>Help</code> at the ibsim console to see the commands your build supports.</p>
+<p><strong>Checkpoint:</strong> port 34 is <code>LinkUp</code> / <code>Active</code> at 4X again, and <code>diff base-links.txt &lt;(ibsim-run iblinkinfo --switches-only -l)</code> shows nothing. The SM brings the port to Active on its next sweep (default sweep interval about 10 seconds).</p>
+<p><strong>Root cause:</strong> one spine uplink failed. The SM routed around it, so nothing broke, but SU2's bandwidth to the spines dropped by one uplink's share. Only a comparison with a known-good baseline (or UFM link monitoring) shows it quickly. In production, also check <code>LinkDownedCounter</code> on both ends and the physical layer before you declare it fixed.</p>
+<h2 id="verify">Verify<a class="headerlink" href="#verify" title="Permanent link">&para;</a></h2>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> You captured Ethernet and InfiniBand baselines and a <code>pre-capstone</code> favourite checkpoint.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> For each scenario you solved, the notes follow the template, with scope, evidence, root cause, fix, verification and prevention.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Every fix was proved with the same test that showed the fault.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> After the last scenario, all switches match the baseline: <code>nv config diff applied startup</code> is empty and <code>show bgp summary</code>, <code>show evpn vni</code> and <code>nv show qos roce</code> match the baseline files.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> On <code>hxa-ibsim</code>, <code>sminfo</code> shows a master (priority 14), the standby answers (priority 12), <code>ibqueryerrors</code> is clean and <code>iblinkinfo</code> matches <code>base-links.txt</code>.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Your rubric total is recorded, with the chapters to revisit for any scenario that scored below 7.</li>
+</ul>
+<h2 id="clean-up-save-state">Clean-up / save state<a class="headerlink" href="#clean-up-save-state" title="Permanent link">&para;</a></h2>
+<ol>
+<li>If you fixed each fault by hand, run a final comparison with the baseline (the Task 1 loop into a new folder, then <code>diff -r</code>).</li>
+<li>If anything is uncertain, stop the simulation <strong>without</strong> a checkpoint and start it from <code>pre-capstone</code> (Lab 6). Restart ibsim and OpenSM afterwards.</li>
+<li>Remove the capstone playbook if it's still in the Ansible project, and check <code>git status</code> is clean.</li>
+<li>Stop the simulation with <strong>Stop Simulation and Store Checkpoint</strong>. Keep <code>pre-capstone</code> as a favourite: you can run the challenge again before the exam.</li>
+</ol>
+<h2 id="exam-tie-in">Exam tie-in<a class="headerlink" href="#exam-tie-in" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Domain 5 (20%)</strong> questions look like these tickets: a symptom, a few lines of output, and "what is the most likely cause?" or "what should you check next?". Practise reading the one line that matters.</li>
+<li><strong>5.5:</strong> know which InfiniBand tool answers which question: <code>sminfo</code> (who is master), <code>saquery</code>/<code>smpquery</code> (SM-capable ports, PKey tables), <code>iblinkinfo</code> (every link's state, width and speed), <code>ibqueryerrors</code> and <code>perfquery</code> (error counters), <code>ibnetdiscover</code> (topology for baseline diffs).</li>
+<li><strong>2.1, 2.2, 2.3:</strong> control plane up does not mean data plane healthy (F2). Same subnet broken but routing working points to the L2 VNI (F3). Bridging working but routing broken points to the gateway (F4). RoCE settings must be identical on every switch (F5).</li>
+<li><strong>3.1, 3.2:</strong> SM HA means checking the standby too (F7). A port can be Active and still be missing from a partition (F8).</li>
+<li><strong>6.1, 6.2:</strong> <code>nv config history</code> shows whether a change came from a person or from automation. Fix the source of truth, then the device (F6).</li>
+</ul>
+<h2 id="review-questions">Review questions<a class="headerlink" href="#review-questions" title="Permanent link">&para;</a></h2>
+<ol>
+<li>BGP is Established on every link, but large packets between two hosts on different leaves fail and small ones succeed. What do you check first, and why doesn't BGP show the problem?</li>
+<li>A host can ping another host in the same subnet on a different leaf, but not its default gateway. Which configuration is most likely missing, and where?</li>
+<li><code>sminfo</code> shows a healthy master SM. Why is that not enough to confirm SM high availability, and how do you check the standby?</li>
+<li><code>ibqueryerrors</code> shows <code>SymbolErrorCounter == 4200</code> on a leaf uplink that is still Active, and the value was 1500 five minutes ago. What does this indicate and what is the usual fix?</li>
+<li>A leaf's VLAN is wrong, and <code>nv config history</code> shows the change came through the API from the automation account. Why should you fix the Git repository before (or together with) the switch?</li>
+</ol>
+<h3 id="answers">Answers<a class="headerlink" href="#answers" title="Permanent link">&para;</a></h3>
+<ol>
+<li>Check MTU on both ends of every link in the path (and test with <code>ping -M do -s 8972</code> in the underlay). BGP doesn't negotiate or test MTU and its packets are small, so sessions stay up while full-size VXLAN frames (inner frame plus 50 bytes) are dropped on the smaller link.</li>
+<li>The anycast gateway (VRR) on that SVI on the host's local leaf. In EVPN with a distributed gateway, every leaf answers for the gateway address. Bridging uses the L2 VNI, so it still works without the SVI's VRR address.</li>
+<li><code>sminfo</code> without arguments shows only the current master. HA needs a standby that is running and in <code>SMINFO_STANDBY</code> state. Find the SM-capable ports with <code>saquery -s</code>, then query the standby directly with <code>sminfo &lt;standby LID&gt;</code>, and check that its priority is lower than the master's.</li>
+<li>A marginal physical link: a dirty or damaged cable or optic, or a bad port. It hasn't failed yet but is getting worse. Check the physical layer (<code>mlxlink</code> on real hardware), reseat or replace the cable or optic in a maintenance window, clear the counters, and confirm they stay at zero.</li>
+<li>The repository is the source of truth. If you fix only the switch, the next playbook run pushes the wrong VLAN again. Revert or correct the commit, run the playbook in check and diff mode, and add review and an <code>assert</code> so it can't happen again.</li>
+</ol>
+<hr />
+<div class="admonition abstract">
+<p class="admonition-title">Go deeper</p>
+<p>The matching book chapters cover the exam objectives for this lab in full, with a Q&amp;A pack of about 40 exam-style questions per chapter. <a class="md-button md-button--primary" href="../../book/">Get the book</a> <a class="md-button" href="https://github.com/Cloudfoxy-Ltd/ncp-ain-guide/issues/new?template=erratum.yml">Report a problem with this lab</a></p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../lab12/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Lab 12 — Ansible automation">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Lab 12 — Ansible automation
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../appendix/" class="md-footer__link md-footer__link--next" aria-label="Next: Appendices">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Appendices
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      © 2026 Vakeesan Thevarajah · Cloudfoxy Ltd · Lab guide CC BY-NC-SA 4.0 · Independent, not endorsed by NVIDIA
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.footer", "navigation.top", "content.code.copy", "search.highlight", "search.suggest", "toc.follow"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

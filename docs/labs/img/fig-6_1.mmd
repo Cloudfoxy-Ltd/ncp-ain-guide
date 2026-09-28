@@ -1,0 +1,12 @@
+flowchart TB
+    subgraph SW["Inside each switch (NVUE)"]
+        P["Pending<br/>nv set / unset"]:::ctl --> A["Applied<br/>nv config apply"]:::eth
+        A --> S["Startup<br/>/etc/nvue.d/startup.yaml<br/>auto-save or nv config save"]:::eth
+    end
+    subgraph AIR["Around the simulation (Air)"]
+        C["Checkpoint<br/>disk state of every node"]:::sto --> K["Up to 3 per simulation<br/>favourites protected"]:::sto
+    end
+    S -->|"saved to disk"| C
+    classDef eth fill:#DDF2DC,stroke:#2E7D32,color:#123B14
+    classDef ctl fill:#FDE8CF,stroke:#D9730D,color:#4A2604
+    classDef sto fill:#D5F0EE,stroke:#00796B,color:#07332E

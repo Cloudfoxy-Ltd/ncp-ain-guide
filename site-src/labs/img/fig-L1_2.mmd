@@ -1,0 +1,19 @@
+flowchart TB
+    subgraph A["Learn on hxb-leaf-r1"]
+        direction LR
+        T1["Task 1<br/>Log in, change password<br/>(all six switches)"]:::oob --> T2["Task 2<br/>Explore nv show"]:::ctl
+        T2 --> T3["Task 3<br/>Hostname via NVUE"]:::ctl
+        T3 --> T4["Task 4<br/>Pending vs applied vs startup"]:::ctl
+    end
+    subgraph B["Build and operate"]
+        direction LR
+        T5["Task 5<br/>Descriptions, MTU 9216, loopbacks<br/>(all six switches)"]:::eth --> T6["Task 6<br/>History and rollback"]:::gpu
+        T6 --> T7["Task 7<br/>Trial apply with --confirm"]:::bad
+        T7 --> T8["Task 8<br/>REST API on :8765"]:::gpu
+    end
+    A --> B
+    classDef eth fill:#DDF2DC,stroke:#2E7D32,color:#123B14
+    classDef gpu fill:#DCEBFA,stroke:#1F5FAD,color:#0B2545
+    classDef ctl fill:#FDE8CF,stroke:#D9730D,color:#4A2604
+    classDef oob fill:#ECECEC,stroke:#6B6B6B,color:#2A2A2A
+    classDef bad fill:#FADBD8,stroke:#C62828,color:#5B0F0F

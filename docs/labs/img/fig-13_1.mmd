@@ -1,0 +1,20 @@
+flowchart LR
+    subgraph A["Find"]
+        direction TB
+        T["① Ticket<br/>what, where, since when"]:::ctl --> S["② Scope<br/>host · rail · tenant · fabric"]:::ctl
+        S --> C["③ Compare with<br/>a healthy twin"]:::oob
+        C --> L["④ Work up the layers<br/>link → L2/MTU → BGP<br/>→ EVPN → QoS → automation"]:::eth
+    end
+    subgraph B["Fix and prove"]
+        direction TB
+        H["⑤ Hypothesis<br/>one cause, with evidence"]:::gpu --> F["⑥ One change<br/>nv config diff · apply"]:::eth
+        F --> V{"⑦ Same test<br/>passes?"}:::ctl
+        V -->|"Yes"| N["⑧ Notes · root cause<br/>prevention"]:::sto
+    end
+    A -->|"evidence"| B
+    B -.->|"⑦ No: back to ④"| A
+    classDef gpu fill:#DCEBFA,stroke:#1F5FAD,color:#0B2545
+    classDef eth fill:#DDF2DC,stroke:#2E7D32,color:#123B14
+    classDef ctl fill:#FDE8CF,stroke:#D9730D,color:#4A2604
+    classDef oob fill:#ECECEC,stroke:#6B6B6B,color:#2A2A2A
+    classDef sto fill:#D5F0EE,stroke:#00796B,color:#07332E

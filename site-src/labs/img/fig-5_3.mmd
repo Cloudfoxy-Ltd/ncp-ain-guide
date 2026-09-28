@@ -1,0 +1,15 @@
+flowchart TB
+    subgraph T1["Same tenant, same rail"]
+        A1["gpu01 eth1<br/>172.16.10.101"]:::gpu -->|"VLAN 110 · L2VNI 10110<br/>leaf-r1 → leaf-r3"| B1["gpu02 eth1<br/>TTL 64 · bridged"]:::eth
+    end
+    subgraph T2["Same tenant, across rails"]
+        A2["gpu01 eth1<br/>172.16.10.101"]:::gpu -->|"route in AURORA · L3VNI 104001<br/>leaf-r1 → leaf-r4"| B2["gpu02 eth2<br/>TTL 62 · routed twice"]:::eth
+    end
+    subgraph T3["Different tenant"]
+        A3["gpu01 eth1<br/>172.16.10.101"]:::gpu -->|"VRF AURORA has<br/>no 172.17.x route"| B3["gpu03 / gpu04<br/>dropped at leaf-r1"]:::bad
+    end
+    T1 ~~~ T2
+    T2 ~~~ T3
+    classDef gpu fill:#DCEBFA,stroke:#1F5FAD,color:#0B2545
+    classDef eth fill:#DDF2DC,stroke:#2E7D32,color:#123B14
+    classDef bad fill:#FADBD8,stroke:#C62828,color:#5B0F0F

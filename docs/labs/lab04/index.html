@@ -1,0 +1,2140 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Free hands-on labs on NVIDIA DSX Air, errata and study files for the NCP-AIN Certification Guide by Vakeesan Thevarajah (Cloudfoxy Ltd).">
+      
+      
+        <meta name="author" content="Vakeesan Thevarajah">
+      
+      
+        <link rel="canonical" href="https://cloudfoxy-ltd.github.io/ncp-ain-guide/labs/lab04/">
+      
+      
+        <link rel="prev" href="../lab03/">
+      
+      
+        <link rel="next" href="../lab05/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Lab 4 — AR, ECMP and telemetry - NCP-AIN Certification Guide — Labs & Errata</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="cyan" data-md-color-accent="purple">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#lab-4-adaptive-routing-ecmp-and-telemetry-configuration" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="NCP-AIN Certification Guide — Labs &amp; Errata" class="md-header__button md-logo" aria-label="NCP-AIN Certification Guide — Labs & Errata" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            NCP-AIN Certification Guide — Labs & Errata
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Lab 4 — AR, ECMP and telemetry
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="cyan" data-md-color-accent="purple"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="cyan" data-md-color-accent="purple"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Cloudfoxy-Ltd/ncp-ain-guide" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Cloudfoxy-Ltd/ncp-ain-guide
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
+          
+  
+  
+  Hands-On Labs
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../book/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  The Book
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../errata/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Errata
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../flashcards/" class="md-tabs__link">
+          
+  
+  
+  Study Files
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../license/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Licence
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="NCP-AIN Certification Guide — Labs &amp; Errata" class="md-nav__button md-logo" aria-label="NCP-AIN Certification Guide — Labs & Errata" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    NCP-AIN Certification Guide — Labs & Errata
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Cloudfoxy-Ltd/ncp-ain-guide" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Cloudfoxy-Ltd/ncp-ain-guide
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hands-On Labs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Hands-On Labs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab00/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 0 — Air and topology
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab01/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 1 — NVUE essentials
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab02/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 2 — eBGP unnumbered underlay
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab03/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 3 — Lossless RoCE and Soft-RoCE
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 4 — AR, ECMP and telemetry
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 4 — AR, ECMP and telemetry
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#lab-at-a-glance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lab at a glance
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#objectives" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Objectives
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#background" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Background
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-by-step" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step-by-step
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Step-by-step">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#task-1-confirm-the-two-equal-cost-paths" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 1 — Confirm the two equal-cost paths
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-2-enable-adaptive-routing-configuration-level" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 2 — Enable adaptive routing (configuration level)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-3-inspect-and-tune-ecmp-hashing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 3 — Inspect and tune ECMP hashing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-4-watch-ecmp-move-flows-between-spines" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 4 — Watch ECMP move flows between spines
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-5-configure-telemetry-otlp-export-statistics-and-histograms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 5 — Configure telemetry: OTLP export, statistics and histograms
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#verify" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verify
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#break-and-fix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Break and fix
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Break and fix">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fault-1-ar-enabled-on-only-one-uplink" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fault 1 — AR enabled on only one uplink
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fault-2-no-entropy-in-the-hash" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fault 2 — No entropy in the hash
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#clean-up-save-state" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Clean-up / save state
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exam-tie-in" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exam tie-in
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#review-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Review questions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Review questions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#answers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Answers
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab05/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 5 — BGP-EVPN multi-tenancy
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab06/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 6 — Air power skills
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab07/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 7 — Monitoring and troubleshooting
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab08/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 8 — InfiniBand with ibsim
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab09/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 9 — perftest over Soft-RoCE
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab10/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 10 — Kubernetes Network Operator
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab11/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 11 — NVUE templates
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab12/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 12 — Ansible automation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab13/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 13 — Capstone challenge
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../appendix/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Appendices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../book/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The Book
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../errata/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Errata
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Study Files
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Study Files
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../flashcards/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Flashcards
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lab-files/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab files
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../license/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Licence
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#lab-at-a-glance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lab at a glance
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#objectives" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Objectives
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#background" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Background
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-by-step" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step-by-step
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Step-by-step">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#task-1-confirm-the-two-equal-cost-paths" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 1 — Confirm the two equal-cost paths
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-2-enable-adaptive-routing-configuration-level" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 2 — Enable adaptive routing (configuration level)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-3-inspect-and-tune-ecmp-hashing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 3 — Inspect and tune ECMP hashing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-4-watch-ecmp-move-flows-between-spines" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 4 — Watch ECMP move flows between spines
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-5-configure-telemetry-otlp-export-statistics-and-histograms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 5 — Configure telemetry: OTLP export, statistics and histograms
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#verify" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verify
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#break-and-fix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Break and fix
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Break and fix">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fault-1-ar-enabled-on-only-one-uplink" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fault 1 — AR enabled on only one uplink
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fault-2-no-entropy-in-the-hash" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fault 2 — No entropy in the hash
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#clean-up-save-state" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Clean-up / save state
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exam-tie-in" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exam tie-in
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#review-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Review questions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Review questions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#answers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Answers
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="lab-4-adaptive-routing-ecmp-and-telemetry-configuration">Lab 4 — Adaptive Routing, ECMP and Telemetry Configuration<a class="headerlink" href="#lab-4-adaptive-routing-ecmp-and-telemetry-configuration" title="Permanent link">&para;</a></h1>
+<div class="admonition abstract">
+<p class="admonition-title">Companion to the NCP-AIN Certification Guide</p>
+<p>This free lab is part of the hands-on companion to <em>NCP-AIN Certification Guide</em> by Vakeesan Thevarajah (Cloudfoxy Ltd). The book explains the theory, design choices and hardware behaviour behind every step. <a class="md-button md-button--primary" href="../../book/">Get the book</a> <a class="md-button" href="../../sample/NCP-AIN_Sample.pdf">Free sample</a></p>
+</div>
+<h2 id="lab-at-a-glance">Lab at a glance<a class="headerlink" href="#lab-at-a-glance" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Detail</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Book chapters</td>
+<td>Chapter 6 (Adaptive routing, performance isolation and telemetry) · Chapter 10 (monitoring) · Chapter 2 (Clos fabrics and ECMP)</td>
+</tr>
+<tr>
+<td>Exam objectives</td>
+<td><strong>2.2</strong> Enable QoS, ECN, PFC, <strong>adaptive routing and telemetry</strong> · supports <strong>2.5</strong> (diagnose congestion)</td>
+</tr>
+<tr>
+<td>Time</td>
+<td>About 60 minutes</td>
+</tr>
+<tr>
+<td>Air resources used</td>
+<td>hxb-leaf-r1 and hxb-leaf-r3 (configuration), hxb-spine01 and hxb-spine02 (path observation), oob-mgmt-server (jump host, telemetry destination)</td>
+</tr>
+<tr>
+<td>Prerequisite labs</td>
+<td>Lab 2 (eBGP unnumbered underlay with loopbacks advertised). Lab 3 is recommended but not required</td>
+</tr>
+</tbody>
+</table>
+<h2 id="objectives">Objectives<a class="headerlink" href="#objectives" title="Permanent link">&para;</a></h2>
+<p>By the end of this lab you will be able to:</p>
+<ul>
+<li>Enable adaptive routing (AR) globally and on each uplink with NVUE, and verify it, while being clear about what VX can and cannot do with it.</li>
+<li>Read and change the ECMP hash configuration (<code>nv show system forwarding</code>, hash fields, hash seed) and know where <code>cl-ecmpcalc</code> fits.</li>
+<li>Observe ECMP path selection in the Air underlay by varying the source port of a probe and watching it move between the two spines.</li>
+<li>Configure OTLP telemetry export and interface, buffer and histogram statistics with the commands from Chapter 6.</li>
+<li>State, for each feature, whether Air gives you a configuration-level result or a data-plane result.</li>
+</ul>
+<h2 id="background">Background<a class="headerlink" href="#background" title="Permanent link">&para;</a></h2>
+<p>Hash-based ECMP pins each flow to one path. For the few, huge, long-lived RoCE flows of AI training, that means collisions: two elephant flows share one uplink while another sits idle. Spectrum-X <strong>adaptive routing</strong> solves this by choosing the egress port <strong>per packet</strong> from live port load, and relies on the SuperNIC to put packets back in order at the receiver. On Cumulus Linux it is enabled globally with <code>nv set router adaptive-routing state enabled</code> and then per eligible Layer-3 uplink. AR applies to RoCEv2 unicast in the default VRF; everything else still uses ECMP hashing, which is why the hash settings still matter.</p>
+<p>Telemetry is the other half of objective 2.2. Counters averaged over seconds hide microbursts, so Spectrum switches add <strong>histograms</strong> (distributions of queue occupancy, latency and counters), <strong>high-frequency telemetry</strong> (HFT, Spectrum-4) and <strong>OTLP export</strong> to an OpenTelemetry collector over gRPC.</p>
+<p>This lab is honest about Air. NVIDIA's documentation lists <strong>Cumulus VX as not supported</strong> for adaptive routing, and histograms, HFT and OTLP export need Spectrum-2 or later (HFT needs Spectrum-4). On VX you can type, diff and in many cases apply the configuration, and read it back with <code>nv show</code>. You cannot see packets sprayed or histograms filled. ECMP, on the other hand, is real in Air: VX forwards in the Linux kernel, which load-shares across the two spines, so you can watch flows move between paths.</p>
+<figure>
+<p><img alt="Figure 4.1: Two equal-cost paths from hxb-leaf-r1 to hxb-leaf-r3" loading="lazy" src="../img/fig-4_1.png" /></p>
+<figcaption><strong>Figure 4.1: Two equal-cost paths from hxb-leaf-r1 to hxb-leaf-r3.</strong> Each leaf has two uplinks, swp31 to hxb-spine01 and swp32 to hxb-spine02, so the route to 10.255.0.13 has two next hops. ECMP picks one per flow by hashing header fields. Adaptive routing (hardware only) would pick per packet by load.</figcaption>
+</figure>
+<h2 id="step-by-step">Step-by-step<a class="headerlink" href="#step-by-step" title="Permanent link">&para;</a></h2>
+<h3 id="task-1-confirm-the-two-equal-cost-paths">Task 1 — Confirm the two equal-cost paths<a class="headerlink" href="#task-1-confirm-the-two-equal-cost-paths" title="Permanent link">&para;</a></h3>
+<ol>
+<li>
+<p>Log in to hxb-leaf-r1 and check the route to hxb-leaf-r3's loopback.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>ubuntu@oob-mgmt-server:~$ ssh cumulus@hxb-leaf-r1
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv show vrf default router rib ipv4 route 10.255.0.13/32
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>cumulus@hxb-leaf-r1:mgmt:~$ ip route show 10.255.0.13
+</code></pre></div>
+<p><strong>Expected output (illustrative):</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>10.255.0.13 nhid 62 proto bgp metric 20
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>        nexthop via inet6 fe80::4638:39ff:fe00:1 dev swp31 weight 1
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>        nexthop via inet6 fe80::4638:39ff:fe00:3 dev swp32 weight 1
+</code></pre></div>
+</li>
+</ol>
+<p>Two next hops (IPv6 link-local, because the underlay is BGP unnumbered from Lab 2) means ECMP is in play.</p>
+<p><strong>Checkpoint</strong></p>
+<ul>
+<li>The route to 10.255.0.13/32 has two next hops, one via swp31 and one via swp32.</li>
+</ul>
+<h3 id="task-2-enable-adaptive-routing-configuration-level">Task 2 — Enable adaptive routing (configuration level)<a class="headerlink" href="#task-2-enable-adaptive-routing-configuration-level" title="Permanent link">&para;</a></h3>
+<ol>
+<li>
+<p>Enable AR globally and on both uplinks. The book's Chapter 6 example uses <code>swp49-52</code>; on helix-b-air the uplinks are <code>swp31-32</code>.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv set router adaptive-routing state enabled
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv set interface swp31-32 router adaptive-routing state enabled
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv config diff
+</code></pre></div>
+<p><strong>Expected output (illustrative):</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>- set:
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>    router:
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>      adaptive-routing:
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>        state: enabled
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>    interface:
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>      swp31:
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>        router:
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>          adaptive-routing:
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>            state: enabled
+<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>      swp32:
+<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>        router:
+<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>          adaptive-routing:
+<a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>            state: enabled
+</code></pre></div>
+</li>
+<li>
+<p>Try to apply.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv config apply -y
+</code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Version note</p>
+<p>NVIDIA documents adaptive routing as supported on Spectrum-4 at 200G and 400G, and <strong>not supported on Cumulus VX</strong>. Depending on your release, VX either accepts the configuration (and <code>nv show</code> displays it with no data-plane effect) or rejects the apply with a platform error (check on your release). If apply fails, record the message, run <code>nv config detach</code> to discard the pending change, and complete step 3 using <code>nv config diff</code> as your evidence of correct intent.</p>
+</div>
+</li>
+<li>
+<p>Verify.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv show router adaptive-routing
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv show interface swp31 router adaptive-routing
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv show interface swp32 router adaptive-routing
+</code></pre></div>
+<p><strong>Expected output (illustrative):</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>                              operational  applied
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>----------------------------  -----------  --------
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>state                         enabled      enabled
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>link-utilization-threshold    disabled     disabled
+</code></pre></div>
+</li>
+<li>
+<p>Look at the one AR tunable Chapter 6 covers: the link-utilisation threshold (default 70%). Do not change it in this lab; just read the syntax.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>nv set interface swp31 router adaptive-routing link-utilization-threshold &lt;1-100&gt;
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>nv set router adaptive-routing link-utilization-threshold enabled
+</code></pre></div>
+</li>
+<li>
+<p>Repeat steps 1–3 on hxb-leaf-r3 so that both ends of the path under study carry the same intent.</p>
+</li>
+</ol>
+<figure>
+<p><img alt="Figure 4.2: What this lab proves in Air, layer by layer" loading="lazy" src="../img/fig-4_2.png" /></p>
+<figcaption><strong>Figure 4.2: What this lab proves in Air, layer by layer.</strong> ECMP forwarding is real in Air because VX forwards in the Linux kernel. Adaptive routing, histograms and OTLP data depend on the Spectrum ASIC, so in Air you prove the configuration and leave data-plane proof to hardware.</figcaption>
+</figure>
+<p><strong>Checkpoint</strong></p>
+<ul>
+<li><code>nv config diff</code> (or <code>nv show router adaptive-routing</code>) shows AR enabled globally and on swp31 and swp32, on both hxb-leaf-r1 and hxb-leaf-r3.</li>
+<li>You can explain why AR still needs per-interface enablement after the global command.</li>
+</ul>
+<h3 id="task-3-inspect-and-tune-ecmp-hashing">Task 3 — Inspect and tune ECMP hashing<a class="headerlink" href="#task-3-inspect-and-tune-ecmp-hashing" title="Permanent link">&para;</a></h3>
+<ol>
+<li>
+<p>Read the forwarding and hash settings.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv show system forwarding
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv show system forwarding ecmp-hash
+</code></pre></div>
+<p><strong>Expected output (illustrative):</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>                  operational  applied
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>----------------  -----------  -------
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>destination-ip    enabled      on
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>destination-port  enabled      on
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>ip-protocol       enabled      on
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>source-ip         enabled      on
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>source-port       enabled      on
+<a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a>...
+</code></pre></div>
+</li>
+<li>
+<p>Set a unique hash seed on this leaf. Chapter 6 explains why: identical seeds on every tier make leaf and spine take correlated decisions (polarisation).</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv set system forwarding hash-seed 50
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv config diff
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv config apply -y
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv show system forwarding | grep -i seed
+</code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>On Spectrum hardware these settings program the ASIC hash, through <code>switchd</code>. On VX there is no ASIC, so they do <strong>not</strong> change how the Linux kernel hashes the traffic you observe in Task 4. The kernel's own policy is controlled by <code>net.ipv4.fib_multipath_hash_policy</code>. Keep that distinction clear.</p>
+</div>
+</li>
+<li>
+<p>Try the path calculator.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ sudo cl-ecmpcalc -i swp1 -s 10.255.0.11 -d 10.255.0.13 -p udp --sport 49152 --dport 4791
+</code></pre></div>
+<p><strong>Expected output:</strong> On Spectrum hardware, <code>cl-ecmpcalc</code> prints the egress interface the ASIC hash would choose for that flow. On VX it is either absent or fails because there is no ASIC to query (check on your release). Record which one you see. The book's form of the command, with every field (interface, source, destination, protocol, ports) supplied, is what matters for the exam.</p>
+</li>
+</ol>
+<p><strong>Checkpoint</strong></p>
+<ul>
+<li>You can list the ECMP hash fields and name the commands that remove L4 ports from the hash (<code>nv set system forwarding ecmp-hash source-port off</code> / <code>destination-port off</code>) and set the seed.</li>
+<li>You know which tool predicts a flow's path on hardware.</li>
+</ul>
+<h3 id="task-4-watch-ecmp-move-flows-between-spines">Task 4 — Watch ECMP move flows between spines<a class="headerlink" href="#task-4-watch-ecmp-move-flows-between-spines" title="Permanent link">&para;</a></h3>
+<p>On VX the kernel does the forwarding, so you can see real ECMP decisions. Your shell on a Cumulus switch runs in the management VRF (note <code>:mgmt:</code> in the prompt), so run underlay tests in the <strong>default</strong> VRF with <code>ip vrf exec default</code>.</p>
+<ol>
+<li>
+<p>Check that the kernel includes Layer-4 ports in its multipath hash.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ sysctl net.ipv4.fib_multipath_hash_policy
+</code></pre></div>
+<p><strong>Expected output:</strong> <code>net.ipv4.fib_multipath_hash_policy = 1</code> (L3 + L4). If it shows <code>0</code> (L3 only), every flow between the same two loopbacks takes the same path. Set it to 1 for this lab only: <code>sudo sysctl -w net.ipv4.fib_multipath_hash_policy=1</code> (it reverts on reboot).</p>
+</li>
+<li>
+<p>Ask the kernel which next hop it would use for several flows that differ only by source port. The destination port is 4791, as for RoCEv2.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ for sp in 49152 49153 49154 49155 49156 49157; do
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>&gt;   echo -n &quot;sport $sp: &quot;
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>&gt;   ip route get 10.255.0.13 from 10.255.0.11 ipproto udp sport $sp dport 4791 | grep -o &#39;dev swp3[12]&#39;
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>&gt; done
+</code></pre></div>
+<p><strong>Expected output (illustrative):</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>sport 49152: dev swp31
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>sport 49153: dev swp32
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>sport 49154: dev swp32
+<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>sport 49155: dev swp31
+<a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a>sport 49156: dev swp31
+<a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a>sport 49157: dev swp32
+</code></pre></div>
+</li>
+<li>
+<p>Confirm with real probes. <code>traceroute -U</code> sends UDP to one fixed destination port (instead of incrementing it per probe), and <code>--sport</code> fixes the source port, so each run is one "flow".</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ for sp in 49152 49153 49154 49155; do
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>&gt;   sudo ip vrf exec default traceroute -n -q 1 -U -p 4791 --sport=$sp -s 10.255.0.11 10.255.0.13 | tail -2
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>&gt; done
+</code></pre></div>
+<p><strong>Expected output (illustrative):</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a> 1  10.255.0.1  0.901 ms
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a> 2  10.255.0.13  1.412 ms
+<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a> 1  10.255.0.2  0.874 ms
+<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a> 2  10.255.0.13  1.380 ms
+<a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a> 1  10.255.0.2  0.911 ms
+<a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a> 2  10.255.0.13  1.502 ms
+<a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a> 1  10.255.0.1  0.820 ms
+<a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a> 2  10.255.0.13  1.355 ms
+</code></pre></div>
+</li>
+</ol>
+<p>Hop 1 is the spine's loopback (unnumbered interfaces borrow it), so <code>10.255.0.1</code> means hxb-spine01 and <code>10.255.0.2</code> means hxb-spine02. Different source ports, different spines: that is per-flow ECMP. Every probe of one run takes the same path, because the 5-tuple does not change. That is exactly why a single elephant RoCE flow can never use more than one uplink under ECMP.</p>
+<div class="admonition info">
+<p class="admonition-title">Field note</p>
+<p>If <code>traceroute</code> is not installed or does not recognise <code>--sport</code>, use step 2 alone: <code>ip route get</code> with <code>sport</code>/<code>dport</code> shows the kernel's decision directly (check on your release).</p>
+</div>
+<ol>
+<li>
+<p>Now remove the source port from the kernel hash and repeat step 2. With <code>fib_multipath_hash_policy=0</code>, all six flows pick the same uplink. Put the value back afterwards.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ sudo sysctl -w net.ipv4.fib_multipath_hash_policy=0
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>cumulus@hxb-leaf-r1:mgmt:~$ sudo sysctl -w net.ipv4.fib_multipath_hash_policy=1
+</code></pre></div>
+</li>
+</ol>
+<p>This is the kernel equivalent of <code>nv set system forwarding ecmp-hash source-port off</code> on hardware: fewer hash fields, less entropy, more collisions.</p>
+<p><strong>Checkpoint</strong></p>
+<ul>
+<li>Different source ports map to different uplinks (swp31/swp32) and different first-hop spines.</li>
+<li>Without L4 fields in the hash, all flows between the same two addresses take one path.</li>
+</ul>
+<h3 id="task-5-configure-telemetry-otlp-export-statistics-and-histograms">Task 5 — Configure telemetry: OTLP export, statistics and histograms<a class="headerlink" href="#task-5-configure-telemetry-otlp-export-statistics-and-histograms" title="Permanent link">&para;</a></h3>
+<ol>
+<li>
+<p>On the oob-mgmt-server, find its management address. It is the OTLP destination for this lab.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>ubuntu@oob-mgmt-server:~$ ip -4 addr show eth0 | grep inet
+</code></pre></div>
+<p><strong>Expected output (illustrative):</strong> <code>inet 192.168.200.1/24 ...</code>. Use your own value in place of <code>192.168.200.1</code> below.</p>
+</li>
+<li>
+<p>On hxb-leaf-r1, enable telemetry and OTLP export over the management VRF (the Chapter 6 command set).</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv set system telemetry state enabled
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv set system telemetry export otlp state enabled
+<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv set system telemetry export otlp grpc destination 192.168.200.1 port 4317
+<a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv set system telemetry export otlp grpc insecure enabled
+<a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv set system telemetry export vrf mgmt
+<a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv set system telemetry interface-stats export state enabled
+<a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv set system telemetry interface-stats sample-interval 1
+<a id="__codelineno-19-8" name="__codelineno-19-8" href="#__codelineno-19-8"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv set system telemetry buffer-stats export state enabled
+<a id="__codelineno-19-9" name="__codelineno-19-9" href="#__codelineno-19-9"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv set system telemetry histogram export state enabled
+<a id="__codelineno-19-10" name="__codelineno-19-10" href="#__codelineno-19-10"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv set system telemetry platform-stats export state enabled
+<a id="__codelineno-19-11" name="__codelineno-19-11" href="#__codelineno-19-11"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv set system telemetry router export state enabled
+</code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p><code>insecure enabled</code> sends telemetry without TLS. It is for the lab only. In production, install the collector's CA certificate with <code>nv set system telemetry export otlp grpc certificate &lt;ca-certificate&gt;</code>.</p>
+</div>
+</li>
+<li>
+<p>Add histograms for the RoCE queue. An egress-buffer histogram on traffic class 3 answers "how often does the lossless queue go above X?". Add it on the server-facing and uplink ports, together with a counter histogram on the uplinks.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv set system telemetry histogram egress-buffer bin-min-boundary 960
+<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv set system telemetry histogram egress-buffer histogram-size 12288
+<a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv set system telemetry histogram egress-buffer sample-interval 1024
+<a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv set interface swp1-2,swp31-32 telemetry histogram egress-buffer traffic-class 3
+<a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv set interface swp31-32 telemetry histogram counter counter-type tx-byte
+<a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv config diff
+<a id="__codelineno-20-7" name="__codelineno-20-7" href="#__codelineno-20-7"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv config apply -y
+</code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Version note</p>
+<p>OTLP export, buffer statistics and histograms need a Spectrum-2 or later ASIC (egress-buffer histograms Spectrum-1 and later), and HFT needs Spectrum-4. On VX, apply may succeed with no data produced, or be rejected for unsupported objects (check on your release). If it is rejected, <code>nv config detach</code>, then re-enter the commands without the objects named in the error and keep a note of which ones VX refused.</p>
+</div>
+</li>
+<li>
+<p>Read the configuration back.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv show system telemetry
+<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv show system telemetry export
+<a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv show system telemetry histogram
+<a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv show system telemetry histogram interface
+<a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv show interface swp31 telemetry histogram egress-buffer traffic-class 3
+</code></pre></div>
+<p><strong>Expected output (illustrative):</strong> <code>export</code> shows OTLP <code>enabled</code>, destination 192.168.200.1 port 4317, VRF <code>mgmt</code>. <code>histogram interface</code> lists swp1, swp2, swp31 and swp32. On hardware, the per-interface histogram view shows bins with sample counts. On VX expect the configuration and empty or missing bins.</p>
+</li>
+<li>
+<p>Optional: see whether the leaf tries to reach the collector. There is no collector running, so any connection is refused, but the attempt shows the export path and VRF are right.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>ubuntu@oob-mgmt-server:~$ sudo tcpdump -i eth0 -nn -c 5 tcp port 4317
+</code></pre></div>
+<p><strong>Expected output:</strong> SYN packets from hxb-leaf-r1's management address to port 4317, answered by RST, if the VX build starts the exporter at all. No packets is also a valid VX result: record it.</p>
+</li>
+<li>
+<p>For reference, the HFT block from Chapter 6. Type it into <code>nv config diff</code> only if you want to see how NVUE renders it, then detach; HFT needs Spectrum-4.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>nv set system telemetry hft sample-interval-usec 1000
+<a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a>nv set system telemetry hft counter tc-occupancy
+<a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a>nv set system telemetry hft egress-buffer traffic-class 3
+<a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a>nv set interface swp31-32 telemetry hft state enabled
+<a id="__codelineno-23-5" name="__codelineno-23-5" href="#__codelineno-23-5"></a>nv set system telemetry hft duration 120
+<a id="__codelineno-23-6" name="__codelineno-23-6" href="#__codelineno-23-6"></a>nv set system telemetry hft export state enabled
+</code></pre></div>
+</li>
+</ol>
+<figure>
+<p><img alt="Figure 4.3: Telemetry configured on hxb-leaf-r1" loading="lazy" src="../img/fig-4_3.png" /></p>
+<figcaption><strong>Figure 4.3: Telemetry configured on hxb-leaf-r1.</strong> Interface, buffer, platform and routing statistics plus TC 3 histograms feed the OTLP exporter, which streams over gRPC (port 4317) in the management VRF to the collector on the oob-mgmt-server. On hardware the collector would feed Prometheus or Grafana. On VX the pipeline is configured but carries little or no data.</figcaption>
+</figure>
+<p><strong>Checkpoint</strong></p>
+<ul>
+<li><code>nv show system telemetry export</code> shows the OTLP destination, port and VRF you set, or you have a recorded note of what VX refused.</li>
+<li>You can name the four telemetry layers in Chapter 6 (counters, histograms, HFT, OTLP) and the ASIC generation each needs.</li>
+</ul>
+<h2 id="verify">Verify<a class="headerlink" href="#verify" title="Permanent link">&para;</a></h2>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> The route to 10.255.0.13/32 has two next hops on hxb-leaf-r1.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> AR intent (global and swp31–32) is visible in <code>nv show router adaptive-routing</code> or in <code>nv config diff</code>, on hxb-leaf-r1 and hxb-leaf-r3.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <code>nv show system forwarding</code> shows your hash seed and the hash fields.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <code>ip route get … sport &lt;n&gt;</code> or <code>traceroute --sport</code> shows different flows taking different spines.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Telemetry export and TC 3 histograms are configured on hxb-leaf-r1 (or you recorded exactly which objects VX refused).</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> You can say, for AR, ECMP, histograms and OTLP, which part Air proved and which part needs hardware.</li>
+</ul>
+<h2 id="break-and-fix">Break and fix<a class="headerlink" href="#break-and-fix" title="Permanent link">&para;</a></h2>
+<h3 id="fault-1-ar-enabled-on-only-one-uplink">Fault 1 — AR enabled on only one uplink<a class="headerlink" href="#fault-1-ar-enabled-on-only-one-uplink" title="Permanent link">&para;</a></h3>
+<p>This is the Chapter 6 troubleshooting scenario in miniature.</p>
+<p><strong>Inject.</strong> On hxb-leaf-r1, disable AR on swp32 as if a typo had left it out of the range.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv set interface swp32 router adaptive-routing state disabled
+<a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv config apply -y
+</code></pre></div>
+<p><strong>Symptoms.</strong> On hardware, RoCE traffic that the leaf sends out of swp32 is still placed by ECMP hash, so uplink utilisation is uneven and ECN marks appear on one uplink only, even though "AR is enabled".</p>
+<p><strong>Diagnosis.</strong> Check the global state, then every uplink. Use JSON when you script this across many leaves.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv show router adaptive-routing
+<a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a>cumulus@hxb-leaf-r1:mgmt:~$ for i in swp31 swp32; do echo -n &quot;$i: &quot;; nv show interface $i router adaptive-routing -o json | grep -o &#39;&quot;state&quot;: *&quot;[a-z]*&quot;&#39;; done
+</code></pre></div>
+<p><strong>Expected output (illustrative):</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>swp31: &quot;state&quot;: &quot;enabled&quot;
+<a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a>swp32: &quot;state&quot;: &quot;disabled&quot;
+</code></pre></div>
+<p><strong>Fix.</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv set interface swp31-32 router adaptive-routing state enabled
+<a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv config apply -y
+</code></pre></div>
+<p>To stop it happening again, generate leaf configuration from a template (Lab 11) and check AR on every uplink automatically.</p>
+<h3 id="fault-2-no-entropy-in-the-hash">Fault 2 — No entropy in the hash<a class="headerlink" href="#fault-2-no-entropy-in-the-hash" title="Permanent link">&para;</a></h3>
+<p><strong>Inject.</strong> On hxb-leaf-r1, set the kernel policy to L3 only (standing in for <code>ecmp-hash source-port off</code> and <code>destination-port off</code> on hardware).</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ sudo sysctl -w net.ipv4.fib_multipath_hash_policy=0
+</code></pre></div>
+<p><strong>Symptoms.</strong> Re-run Task 4 step 2. All flows between 10.255.0.11 and 10.255.0.13 take the same uplink, whatever the source port.</p>
+<p><strong>Diagnosis.</strong> <code>sysctl net.ipv4.fib_multipath_hash_policy</code> shows <code>0</code>. On hardware, <code>nv show system forwarding ecmp-hash</code> would show the port fields disabled.</p>
+<p><strong>Fix.</strong> <code>sudo sysctl -w net.ipv4.fib_multipath_hash_policy=1</code>, then re-run the loop and confirm both uplinks appear. On hardware: <code>nv set system forwarding ecmp-hash source-port on</code> and <code>destination-port on</code>, then apply.</p>
+<h2 id="clean-up-save-state">Clean-up / save state<a class="headerlink" href="#clean-up-save-state" title="Permanent link">&para;</a></h2>
+<ol>
+<li>
+<p>Decide what to keep. The AR and telemetry configuration is harmless on VX and matches the Helix-B design, so keep it if it applied cleanly. If VX rejected any object, make sure nothing is left pending.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv config diff
+<a id="__codelineno-29-2" name="__codelineno-29-2" href="#__codelineno-29-2"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv config detach        # only if the diff shows leftover pending changes
+</code></pre></div>
+</li>
+<li>
+<p>If you prefer a clean baseline for Lab 5, remove the telemetry objects (keep AR and the hash seed).</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv unset system telemetry
+<a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv unset interface swp1-2,swp31-32 telemetry
+<a id="__codelineno-30-3" name="__codelineno-30-3" href="#__codelineno-30-3"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv config apply -y
+</code></pre></div>
+</li>
+<li>
+<p>Confirm the kernel hash policy is back to <code>1</code>, then save on every switch you changed.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ sysctl net.ipv4.fib_multipath_hash_policy
+<a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv config save
+<a id="__codelineno-31-3" name="__codelineno-31-3" href="#__codelineno-31-3"></a>cumulus@hxb-leaf-r3:mgmt:~$ nv config save
+</code></pre></div>
+</li>
+<li>
+<p>Sleep the simulation from the Air UI if you are stopping here.</p>
+</li>
+</ol>
+<h2 id="exam-tie-in">Exam tie-in<a class="headerlink" href="#exam-tie-in" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>2.2 (AR):</strong> <code>nv set router adaptive-routing state enabled</code> (global) <strong>and</strong> <code>nv set interface &lt;swp&gt; router adaptive-routing state enabled</code> (per uplink), verified with <code>nv show router adaptive-routing</code> and <code>nv show interface &lt;swp&gt; router adaptive-routing</code>. AR applies to RoCEv2 unicast on L3 uplinks in the default VRF, and needs SuperNIC reordering.</li>
+<li><strong>2.2 (telemetry):</strong> OTLP export (<code>nv set system telemetry export otlp …</code>, gRPC destination and port, VRF), statistics (<code>interface-stats</code>, <code>buffer-stats</code>, <code>histogram</code>, <code>platform-stats</code>, <code>router</code>), histograms per interface and TC, HFT for microbursts on Spectrum-4.</li>
+<li><strong>2.2 and 2.5 (ECMP):</strong> ECMP is per flow. Hash fields, <code>hash-seed</code> and <code>cl-ecmpcalc</code> still matter for non-RoCE traffic and for any RoCE traffic AR doesn't handle.</li>
+<li><strong>Exam trap:</strong> AR is not "a better hash". It does not hash RoCE at all; it chooses per packet by load.</li>
+</ul>
+<h2 id="review-questions">Review questions<a class="headerlink" href="#review-questions" title="Permanent link">&para;</a></h2>
+<ol>
+<li>After <code>nv set router adaptive-routing state enabled</code> and <code>nv config apply</code>, RoCE on uplink swp32 is still placed by hash. What was missed?</li>
+<li>Why does changing <code>nv set system forwarding hash-seed</code> on VX not change the paths you observed with <code>ip route get</code>?</li>
+<li>Four <code>traceroute</code> runs with different <code>--sport</code> values show first hops 10.255.0.1, 10.255.0.2, 10.255.0.2, 10.255.0.1. What does this show, and why does each individual run stay on one spine?</li>
+<li>Which NVUE settings stream interface statistics to an OpenTelemetry collector at 10.10.0.50 over the management VRF?</li>
+<li>A 1-second interface average shows 30% utilisation on a leaf uplink, yet ECN marks keep appearing. Which telemetry feature would show why, and on which ASIC generation?</li>
+</ol>
+<h3 id="answers">Answers<a class="headerlink" href="#answers" title="Permanent link">&para;</a></h3>
+<ol>
+<li>Per-interface enablement: <code>nv set interface swp32 router adaptive-routing state enabled</code> (usually for all uplinks, e.g. <code>swp31-32</code>), then apply. The global command alone does not enable AR on any port.</li>
+<li>On VX there is no ASIC. The NVUE ECMP settings program the Spectrum hash through <code>switchd</code>, while VX forwards in the Linux kernel, whose hash is governed by <code>net.ipv4.fib_multipath_hash_policy</code>.</li>
+<li>It shows per-flow ECMP across the two spines: the source port is part of the hash, so different flows take different paths. Within one run the 5-tuple is constant (<code>-U -p 4791 --sport=&lt;n&gt;</code>), so every probe hashes to the same next hop.</li>
+<li><code>nv set system telemetry export otlp state enabled</code>, <code>nv set system telemetry export otlp grpc destination 10.10.0.50 port 4317</code>, <code>nv set system telemetry export vrf mgmt</code>, <code>nv set system telemetry interface-stats export state enabled</code> (plus a certificate, or <code>insecure enabled</code> in a lab), then <code>nv config apply</code>.</li>
+<li>High-frequency telemetry (HFT), sampling <code>tc-occupancy</code> and <code>tx-byte</code> at sub-millisecond intervals, reveals the microbursts that the average hides. HFT needs Spectrum-4 or later and benefits from PTP time.</li>
+</ol>
+<hr />
+<div class="admonition abstract">
+<p class="admonition-title">Go deeper</p>
+<p>The matching book chapters cover the exam objectives for this lab in full, with a Q&amp;A pack of about 40 exam-style questions per chapter. <a class="md-button md-button--primary" href="../../book/">Get the book</a> <a class="md-button" href="https://github.com/Cloudfoxy-Ltd/ncp-ain-guide/issues/new?template=erratum.yml">Report a problem with this lab</a></p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../lab03/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Lab 3 — Lossless RoCE and Soft-RoCE">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Lab 3 — Lossless RoCE and Soft-RoCE
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../lab05/" class="md-footer__link md-footer__link--next" aria-label="Next: Lab 5 — BGP-EVPN multi-tenancy">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Lab 5 — BGP-EVPN multi-tenancy
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      © 2026 Vakeesan Thevarajah · Cloudfoxy Ltd · Lab guide CC BY-NC-SA 4.0 · Independent, not endorsed by NVIDIA
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.footer", "navigation.top", "content.code.copy", "search.highlight", "search.suggest", "toc.follow"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

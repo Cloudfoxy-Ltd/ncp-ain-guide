@@ -1,0 +1,8 @@
+flowchart TB
+    A["① perftest on hxb-gpu01<br/>QP created with ToS 106<br/>(-T with -R, or --tclass with -x)"]:::gpu --> B["② rxe0 (Soft-RoCE)<br/>RoCEv2 packet · UDP 4791<br/>IP tos 0x6a"]:::gpu
+    B --> C["③ hxb-leaf-r1 swp1<br/>tcpdump reads DSCP 26 + ECT(0)"]:::eth
+    C --> D["④ Spectrum hardware only<br/>trust DSCP · 26 maps to SP 3 · TC 3"]:::ctl
+    D --> E["⑤ Lossless treatment<br/>PFC on priority 3 · ECN from 146 KB"]:::ctl
+    classDef gpu fill:#DCEBFA,stroke:#1F5FAD,color:#0B2545
+    classDef eth fill:#DDF2DC,stroke:#2E7D32,color:#123B14
+    classDef ctl fill:#FDE8CF,stroke:#D9730D,color:#4A2604

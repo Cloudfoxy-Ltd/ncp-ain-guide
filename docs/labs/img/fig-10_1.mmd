@@ -1,0 +1,26 @@
+flowchart TB
+    subgraph K8S[" "]
+        direction LR
+        H["helm install<br/>network-operator"]:::ctl --> OP["Network Operator<br/>(controller)"]:::ctl
+        NCP["NicClusterPolicy<br/>multus · cniPlugins · nvIpam"]:::ctl --> OP
+    end
+    subgraph NODE[" "]
+        direction LR
+        M["Multus + macvlan CNI<br/>(DaemonSets)"]:::eth
+        I["NV-IPAM<br/>IPPool 172.16.10.200+"]:::sto
+        N["MacvlanNetwork → NAD<br/>master eth1"]:::eth
+    end
+    subgraph PODS[" "]
+        direction LR
+        P1["pod-a on gpu01<br/>eth0 + net1"]:::gpu
+        P2["pod-b on gpu02<br/>eth0 + net1"]:::gpu
+    end
+    K8S --> NODE
+    NODE --> PODS
+    style K8S fill:#FFFFFF,stroke:#FFFFFF
+    style NODE fill:#FFFFFF,stroke:#FFFFFF
+    style PODS fill:#FFFFFF,stroke:#FFFFFF
+    classDef gpu fill:#DCEBFA,stroke:#1F5FAD,color:#0B2545
+    classDef eth fill:#DDF2DC,stroke:#2E7D32,color:#123B14
+    classDef ctl fill:#FDE8CF,stroke:#D9730D,color:#4A2604
+    classDef sto fill:#D5F0EE,stroke:#00796B,color:#07332E

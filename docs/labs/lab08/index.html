@@ -1,0 +1,2236 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Free hands-on labs on NVIDIA DSX Air, errata and study files for the NCP-AIN Certification Guide by Vakeesan Thevarajah (Cloudfoxy Ltd).">
+      
+      
+        <meta name="author" content="Vakeesan Thevarajah">
+      
+      
+        <link rel="canonical" href="https://cloudfoxy-ltd.github.io/ncp-ain-guide/labs/lab08/">
+      
+      
+        <link rel="prev" href="../lab07/">
+      
+      
+        <link rel="next" href="../lab09/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Lab 8 — InfiniBand with ibsim - NCP-AIN Certification Guide — Labs & Errata</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="cyan" data-md-color-accent="purple">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#lab-8-an-infiniband-fabric-with-ibsim-sm-ha-partitions-and-diagnostics" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="NCP-AIN Certification Guide — Labs &amp; Errata" class="md-header__button md-logo" aria-label="NCP-AIN Certification Guide — Labs & Errata" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            NCP-AIN Certification Guide — Labs & Errata
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Lab 8 — InfiniBand with ibsim
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="cyan" data-md-color-accent="purple"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="cyan" data-md-color-accent="purple"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Cloudfoxy-Ltd/ncp-ain-guide" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Cloudfoxy-Ltd/ncp-ain-guide
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
+          
+  
+  
+  Hands-On Labs
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../book/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  The Book
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../errata/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Errata
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../flashcards/" class="md-tabs__link">
+          
+  
+  
+  Study Files
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../license/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Licence
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="NCP-AIN Certification Guide — Labs &amp; Errata" class="md-nav__button md-logo" aria-label="NCP-AIN Certification Guide — Labs & Errata" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    NCP-AIN Certification Guide — Labs & Errata
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Cloudfoxy-Ltd/ncp-ain-guide" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Cloudfoxy-Ltd/ncp-ain-guide
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hands-On Labs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Hands-On Labs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab00/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 0 — Air and topology
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab01/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 1 — NVUE essentials
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab02/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 2 — eBGP unnumbered underlay
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab03/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 3 — Lossless RoCE and Soft-RoCE
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab04/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 4 — AR, ECMP and telemetry
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab05/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 5 — BGP-EVPN multi-tenancy
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab06/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 6 — Air power skills
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab07/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 7 — Monitoring and troubleshooting
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 8 — InfiniBand with ibsim
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 8 — InfiniBand with ibsim
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#lab-at-a-glance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lab at a glance
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#objectives" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Objectives
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#background" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Background
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Background">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-simulated-helix-a-fabric" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The simulated Helix-A fabric
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-by-step" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step-by-step
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Step-by-step">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#task-1-install-the-simulator-and-tools-on-hxa-ibsim" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 1 — Install the simulator and tools on hxa-ibsim
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-2-create-the-fabric-file-and-start-the-simulator" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 2 — Create the fabric file and start the simulator
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-3-start-the-subnet-manager-and-discover-the-fabric" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 3 — Start the Subnet Manager and discover the fabric
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-4-read-ports-links-and-forwarding-tables" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 4 — Read ports, links and forwarding tables
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-5-master-and-standby-sm-failover-and-failback" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 5 — Master and standby SM; failover and failback
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-6-partitions-pkeys-for-tenant-isolation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 6 — Partitions (PKeys) for tenant isolation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-7-counters-errors-and-a-failed-link" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 7 — Counters, errors and a failed link
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#verify" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verify
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#break-and-fix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Break and fix
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#clean-up-save-state" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Clean-up / save state
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exam-tie-in" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exam tie-in
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#review-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Review questions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Review questions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#answers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Answers
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab09/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 9 — perftest over Soft-RoCE
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab10/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 10 — Kubernetes Network Operator
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab11/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 11 — NVUE templates
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab12/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 12 — Ansible automation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab13/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 13 — Capstone challenge
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../appendix/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Appendices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../book/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The Book
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../errata/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Errata
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Study Files
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Study Files
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../flashcards/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Flashcards
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lab-files/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab files
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../license/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Licence
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#lab-at-a-glance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lab at a glance
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#objectives" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Objectives
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#background" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Background
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Background">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-simulated-helix-a-fabric" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The simulated Helix-A fabric
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-by-step" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step-by-step
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Step-by-step">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#task-1-install-the-simulator-and-tools-on-hxa-ibsim" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 1 — Install the simulator and tools on hxa-ibsim
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-2-create-the-fabric-file-and-start-the-simulator" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 2 — Create the fabric file and start the simulator
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-3-start-the-subnet-manager-and-discover-the-fabric" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 3 — Start the Subnet Manager and discover the fabric
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-4-read-ports-links-and-forwarding-tables" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 4 — Read ports, links and forwarding tables
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-5-master-and-standby-sm-failover-and-failback" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 5 — Master and standby SM; failover and failback
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-6-partitions-pkeys-for-tenant-isolation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 6 — Partitions (PKeys) for tenant isolation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-7-counters-errors-and-a-failed-link" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 7 — Counters, errors and a failed link
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#verify" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verify
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#break-and-fix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Break and fix
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#clean-up-save-state" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Clean-up / save state
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exam-tie-in" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exam tie-in
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#review-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Review questions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Review questions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#answers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Answers
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="lab-8-an-infiniband-fabric-with-ibsim-sm-ha-partitions-and-diagnostics">Lab 8 — An InfiniBand Fabric with ibsim: SM, HA, Partitions and Diagnostics<a class="headerlink" href="#lab-8-an-infiniband-fabric-with-ibsim-sm-ha-partitions-and-diagnostics" title="Permanent link">&para;</a></h1>
+<div class="admonition abstract">
+<p class="admonition-title">Companion to the NCP-AIN Certification Guide</p>
+<p>This free lab is part of the hands-on companion to <em>NCP-AIN Certification Guide</em> by Vakeesan Thevarajah (Cloudfoxy Ltd). The book explains the theory, design choices and hardware behaviour behind every step. <a class="md-button md-button--primary" href="../../book/">Get the book</a> <a class="md-button" href="../../sample/NCP-AIN_Sample.pdf">Free sample</a></p>
+</div>
+<h2 id="lab-at-a-glance">Lab at a glance<a class="headerlink" href="#lab-at-a-glance" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Book chapters</td>
+<td>11 (IB architecture and SM), 12 (provisioning and HA), 13 (PKeys), 14 (routing), 15 and 20 (monitoring and health), 17 (diagnostic toolkit)</td>
+</tr>
+<tr>
+<td>Exam objectives</td>
+<td>3.1, 3.2, 3.3, 3.4, 5.4, 5.5</td>
+</tr>
+<tr>
+<td>Time</td>
+<td>90 minutes</td>
+</tr>
+<tr>
+<td>Air resources</td>
+<td>hxa-ibsim only (2 vCPU, 2 GiB); the rest of the simulation can stay running or be stopped</td>
+</tr>
+<tr>
+<td>Prerequisites</td>
+<td>Lab 0</td>
+</tr>
+</tbody>
+</table>
+<h2 id="objectives">Objectives<a class="headerlink" href="#objectives" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Build a small Helix-A InfiniBand fabric in the <strong>ibsim</strong> simulator.</li>
+<li>Run <strong>OpenSM</strong>, watch it discover the fabric, assign LIDs and program forwarding tables.</li>
+<li>Use the Chapter 17 toolkit: <code>sminfo</code>, <code>ibnodes</code>, <code>ibswitches</code>, <code>ibhosts</code>, <code>ibnetdiscover</code>, <code>iblinkinfo</code>, <code>smpquery</code>, <code>ibroute</code>, <code>ibtracert</code>, <code>perfquery</code>, <code>ibqueryerrors</code>, <code>saquery</code>.</li>
+<li>Run a <strong>master and a standby SM</strong>, then fail over and fail back (Chapter 12).</li>
+<li>Create <strong>partitions</strong> (PKeys) for the RESEARCH, PRODUCTION and SHARED tenants (Chapter 13) and prove membership.</li>
+<li>Inject <strong>symbol errors</strong> and a <strong>failed link</strong>, and find them the way you would on a real fabric (Chapters 15, 17 and 20).</li>
+</ul>
+<h2 id="background">Background<a class="headerlink" href="#background" title="Permanent link">&para;</a></h2>
+<p>DSX Air cannot simulate InfiniBand switches, so this lab uses <strong>ibsim</strong>, the open-source InfiniBand fabric simulator from the linux-rdma project. ibsim models switches and HCAs from a text topology file in the same format that <code>ibnetdiscover</code> prints. The real OpenSM and the real <code>infiniband-diags</code> tools run against it through a small library, <code>libumad2sim.so</code>, that redirects their management datagrams (MADs) from the kernel to the simulator. The helper <code>ibsim-run &lt;command&gt;</code> loads that library for you.</p>
+<p>What you practise is therefore genuine: the same SM state machine, LID assignment, PKey tables, forwarding tables and diagnostic tools that run on a Quantum fabric. The simulator has limits: links report SDR speed (2.5 Gb/s per lane) rather than NDR, sysfs-based tools such as <code>ibstat</code> and <code>ibv_devinfo</code> don't see simulated HCAs, and NVIDIA-specific tools (ibdiagnet, UFM, SHARP, the <code>ar_updn</code> routing engine) aren't part of it.</p>
+<figure>
+<p><img alt="Figure 8.1: How ibsim works" loading="lazy" src="../img/fig-8_1.png" /></p>
+<figcaption><strong>Figure 8.1: How ibsim works.</strong> ibsim holds the fabric model. OpenSM and the diagnostic tools run unchanged, with libumad2sim.so redirecting their MADs to the simulator instead of a real HCA. Commands typed into the simulator console (fed through a named pipe) change the fabric, for example by failing a link.</figcaption>
+</figure>
+<h3 id="the-simulated-helix-a-fabric">The simulated Helix-A fabric<a class="headerlink" href="#the-simulated-helix-a-fabric" title="Permanent link">&para;</a></h3>
+<p>The fabric is a two-SU slice of Helix-A: two spines, four rail leaves, four GPU nodes with two HCAs each (one per rail), and the two UFM servers of the HA pair. The first node in the file, <code>hxa-ufm-a1</code>, is where ibsim attaches clients by default, so that is where the master SM runs, just as UFM hosts the SM on Helix-A.</p>
+<figure>
+<p><img alt="Figure 8.2: The Helix-A mini fabric in ibsim" loading="lazy" src="../img/fig-8_2.png" /></p>
+<figcaption><strong>Figure 8.2: The Helix-A mini fabric in ibsim.</strong> Leaf ports 1–2 go to GPU HCAs, port 30 to a UFM server, and ports 33 and 34 are uplinks to spine01 and spine02. Rail 1 HCAs (mlx5_0) connect to the r1 leaves, rail 2 HCAs (mlx5_1) to the r2 leaves.</figcaption>
+</figure>
+<h2 id="step-by-step">Step-by-step<a class="headerlink" href="#step-by-step" title="Permanent link">&para;</a></h2>
+<h3 id="task-1-install-the-simulator-and-tools-on-hxa-ibsim">Task 1 — Install the simulator and tools on hxa-ibsim<a class="headerlink" href="#task-1-install-the-simulator-and-tools-on-hxa-ibsim" title="Permanent link">&para;</a></h3>
+<ol>
+<li>
+<p>From the oob-mgmt-server, log in and become root. Running everything as root keeps the simulator and its clients under the same user, which ibsim needs.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>ubuntu@oob-mgmt-server:~$ ssh ubuntu@hxa-ibsim
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>ubuntu@hxa-ibsim:~$ sudo -i
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>root@hxa-ibsim:~#
+</code></pre></div>
+</li>
+<li>
+<p>Install ibsim, OpenSM and the diagnostic tools. They are in Ubuntu 24.04's <code>universe</code> repository and download through the oob-mgmt-server's NAT gateway.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>root@hxa-ibsim:~# apt-get update
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>root@hxa-ibsim:~# apt-get install -y ibsim-utils opensm infiniband-diags
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>root@hxa-ibsim:~# ibsim-run -h | head -3
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>ibsim-run: run commands with an ibsim-smulated stack
+</code></pre></div>
+</li>
+</ol>
+<p><strong>Checkpoint</strong></p>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <code>which ibsim opensm ibnetdiscover</code> prints three paths.</li>
+</ul>
+<h3 id="task-2-create-the-fabric-file-and-start-the-simulator">Task 2 — Create the fabric file and start the simulator<a class="headerlink" href="#task-2-create-the-fabric-file-and-start-the-simulator" title="Permanent link">&para;</a></h3>
+<ol>
+<li>
+<p>Create a working directory and the topology file. Download <code>helix-a.net</code> from the companion site, or type it in from <strong>Appendix B</strong>.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>root@hxa-ibsim:~# mkdir -p ~/ibsim &amp;&amp; cd ~/ibsim
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>root@hxa-ibsim:~/ibsim# nano helix-a.net          # paste Appendix B, save
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>root@hxa-ibsim:~/ibsim# grep -c &#39;^Switch&#39; helix-a.net ; grep -c &#39;^Hca&#39; helix-a.net
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>6
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>10
+</code></pre></div>
+</li>
+<li>
+<p>Each node record is a header line (<code>Switch 36 "name"</code> or <code>Hca 1 "name"</code>) followed by one line per connected port: <code>[local-port] "remote-node"[remote-port]</code>. Look at one leaf:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>Switch  36 &quot;hxa-su1-leaf-r1&quot;
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>[1] &quot;hxa-gpu01 mlx5_0&quot;[1]
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>[2] &quot;hxa-gpu02 mlx5_0&quot;[1]
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>[30]    &quot;hxa-ufm-a1 mlx5_0&quot;[1]
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>[33]    &quot;hxa-spine01&quot;[1]
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>[34]    &quot;hxa-spine02&quot;[1]
+</code></pre></div>
+</li>
+<li>
+<p>Start the simulator in the background. Its console reads commands from a <strong>named pipe</strong>, <code>simcmd</code>, so you can change the fabric later without a second terminal.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>root@hxa-ibsim:~/ibsim# mkfifo simcmd
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>root@hxa-ibsim:~/ibsim# nohup sh -c &#39;tail -f ~/ibsim/simcmd | ibsim -s ~/ibsim/helix-a.net&#39; &gt; ~/ibsim/sim.log 2&gt;&amp;1 &amp;
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>root@hxa-ibsim:~/ibsim# echo &#39;Help&#39; &gt; simcmd ; sleep 1 ; grep -A6 &#39;Commands:&#39; sim.log
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>sim&gt; Commands:
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>    !&lt;filename&gt; - run commands from the file
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>    Start network
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>    Dump [&quot;nodeid&quot;] : dump node information in network
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>    Route &lt;from-lid&gt; &lt;to-lid&gt;
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>    Link &quot;nodeid&quot;[port] &quot;remoteid&quot;[port]
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>    ReLink &quot;nodeid&quot; : restore previously unconnected link(s) of the node
+</code></pre></div>
+<div class="admonition info">
+<p class="admonition-title">Field note</p>
+<p><code>sim.log</code> also contains many <code>ibwarn: parse_port_connection_data: cannot parse remote lid</code> lines. They are harmless: the parser expects the optional LID fields that a real <code>ibnetdiscover</code> dump contains.</p>
+</div>
+</li>
+</ol>
+<h3 id="task-3-start-the-subnet-manager-and-discover-the-fabric">Task 3 — Start the Subnet Manager and discover the fabric<a class="headerlink" href="#task-3-start-the-subnet-manager-and-discover-the-fabric" title="Permanent link">&para;</a></h3>
+<ol>
+<li>
+<p>Start OpenSM on <code>hxa-ufm-a1</code> with priority 14 (Chapter 12: the preferred master gets the highest priority, 0–15).</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>root@hxa-ibsim:~/ibsim# nohup ibsim-run opensm -p 14 -f ~/ibsim/opensm-a1.log &gt; osm-a1.out 2&gt;&amp;1 &amp;
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>root@hxa-ibsim:~/ibsim# sleep 8 ; grep -E &#39;Priority|state&#39; osm-a1.out
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a> Priority = 14
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>Entering DISCOVERING state
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>Entering MASTER state
+</code></pre></div>
+</li>
+<li>
+<p>Confirm which SM is master:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>root@hxa-ibsim:~/ibsim# ibsim-run sminfo 2&gt;/dev/null
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>sminfo: sm lid 1 sm guid 0x100001, activity count 506 priority 14 state 3 SMINFO_MASTER
+</code></pre></div>
+</li>
+<li>
+<p>Inventory the fabric (Chapter 17, section 17.3):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>root@hxa-ibsim:~/ibsim# alias ib=&#39;ibsim-run&#39;        # saves typing; tools print ibwarn noise on stderr
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>root@hxa-ibsim:~/ibsim# ib ibswitches 2&gt;/dev/null
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>Switch  : 0x0000000000200005 ports 36 &quot;hxa-su2-leaf-r2&quot; base port 0 lid 9 lmc 0
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>Switch  : 0x0000000000200004 ports 36 &quot;hxa-su2-leaf-r1&quot; base port 0 lid 7 lmc 0
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>Switch  : 0x0000000000200003 ports 36 &quot;hxa-su1-leaf-r2&quot; base port 0 lid 6 lmc 0
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>Switch  : 0x0000000000200001 ports 36 &quot;hxa-spine02&quot; base port 0 lid 3 lmc 0
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>Switch  : 0x0000000000200000 ports 36 &quot;hxa-spine01&quot; base port 0 lid 2 lmc 0
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>Switch  : 0x0000000000200002 ports 36 &quot;hxa-su1-leaf-r1&quot; base port 0 lid 4 lmc 0
+<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>root@hxa-ibsim:~/ibsim# ib ibhosts 2&gt;/dev/null | wc -l
+<a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>10
+</code></pre></div>
+</li>
+<li>
+<p>Build the LID and port-GUID map you'll need for partitions. <code>ibnetdiscover -p</code> prints one line per port:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>root@hxa-ibsim:~/ibsim# ib ibnetdiscover -p 2&gt;/dev/null | grep &#39;^CA&#39; | grep gpu | sort -k2 -n
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>CA     5  1 0x0000000000100003 4x SDR - SW     4  1 0x0000000000200002 ( &#39;hxa-gpu01 mlx5_0&#39; - &#39;hxa-su1-leaf-r1&#39; )
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>CA     8  1 0x0000000000100005 4x SDR - SW     6  1 0x0000000000200003 ( &#39;hxa-gpu01 mlx5_1&#39; - &#39;hxa-su1-leaf-r2&#39; )
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>CA    10  1 0x0000000000100007 4x SDR - SW     4  2 0x0000000000200002 ( &#39;hxa-gpu02 mlx5_0&#39; - &#39;hxa-su1-leaf-r1&#39; )
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>CA    11  1 0x0000000000100009 4x SDR - SW     6  2 0x0000000000200003 ( &#39;hxa-gpu02 mlx5_1&#39; - &#39;hxa-su1-leaf-r2&#39; )
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>CA    12  1 0x000000000010000b 4x SDR - SW     7  1 0x0000000000200004 ( &#39;hxa-gpu03 mlx5_0&#39; - &#39;hxa-su2-leaf-r1&#39; )
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>CA    13  1 0x000000000010000d 4x SDR - SW     9  1 0x0000000000200005 ( &#39;hxa-gpu03 mlx5_1&#39; - &#39;hxa-su2-leaf-r2&#39; )
+<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>CA    14  1 0x000000000010000f 4x SDR - SW     7  2 0x0000000000200004 ( &#39;hxa-gpu04 mlx5_0&#39; - &#39;hxa-su2-leaf-r1&#39; )
+<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>CA    15  1 0x0000000000100011 4x SDR - SW     9  2 0x0000000000200005 ( &#39;hxa-gpu04 mlx5_1&#39; - &#39;hxa-su2-leaf-r2&#39; )
+</code></pre></div>
+</li>
+</ol>
+<p>Read each line as: node type, <strong>LID</strong>, port number, <strong>port GUID</strong>, width and speed, then the peer's type, LID, port and GUID, then the two node descriptions. Record the table below; the rest of the lab uses it.</p>
+<table>
+<thead>
+<tr>
+<th>HCA</th>
+<th>LID</th>
+<th>Port GUID</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>hxa-gpu01 mlx5_0</td>
+<td>5</td>
+<td>0x0000000000100003</td>
+</tr>
+<tr>
+<td>hxa-gpu02 mlx5_0</td>
+<td>10</td>
+<td>0x0000000000100007</td>
+</tr>
+<tr>
+<td>hxa-gpu03 mlx5_0</td>
+<td>12</td>
+<td>0x000000000010000b</td>
+</tr>
+<tr>
+<td>hxa-gpu04 mlx5_0</td>
+<td>14</td>
+<td>0x000000000010000f</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition danger">
+<p class="admonition-title">Exam trap</p>
+<p>Node GUID and port GUID are different numbers. <code>ibhosts</code> shows the node GUID (…002 for gpu01 mlx5_0); partitions and SA records use the <strong>port GUID</strong> (…003). Mixing them up is the most common reason a partition "doesn't work".</p>
+</div>
+<p><strong>Checkpoint</strong></p>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <code>sminfo</code> shows a MASTER at LID 1 with priority 14.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> 6 switches and 10 CAs discovered; your LID table matches.</li>
+</ul>
+<h3 id="task-4-read-ports-links-and-forwarding-tables">Task 4 — Read ports, links and forwarding tables<a class="headerlink" href="#task-4-read-ports-links-and-forwarding-tables" title="Permanent link">&para;</a></h3>
+<ol>
+<li>
+<p>Check one HCA port the way Chapter 11 describes the port state machine:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>root@hxa-ibsim:~/ibsim# ib smpquery portinfo 5 1 2&gt;/dev/null | grep -E &#39;SMLid|LinkState|PhysLinkState|LinkWidthActive|LinkSpeedActive&#39;
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>SMLid:...........................1
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>LinkWidthActive:.................4X
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>LinkState:.......................Active
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>PhysLinkState:...................LinkUp
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>LinkSpeedActive:.................2.5 Gbps
+</code></pre></div>
+<p><code>Active</code> + <code>LinkUp</code> + 4X is healthy. (A real NDR port shows 106.25 Gbps per lane; the simulator models SDR.)</p>
+</li>
+<li>
+<p>See every link from the switches' point of view (Chapter 17, <code>iblinkinfo</code>):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>root@hxa-ibsim:~/ibsim# ib iblinkinfo --switches-only -l 2&gt;/dev/null | grep &#39;hxa-su1-leaf-r1&#39; | head -4
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>0x0000000000200002 &quot;               hxa-su1-leaf-r1&quot;      4    1[  ] ==( 4X           2.5 Gbps Active/  LinkUp)==&gt;  0x0000000000100002      5    1[  ] &quot;hxa-gpu01 mlx5_0&quot; (Could be 12X Could be 10.0 Gbps)
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>0x0000000000200002 &quot;               hxa-su1-leaf-r1&quot;      4    2[  ] ==( 4X           2.5 Gbps Active/  LinkUp)==&gt;  0x0000000000100006     10    1[  ] &quot;hxa-gpu02 mlx5_0&quot; (Could be 12X Could be 10.0 Gbps)
+</code></pre></div>
+</li>
+<li>
+<p>Dump a leaf's linear forwarding table (LFT). The SM spreads destinations across both uplinks (33 and 34):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>root@hxa-ibsim:~/ibsim# ib ibroute 4 2&gt;/dev/null | head -12
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>Unicast lids [0x0-0x10] of switch Lid 4 guid 0x0000000000200002 (hxa-su1-leaf-r1):
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>  Lid  Out   Destination
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>       Port     Info 
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>0x0001 030 : (Channel Adapter portguid 0x0000000000100001: &#39;hxa-ufm-a1 mlx5_0&#39;)
+<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>0x0002 033 : (Switch portguid 0x0000000000200000: &#39;hxa-spine01&#39;)
+<a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a>0x0003 034 : (Switch portguid 0x0000000000200001: &#39;hxa-spine02&#39;)
+<a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a>0x0004 000 : (Switch portguid 0x0000000000200002: &#39;hxa-su1-leaf-r1&#39;)
+<a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a>0x0005 001 : (Channel Adapter portguid 0x0000000000100003: &#39;hxa-gpu01 mlx5_0&#39;)
+<a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a>0x0006 034 : (Switch portguid 0x0000000000200003: &#39;hxa-su1-leaf-r2&#39;)
+<a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a>0x0007 034 : (Switch portguid 0x0000000000200004: &#39;hxa-su2-leaf-r1&#39;)
+<a id="__codelineno-11-12" name="__codelineno-11-12" href="#__codelineno-11-12"></a>0x0008 034 : (Channel Adapter portguid 0x0000000000100005: &#39;hxa-gpu01 mlx5_1&#39;)
+</code></pre></div>
+</li>
+<li>
+<p>Trace the path from gpu01 rail 1 (LID 5) to gpu03 rail 1 (LID 12), which sits in the other SU:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>root@hxa-ibsim:~/ibsim# ib ibtracert 5 12 2&gt;/dev/null
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>From ca {0x0000000000100002} portnum 1 lid 5-5 &quot;hxa-gpu01 mlx5_0&quot;
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>[1] -&gt; switch port {0x0000000000200002}[1] lid 4-4 &quot;hxa-su1-leaf-r1&quot;
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>[33] -&gt; switch port {0x0000000000200000}[1] lid 2-2 &quot;hxa-spine01&quot;
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>[3] -&gt; switch port {0x0000000000200004}[33] lid 7-7 &quot;hxa-su2-leaf-r1&quot;
+<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>[1] -&gt; ca port {0x000000000010000b}[1] lid 12-12 &quot;hxa-gpu03 mlx5_0&quot;
+<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a>To ca {0x000000000010000a} portnum 1 lid 12-12 &quot;hxa-gpu03 mlx5_0&quot;
+</code></pre></div>
+</li>
+</ol>
+<p>Leaf → spine → leaf: exactly the rail-optimised path of Chapter 2. Traffic between two HCAs on the same rail leaf never leaves that leaf.</p>
+<div class="admonition question">
+<p class="admonition-title">Check your understanding</p>
+<p>Run <code>ib ibtracert 5 8</code> (gpu01 rail 1 to gpu01 rail 2). Why does it cross a spine even though both HCAs are in the same server? <em>(Answer: rail 1 and rail 2 are separate leaves; in a rail-optimised fabric, cross-rail traffic goes leaf → spine → leaf. In a real node NCCL keeps it on NVLink instead.)</em></p>
+</div>
+<ol>
+<li>
+<p>Read the SM's routing choice from its log. OpenSM's default engine is <strong>minhop</strong>; NVIDIA's OpenSM in UFM adds <code>ar_updn</code> for adaptive routing (Chapter 14), which this open-source build doesn't include.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>root@hxa-ibsim:~/ibsim# grep -iE &#39;routing engine|ucast&#39; ~/ibsim/opensm-a1.log | head -3
+</code></pre></div>
+</li>
+</ol>
+<p><strong>Checkpoint</strong></p>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> You can explain each field of an <code>iblinkinfo</code> line and an <code>ibroute</code> entry.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> You traced a cross-SU path leaf → spine → leaf.</li>
+</ul>
+<h3 id="task-5-master-and-standby-sm-failover-and-failback">Task 5 — Master and standby SM; failover and failback<a class="headerlink" href="#task-5-master-and-standby-sm-failover-and-failback" title="Permanent link">&para;</a></h3>
+<ol>
+<li>
+<p>Start a second OpenSM on <code>hxa-ufm-a2</code> with a lower priority (12). The <code>SIM_HOST</code> variable tells umad2sim which simulated node to attach to.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>root@hxa-ibsim:~/ibsim# SIM_HOST=&quot;hxa-ufm-a2 mlx5_0&quot; nohup ibsim-run opensm -p 12 -f ~/ibsim/opensm-a2.log &gt; osm-a2.out 2&gt;&amp;1 &amp;
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>root@hxa-ibsim:~/ibsim# sleep 10 ; grep &#39;state&#39; osm-a2.out
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>Entering DISCOVERING state
+<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>Entering STANDBY state
+</code></pre></div>
+</li>
+<li>
+<p>Fail the master by stopping it (the equivalent of losing <code>ufm-a1</code>):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>root@hxa-ibsim:~/ibsim# pgrep -af &#39;opensm -p 14&#39;
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>root@hxa-ibsim:~/ibsim# kill &lt;pid-from-above&gt;
+</code></pre></div>
+</li>
+<li>
+<p>Watch the standby. It polls the master and takes over after several missed polls; in the simulator this takes about a minute.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>root@hxa-ibsim:~/ibsim# sleep 90 ; grep &#39;state&#39; osm-a2.out | tail -1
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>Entering MASTER state
+<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>root@hxa-ibsim:~/ibsim# ib sminfo 2&gt;/dev/null
+<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a>sminfo: sm lid 16 sm guid 0x100013, activity count 788 priority 12 state 3 SMINFO_MASTER
+</code></pre></div>
+<p><em>(The activity count will differ.)</em> The master is now LID 16, <code>hxa-ufm-a2</code>. Existing LIDs and forwarding tables were kept: a failover does not renumber the fabric.</p>
+</li>
+</ol>
+<figure>
+<p><img alt="Figure 8.3: SM failover and failback in the lab" loading="lazy" src="../img/fig-8_3.png" /></p>
+<figcaption><strong>Figure 8.3: SM failover and failback in the lab.</strong> The standby polls the master. When polls fail, it takes over as master with the existing LIDs. When the higher-priority SM returns, it negotiates and takes mastership back (handover).</figcaption>
+</figure>
+<ol>
+<li>
+<p>Fail back: restart the priority-14 SM on <code>hxa-ufm-a1</code>. Because it has the higher priority, it negotiates mastership back.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>root@hxa-ibsim:~/ibsim# nohup ibsim-run opensm -p 14 -f ~/ibsim/opensm-a1.log &gt; osm-a1.out 2&gt;&amp;1 &amp;
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>root@hxa-ibsim:~/ibsim# sleep 45 ; ib sminfo 2&gt;/dev/null
+<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>sminfo: sm lid 1 sm guid 0x100001, activity count 483 priority 14 state 3 SMINFO_MASTER
+</code></pre></div>
+<div class="admonition tip">
+<p class="admonition-title">Exam focus</p>
+<p>Highest priority wins; on equal priority the lowest port GUID wins. In UFM HA (Chapter 12) the SM follows the UFM master through Pacemaker, so you don't normally run two independent SMs by hand. This task shows the SM-level behaviour underneath.</p>
+</div>
+</li>
+</ol>
+<p><strong>Checkpoint</strong></p>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> You saw STANDBY → MASTER on ufm-a2 after the master failed.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> The priority-14 SM took mastership back.</li>
+</ul>
+<h3 id="task-6-partitions-pkeys-for-tenant-isolation">Task 6 — Partitions (PKeys) for tenant isolation<a class="headerlink" href="#task-6-partitions-pkeys-for-tenant-isolation" title="Permanent link">&para;</a></h3>
+<ol>
+<li>
+<p>Write <code>partitions.conf</code> using the <strong>port GUIDs</strong> from Task 3. RESEARCH gets gpu01 and gpu03 (rail 1), PRODUCTION gets gpu02 and gpu04 (rail 1), and SHARED is a limited partition that every port can use to talk to a full member only (the UFM server).</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>root@hxa-ibsim:~/ibsim# cat &gt; partitions.conf &lt;&lt;&#39;EOF&#39;
+<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>Default=0x7fff, ipoib : ALL=full ;
+<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a>RESEARCH=0x8001, ipoib : 0x0000000000100003=full, 0x000000000010000b=full ;
+<a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a>PRODUCTION=0x8002, ipoib : 0x0000000000100007=full, 0x000000000010000f=full ;
+<a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a>SHARED=0x0100 : ALL=limited, 0x0000000000100001=full ;
+<a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a>EOF
+</code></pre></div>
+</li>
+<li>
+<p>Restart the master SM with the partition file (<code>-P</code>). In production UFM manages this file for you (Chapter 13).</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>root@hxa-ibsim:~/ibsim# pkill -f &#39;opensm -p 14&#39; ; sleep 2
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>root@hxa-ibsim:~/ibsim# nohup ibsim-run opensm -p 14 -P ~/ibsim/partitions.conf -f ~/ibsim/opensm-a1.log &gt; osm-a1.out 2&gt;&amp;1 &amp;
+<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>root@hxa-ibsim:~/ibsim# sleep 45 ; ib sminfo 2&gt;/dev/null | grep -o &#39;priority 14.*&#39;
+<a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a>priority 14 state 3 SMINFO_MASTER
+</code></pre></div>
+</li>
+<li>
+<p>Read the PKey tables the SM programmed. gpu03 rail 1 (LID 12) is in RESEARCH; gpu01 rail 2 (LID 8) is not:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>root@hxa-ibsim:~/ibsim# ib smpquery pkeys 12 2&gt;/dev/null | head -1
+<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>   0: 0xffff 0x0100 0x8001 0x0000 0x0000 0x0000 0x0000 0x0000
+<a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a>root@hxa-ibsim:~/ibsim# ib smpquery pkeys 8 2&gt;/dev/null | head -1
+<a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a>   0: 0xffff 0x0100 0x0000 0x0000 0x0000 0x0000 0x0000 0x0000
+</code></pre></div>
+</li>
+</ol>
+<p>Decode them with Chapter 13: <code>0xffff</code> is the default partition with the membership bit set (full member). <code>0x0100</code> is SHARED with the membership bit <strong>clear</strong>, so these ports are <strong>limited</strong> members and can talk only to full members of 0x0100. <code>0x8001</code> is RESEARCH, full member.</p>
+<ol>
+<li>
+<p>Change membership and reload without restarting. Add gpu02 rail 1 to RESEARCH, then send OpenSM a HUP so it re-reads the file:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>root@hxa-ibsim:~/ibsim# sed -i &#39;s/0x000000000010000b=full ;/0x000000000010000b=full, 0x0000000000100007=full ;/&#39; partitions.conf
+<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>root@hxa-ibsim:~/ibsim# pkill -HUP -f &#39;opensm -p 14&#39; ; sleep 20
+<a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a>root@hxa-ibsim:~/ibsim# ib smpquery pkeys 10 2&gt;/dev/null | head -1
+<a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a>   0: 0xffff 0x0100 0x8002 0x8001 0x0000 0x0000 0x0000 0x0000
+</code></pre></div>
+</li>
+</ol>
+<p>gpu02 rail 1 is now in both RESEARCH and PRODUCTION.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>OpenSM discards partition lines it can't parse. Always check the log after a change: <code>grep -i partition ~/ibsim/opensm-a1.log | tail</code>.</p>
+</div>
+<p><strong>Checkpoint</strong></p>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> LID 12 shows 0x8001; LID 8 does not.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> After the HUP, LID 10 shows 0x8001.</li>
+</ul>
+<h3 id="task-7-counters-errors-and-a-failed-link">Task 7 — Counters, errors and a failed link<a class="headerlink" href="#task-7-counters-errors-and-a-failed-link" title="Permanent link">&para;</a></h3>
+<ol>
+<li>
+<p>Read counters on a leaf uplink (Chapter 15). All zero on a healthy port:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>root@hxa-ibsim:~/ibsim# ib perfquery 4 33 2&gt;/dev/null | head -8
+<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a># Port counters: Lid 4 port 33 (CapMask: 0x1300)
+<a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a>PortSelect:......................33
+<a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a>CounterSelect:...................0x0000
+<a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a>SymbolErrorCounter:..............0
+<a id="__codelineno-22-6" name="__codelineno-22-6" href="#__codelineno-22-6"></a>LinkErrorRecoveryCounter:........0
+<a id="__codelineno-22-7" name="__codelineno-22-7" href="#__codelineno-22-7"></a>LinkDownedCounter:...............0
+<a id="__codelineno-22-8" name="__codelineno-22-8" href="#__codelineno-22-8"></a>PortRcvErrors:...................0
+</code></pre></div>
+</li>
+<li>
+<p>Inject a marginal cable: set symbol errors and link-downed events on <code>hxa-su1-leaf-r1</code> port 33 through the simulator console.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>root@hxa-ibsim:~/ibsim# echo &#39;PerformanceSet &quot;hxa-su1-leaf-r1&quot;[33] PortCounters.SymbolErrorCounter=250&#39; &gt; simcmd
+<a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a>root@hxa-ibsim:~/ibsim# echo &#39;PerformanceSet &quot;hxa-su1-leaf-r1&quot;[33] PortCounters.LinkDownedCounter=3&#39; &gt; simcmd
+</code></pre></div>
+</li>
+<li>
+<p>Find it the way an operator would, with a fabric-wide error sweep (Chapter 17):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a>root@hxa-ibsim:~/ibsim# ib ibqueryerrors 2&gt;/dev/null
+<a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a>Errors for 0x200002 &quot;hxa-su1-leaf-r1&quot;
+<a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a>   GUID 0x200002 port ALL: [SymbolErrorCounter == 250] [LinkDownedCounter == 3]
+<a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a>   GUID 0x200002 port 33: [SymbolErrorCounter == 250] [LinkDownedCounter == 3]
+<a id="__codelineno-24-5" name="__codelineno-24-5" href="#__codelineno-24-5"></a>
+<a id="__codelineno-24-6" name="__codelineno-24-6" href="#__codelineno-24-6"></a>## Summary: 16 nodes checked, 1 bad nodes found
+<a id="__codelineno-24-7" name="__codelineno-24-7" href="#__codelineno-24-7"></a>##          226 ports checked, 1 ports have errors beyond threshold
+</code></pre></div>
+</li>
+</ol>
+<p>Diagnosis per Chapters 15 and 20: symbol errors plus link-down events on one uplink point to a marginal cable or optic between <code>hxa-su1-leaf-r1</code> port 33 and <code>hxa-spine01</code> port 1. On a real fabric you'd confirm with ibdiagnet's cable and BER checks and UFM's health report, isolate the port and replace the cable. Clear the counters afterwards (<code>perfquery -R</code>) so a recurrence is visible.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a>root@hxa-ibsim:~/ibsim# ib perfquery -R 4 33 2&gt;/dev/null &gt;/dev/null ; ib ibqueryerrors 2&gt;/dev/null | tail -2
+</code></pre></div>
+<ol>
+<li>
+<p>Now fail a link completely: unplug the spine02 uplink of <code>hxa-su2-leaf-r2</code>.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>root@hxa-ibsim:~/ibsim# echo &#39;Unlink &quot;hxa-su2-leaf-r2&quot;[34]&#39; &gt; simcmd ; sleep 20
+<a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a>root@hxa-ibsim:~/ibsim# ib iblinkinfo --switches-only -l 2&gt;/dev/null | grep &#39;hxa-su2-leaf-r2&#39; | grep -E &#39; 3[34]\[&#39;
+<a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a>0x0000000000200005 &quot;               hxa-su2-leaf-r2&quot;      9   33[  ] ==( 4X           2.5 Gbps Active/  LinkUp)==&gt;  0x0000000000200000      2    4[  ] &quot;hxa-spine01&quot; (Could be 12X Could be 10.0 Gbps)
+<a id="__codelineno-26-4" name="__codelineno-26-4" href="#__codelineno-26-4"></a>0x0000000000200005 &quot;               hxa-su2-leaf-r2&quot;      9   34[  ] ==(                Down/ Polling)==&gt;             [  ] &quot;&quot; ( )
+</code></pre></div>
+</li>
+</ol>
+<p>Port 34 is <strong>Down/Polling</strong>: no physical link partner. The SM's next sweep reroutes: check <code>ib ibroute 9</code> and you'll see every destination now leaves through port 33 only. The fabric still works at half the uplink capacity on that leaf, which is exactly the "silent" degradation that Chapter 15 warns about.</p>
+<ol>
+<li>
+<p>Restore the link:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>root@hxa-ibsim:~/ibsim# echo &#39;ReLink &quot;hxa-su2-leaf-r2&quot;[34]&#39; &gt; simcmd ; sleep 20
+<a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a>root@hxa-ibsim:~/ibsim# ib iblinkinfo --switches-only -l 2&gt;/dev/null | grep &#39;hxa-su2-leaf-r2&#39; | grep &#39; 34\[&#39;
+</code></pre></div>
+</li>
+</ol>
+<figure>
+<p><img alt="Figure 8.4: Finding a fabric problem with the toolkit" loading="lazy" src="../img/fig-8_4.png" /></p>
+<figcaption><strong>Figure 8.4: Finding a fabric problem with the toolkit.</strong> Start wide (errors and down links across the fabric), then narrow to the port, its counters and its routes. The same order works on a real fabric, where ibdiagnet and UFM add cable, BER and health data.</figcaption>
+</figure>
+<p><strong>Checkpoint</strong></p>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <code>ibqueryerrors</code> found the symbol errors on leaf LID 4 port 33.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <code>iblinkinfo</code> showed port 34 Down/Polling, and it recovered after ReLink.</li>
+</ul>
+<h2 id="verify">Verify<a class="headerlink" href="#verify" title="Permanent link">&para;</a></h2>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Master SM on hxa-ufm-a1 (priority 14); standby on hxa-ufm-a2.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Failover and failback both observed.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> PKeys 0x8001, 0x8002 and limited 0x0100 visible in PKey tables.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Error injection and link failure found with <code>ibqueryerrors</code> and <code>iblinkinfo</code>.</li>
+</ul>
+<h2 id="break-and-fix">Break and fix<a class="headerlink" href="#break-and-fix" title="Permanent link">&para;</a></h2>
+<p><strong>Fault 1: "RESEARCH members can't reach each other."</strong></p>
+<ul>
+<li><em>Inject:</em> in <code>partitions.conf</code>, replace gpu03's port GUID <code>…10000b</code> with its node GUID <code>…10000a</code>, then <code>pkill -HUP -f 'opensm -p 14'</code>.</li>
+<li><em>Symptom:</em> <code>ib smpquery pkeys 12</code> no longer shows 0x8001.</li>
+<li><em>Diagnosis:</em> the partition references a GUID that isn't a port GUID. Compare with <code>ib ibnetdiscover -p</code>.</li>
+<li><em>Fix:</em> use the port GUID and reload.</li>
+</ul>
+<p><strong>Fault 2: "Two masters fight after maintenance."</strong></p>
+<ul>
+<li><em>Inject:</em> start the ufm-a2 SM with <code>-p 14</code> as well.</li>
+<li><em>Symptom:</em> both logs show handover messages; mastership may move unexpectedly.</li>
+<li><em>Diagnosis:</em> equal priorities, so the tie-break falls to the lowest GUID.</li>
+<li><em>Fix:</em> set a clear priority order (14 on the preferred master, lower on the standby), as in Chapter 12.</li>
+</ul>
+<h2 id="clean-up-save-state">Clean-up / save state<a class="headerlink" href="#clean-up-save-state" title="Permanent link">&para;</a></h2>
+<p>The simulator runs in memory. To stop it: <code>pkill -f opensm ; pkill -f 'ibsim -s' ; pkill -f 'tail -f'</code>. To restart later, repeat Tasks 2 (step 3), 3 (step 1), 5 (step 1) and 6 (step 2). Your files in <code>~/ibsim</code> survive a simulation checkpoint.</p>
+<h2 id="exam-tie-in">Exam tie-in<a class="headerlink" href="#exam-tie-in" title="Permanent link">&para;</a></h2>
+<ul>
+<li>3.1: SM discovery, LID assignment, master/standby election by priority and GUID, failover without renumbering.</li>
+<li>3.2: PKeys, full versus limited membership, port GUIDs in <code>partitions.conf</code>, reload with SIGHUP (UFM does this for you).</li>
+<li>3.3: forwarding tables and routing engines (minhop here; <code>ar_updn</code> for AR on NVIDIA OpenSM).</li>
+<li>3.4, 5.4: counters and error sweeps; interpreting SymbolErrorCounter and LinkDownedCounter.</li>
+<li>5.5: <code>sminfo</code>, <code>ibnodes</code>, <code>ibswitches</code>, <code>ibhosts</code>, <code>ibnetdiscover</code>, <code>iblinkinfo</code>, <code>perfquery</code>, <code>ibqueryerrors</code>, <code>ibtracert</code>, <code>ibroute</code>.</li>
+</ul>
+<h2 id="review-questions">Review questions<a class="headerlink" href="#review-questions" title="Permanent link">&para;</a></h2>
+<ol>
+<li>What does <code>Down/Polling</code> on a switch port mean?</li>
+<li>Why does <code>partitions.conf</code> need port GUIDs rather than node GUIDs?</li>
+<li>After the master SM failed, did the LIDs change? Why does that matter?</li>
+<li>A PKey table shows <code>0x0100</code> rather than <code>0x8100</code>. What kind of member is the port?</li>
+<li>Which two tools would you run first to find a marginal cable in a large fabric?</li>
+</ol>
+<h3 id="answers">Answers<a class="headerlink" href="#answers" title="Permanent link">&para;</a></h3>
+<ol>
+<li>The port has no physical link: the port is down and the PHY is polling for a partner. Typical causes are an unplugged or failed cable or a powered-off peer.</li>
+<li>Partition membership is enforced per port: the SM writes PKeys into each port's PKey table, identified by the port GUID. A node GUID identifies the whole device, not the port.</li>
+<li>No. The standby took over with the existing LIDs and forwarding tables. Renumbering would break every established connection and address handle, so a failover must be invisible to running jobs.</li>
+<li>A limited member: the top (membership) bit is clear. It can communicate only with full members of that partition, not with other limited members.</li>
+<li><code>ibqueryerrors</code> (fabric-wide error sweep) and <code>iblinkinfo</code> (link state, width and speed per port). Then <code>perfquery</code> on the suspect port to see which counters are rising. On a real fabric, ibdiagnet and UFM's health report add cable and BER data.</li>
+</ol>
+<hr />
+<div class="admonition abstract">
+<p class="admonition-title">Go deeper</p>
+<p>The matching book chapters cover the exam objectives for this lab in full, with a Q&amp;A pack of about 40 exam-style questions per chapter. <a class="md-button md-button--primary" href="../../book/">Get the book</a> <a class="md-button" href="https://github.com/Cloudfoxy-Ltd/ncp-ain-guide/issues/new?template=erratum.yml">Report a problem with this lab</a></p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../lab07/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Lab 7 — Monitoring and troubleshooting">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Lab 7 — Monitoring and troubleshooting
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../lab09/" class="md-footer__link md-footer__link--next" aria-label="Next: Lab 9 — perftest over Soft-RoCE">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Lab 9 — perftest over Soft-RoCE
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      © 2026 Vakeesan Thevarajah · Cloudfoxy Ltd · Lab guide CC BY-NC-SA 4.0 · Independent, not endorsed by NVIDIA
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.footer", "navigation.top", "content.code.copy", "search.highlight", "search.suggest", "toc.follow"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

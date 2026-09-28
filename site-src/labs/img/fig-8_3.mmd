@@ -1,0 +1,12 @@
+sequenceDiagram
+    participant A1 as opensm p14 on ufm-a1
+    participant F as Fabric
+    participant A2 as opensm p12 on ufm-a2
+    A1->>F: MASTER, sweeps, programs LFTs
+    A2->>A1: SMInfo polls (STANDBY)
+    Note over A1: killed (ufm-a1 lost)
+    A2--xA1: polls time out
+    A2->>F: becomes MASTER, keeps LIDs
+    Note over A1: restarted, priority 14
+    A1->>A2: higher priority, handover
+    A1->>F: MASTER again, a2 back to STANDBY

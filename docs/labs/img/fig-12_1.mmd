@@ -1,0 +1,10 @@
+sequenceDiagram
+    participant A as ansible-playbook (oob-mgmt-server)
+    participant P as httpapi plugin nvidia.nvue.httpapi
+    participant N as NVUE REST API :8765 on a leaf
+    A->>P: task nvidia.nvue.api operation set, data
+    P->>N: POST /nvue_v1/revision
+    P->>N: PATCH /nvue_v1/?rev=N (data)
+    P->>N: PATCH /nvue_v1/revision/N state apply
+    N-->>P: state applied
+    P-->>A: changed true or false

@@ -1,0 +1,21 @@
+flowchart TB
+    subgraph H1[" "]
+        direction LR
+        A["hxb-gpu01<br/>perftest client"]:::gpu --> B["rxe0 on eth1<br/>172.16.10.101"]:::gpu
+    end
+    subgraph NET[" "]
+        direction LR
+        C["hxb-leaf-r1<br/>VLAN 110 → VNI 10110"]:::eth --> D["spine01 or spine02<br/>(ECMP)"]:::eth
+        D --> E["hxb-leaf-r3<br/>VNI 10110 → VLAN 110"]:::eth
+    end
+    subgraph H2[" "]
+        direction LR
+        F["rxe0 on eth1<br/>172.16.10.102"]:::gpu --> G["hxb-gpu02<br/>perftest server"]:::gpu
+    end
+    H1 --> NET
+    NET --> H2
+    style H1 fill:#FFFFFF,stroke:#FFFFFF
+    style NET fill:#FFFFFF,stroke:#FFFFFF
+    style H2 fill:#FFFFFF,stroke:#FFFFFF
+    classDef gpu fill:#DCEBFA,stroke:#1F5FAD,color:#0B2545
+    classDef eth fill:#DDF2DC,stroke:#2E7D32,color:#123B14

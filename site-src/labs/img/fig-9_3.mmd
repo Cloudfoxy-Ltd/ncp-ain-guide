@@ -1,0 +1,7 @@
+flowchart TB
+    R1["1 · Path health<br/>ping -M do, MTU,<br/>counters"]:::eth --> R2["2 · Single-pair RDMA<br/>ib_write_bw / lat<br/>(this lab)"]:::gpu
+    R2 --> R3["3 · GPUDirect RDMA<br/>--use_cuda<br/>(hardware)"]:::oob
+    R3 --> R4["4 · NCCL all_reduce_perf<br/>busbw vs baseline<br/>(hardware)"]:::oob
+    classDef gpu fill:#DCEBFA,stroke:#1F5FAD,color:#0B2545
+    classDef eth fill:#DDF2DC,stroke:#2E7D32,color:#123B14
+    classDef oob fill:#ECECEC,stroke:#6B6B6B,color:#2A2A2A

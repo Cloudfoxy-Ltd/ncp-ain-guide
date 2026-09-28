@@ -1,0 +1,14 @@
+flowchart TB
+    NET["helix-a.net<br/>(topology file)"]:::oob --> SIM["ibsim<br/>fabric model: switches, HCAs,<br/>ports, counters, PKey tables"]:::ib
+    PIPE["simcmd (named pipe)<br/>Unlink · PerformanceSet · Error"]:::bad --> SIM
+    subgraph CL["Clients via ibsim-run (LD_PRELOAD libumad2sim.so)"]
+        direction LR
+        SM1["opensm -p 14<br/>at hxa-ufm-a1"]:::ctl
+        SM2["opensm -p 12<br/>at hxa-ufm-a2"]:::ctl
+        DG["infiniband-diags<br/>ibnetdiscover · iblinkinfo …"]:::ib
+    end
+    CL <--> SIM
+    classDef ib fill:#EADFF5,stroke:#6A3FA0,color:#2B1745
+    classDef ctl fill:#FDE8CF,stroke:#D9730D,color:#4A2604
+    classDef oob fill:#ECECEC,stroke:#6B6B6B,color:#2A2A2A
+    classDef bad fill:#FADBD8,stroke:#C62828,color:#5B0F0F

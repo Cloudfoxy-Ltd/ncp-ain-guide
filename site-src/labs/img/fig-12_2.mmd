@@ -1,0 +1,12 @@
+flowchart TB
+    INV["inventory.yml<br/>helixb → spines, leaves"]:::oob --> GA["group_vars/all.yml<br/>(vault) password"]:::bad
+    INV --> GH["group_vars/helixb.yml<br/>httpapi · port 8765 · SSL"]:::ctl
+    INV --> GL["group_vars/leaves.yml<br/>tenant_vlans 120/121"]:::eth
+    GH --> PB["playbooks/site-vlans.yml<br/>playbooks/site-roce.yml"]:::gpu
+    GL --> PB
+    GA --> PB
+    classDef gpu fill:#DCEBFA,stroke:#1F5FAD,color:#0B2545
+    classDef eth fill:#DDF2DC,stroke:#2E7D32,color:#123B14
+    classDef ctl fill:#FDE8CF,stroke:#D9730D,color:#4A2604
+    classDef oob fill:#ECECEC,stroke:#6B6B6B,color:#2A2A2A
+    classDef bad fill:#FADBD8,stroke:#C62828,color:#5B0F0F

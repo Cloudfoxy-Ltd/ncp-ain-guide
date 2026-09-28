@@ -1,0 +1,33 @@
+flowchart TB
+    subgraph SP[" "]
+        direction LR
+        S1["hxb-spine01<br/>AS 65100 · 10.255.0.1"]:::eth
+        S2["hxb-spine02<br/>AS 65100 · 10.255.0.2"]:::eth
+    end
+    subgraph LF[" "]
+        direction LR
+        L1["hxb-leaf-r1<br/>AS 65101"]:::eth
+        L2["hxb-leaf-r2<br/>AS 65102"]:::eth
+        L3["hxb-leaf-r3<br/>AS 65103"]:::eth
+        L4["hxb-leaf-r4<br/>AS 65104"]:::eth
+    end
+    subgraph SV[" "]
+        direction LR
+        G1["hxb-gpu01<br/>AURORA"]:::gpu
+        G3["hxb-gpu03<br/>BOREALIS"]:::gpu
+        G2["hxb-gpu02<br/>AURORA"]:::gpu
+        G4["hxb-gpu04<br/>BOREALIS"]:::gpu
+    end
+    SP --- LF
+    LF --- SV
+    IB["hxa-ibsim<br/>InfiniBand simulator (Lab 8)"]:::ib
+    OOB["oob-mgmt-server<br/>jump host · Ansible"]:::oob
+    SV ~~~ IB
+    SV ~~~ OOB
+    style SP fill:#FFFFFF,stroke:#FFFFFF
+    style LF fill:#FFFFFF,stroke:#FFFFFF
+    style SV fill:#FFFFFF,stroke:#FFFFFF
+    classDef gpu fill:#DCEBFA,stroke:#1F5FAD,color:#0B2545
+    classDef eth fill:#DDF2DC,stroke:#2E7D32,color:#123B14
+    classDef ib fill:#EADFF5,stroke:#6A3FA0,color:#2B1745
+    classDef oob fill:#ECECEC,stroke:#6B6B6B,color:#2A2A2A

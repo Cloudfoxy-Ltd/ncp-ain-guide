@@ -1,0 +1,17 @@
+flowchart TB
+    subgraph REAL["Real in Air (Linux kernel data plane)"]
+        direction LR
+        E1["ECMP across<br/>swp31 / swp32"]:::eth --> E2["Path moves with<br/>source port"]:::eth
+    end
+    subgraph CFG["Configuration-level only in Air"]
+        direction LR
+        C1["nv set router<br/>adaptive-routing"]:::ctl --> C2["nv set system<br/>forwarding ecmp-hash"]:::ctl --> C3["nv set system<br/>telemetry …"]:::ctl
+    end
+    subgraph HW["Needs Spectrum hardware"]
+        direction LR
+        H1["Per-packet AR<br/>spraying"]:::bad --> H2["Histograms · HFT<br/>filled with data"]:::bad --> H3["OTLP metrics<br/>at the collector"]:::bad
+    end
+    REAL --> CFG --> HW
+    classDef eth fill:#DDF2DC,stroke:#2E7D32,color:#123B14
+    classDef ctl fill:#FDE8CF,stroke:#D9730D,color:#4A2604
+    classDef bad fill:#FADBD8,stroke:#C62828,color:#5B0F0F

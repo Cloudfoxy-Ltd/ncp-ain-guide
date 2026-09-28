@@ -1,0 +1,22 @@
+flowchart TB
+    L0["Lab 0<br/>Air + topology"]:::ctl --> L1["Lab 1<br/>NVUE"]:::eth
+    L0 --> L8["Lab 8<br/>InfiniBand (ibsim)"]:::ib
+    L0 --> L6["Lab 6<br/>Air power skills"]:::ctl
+    L1 --> L2["Lab 2<br/>BGP underlay"]:::eth
+    L2 --> L3["Lab 3<br/>RoCE QoS"]:::eth
+    L2 --> L4["Lab 4<br/>AR + telemetry"]:::eth
+    L2 --> L5["Lab 5<br/>EVPN tenants"]:::eth
+    L5 --> L7["Lab 7<br/>Monitor + troubleshoot"]:::eth
+    L5 --> L9["Lab 9<br/>perftest"]:::gpu
+    L5 --> L10["Lab 10<br/>Kubernetes"]:::gpu
+    L5 --> L11["Lab 11<br/>NVUE templates"]:::oob
+    L11 --> L12["Lab 12<br/>Ansible"]:::oob
+    L7 --> L13["Lab 13<br/>Capstone"]:::bad
+    L8 --> L13
+    L12 --> L13
+    classDef gpu fill:#DCEBFA,stroke:#1F5FAD,color:#0B2545
+    classDef eth fill:#DDF2DC,stroke:#2E7D32,color:#123B14
+    classDef ib fill:#EADFF5,stroke:#6A3FA0,color:#2B1745
+    classDef ctl fill:#FDE8CF,stroke:#D9730D,color:#4A2604
+    classDef oob fill:#ECECEC,stroke:#6B6B6B,color:#2A2A2A
+    classDef bad fill:#FADBD8,stroke:#C62828,color:#5B0F0F

@@ -1,0 +1,8 @@
+flowchart TB
+    SRC["hxb-leaf-r1<br/>lo 10.255.0.11"]:::eth
+    SRC -->|"swp31 — path A"| S1["hxb-spine01<br/>AS 65100"]:::ctl
+    SRC -->|"swp32 — path B"| S2["hxb-spine02<br/>AS 65100"]:::ctl
+    S1 -->|"swp4"| DST["hxb-leaf-r4<br/>lo 10.255.0.14"]:::eth
+    S2 -->|"swp4"| DST
+    classDef eth fill:#DDF2DC,stroke:#2E7D32,color:#123B14
+    classDef ctl fill:#FDE8CF,stroke:#D9730D,color:#4A2604

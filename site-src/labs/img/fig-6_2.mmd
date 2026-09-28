@@ -1,0 +1,12 @@
+flowchart TB
+    A["Active simulation<br/>(uses credits)"]:::eth -->|"Stop Simulation and<br/>Store Checkpoint"| B["Shutting Down → Saving<br/>→ Inactive"]:::ctl
+    B --> C["Checkpoints tab<br/>max 3 · favourites kept"]:::sto
+    C -->|"Start Simulation ▾<br/>pick a checkpoint"| A
+    C -->|"Revert<br/>(Hold to Revert)"| D["Inactive, rolled back<br/>to chosen checkpoint"]:::oob
+    D --> A
+    C -->|"4th checkpoint saved"| E["Oldest non-favourite<br/>deleted"]:::bad
+    classDef eth fill:#DDF2DC,stroke:#2E7D32,color:#123B14
+    classDef ctl fill:#FDE8CF,stroke:#D9730D,color:#4A2604
+    classDef sto fill:#D5F0EE,stroke:#00796B,color:#07332E
+    classDef oob fill:#ECECEC,stroke:#6B6B6B,color:#2A2A2A
+    classDef bad fill:#FADBD8,stroke:#C62828,color:#5B0F0F

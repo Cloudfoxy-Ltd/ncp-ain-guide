@@ -1,0 +1,19 @@
+flowchart LR
+    subgraph LA[" "]
+        direction TB
+        P["1 · Physical / L1<br/>link state, LLDP, MTU, errors"]:::oob --> U["2 · Underlay<br/>BGP unnumbered, loopbacks, ECMP"]:::eth
+        U --> O["3 · Overlay<br/>VTEPs, EVPN routes, VNIs"]:::eth
+    end
+    subgraph LB[" "]
+        direction TB
+        T["4 · Tenant<br/>VRFs, VRR gateways, host routes"]:::gpu --> Q["5 · QoS / RoCE<br/>trust, maps, PFC, ECN"]:::ctl
+        Q --> A["6 · ASIC evidence<br/>WJH drops, resources<br/>(hardware only)"]:::bad
+    end
+    LA --> LB
+    style LA fill:#FFFFFF,stroke:#FFFFFF
+    style LB fill:#FFFFFF,stroke:#FFFFFF
+    classDef gpu fill:#DCEBFA,stroke:#1F5FAD,color:#0B2545
+    classDef eth fill:#DDF2DC,stroke:#2E7D32,color:#123B14
+    classDef ctl fill:#FDE8CF,stroke:#D9730D,color:#4A2604
+    classDef oob fill:#ECECEC,stroke:#6B6B6B,color:#2A2A2A
+    classDef bad fill:#FADBD8,stroke:#C62828,color:#5B0F0F

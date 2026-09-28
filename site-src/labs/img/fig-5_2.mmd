@@ -1,0 +1,13 @@
+flowchart TB
+    APP["Packet on hxb-gpu01"]:::gpu --> Q{"Source address?"}:::ctl
+    Q -->|"172.16.10.101"| R1{"Destination in<br/>172.16.10.0/24?"}:::ctl
+    Q -->|"172.16.11.101"| R2{"Destination in<br/>172.16.11.0/24?"}:::ctl
+    Q -->|"not chosen yet"| M["Main table<br/>connected /24s on eth1 · eth2<br/>172.16.0.0/16 via 172.16.10.1<br/>default via eth0 (OOB)"]:::oob
+    R1 -->|"Yes"| M
+    R1 -->|"No"| T1["Table 101<br/>172.16.0.0/16 via 172.16.10.1 dev eth1"]:::eth
+    R2 -->|"Yes"| M
+    R2 -->|"No"| T2["Table 102<br/>172.16.0.0/16 via 172.16.11.1 dev eth2"]:::eth
+    classDef gpu fill:#DCEBFA,stroke:#1F5FAD,color:#0B2545
+    classDef eth fill:#DDF2DC,stroke:#2E7D32,color:#123B14
+    classDef ctl fill:#FDE8CF,stroke:#D9730D,color:#4A2604
+    classDef oob fill:#ECECEC,stroke:#6B6B6B,color:#2A2A2A

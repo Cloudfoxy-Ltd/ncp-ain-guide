@@ -1,0 +1,70 @@
+# Helix-A mini InfiniBand fabric for ibsim (NCP-AIN Lab Guide)
+# The first node listed hosts the Subnet Manager (the UFM server).
+
+Hca	1 "hxa-ufm-a1 mlx5_0"
+[1]	"hxa-su1-leaf-r1"[30]
+
+Switch	36 "hxa-spine01"
+[1]	"hxa-su1-leaf-r1"[33]
+[2]	"hxa-su1-leaf-r2"[33]
+[3]	"hxa-su2-leaf-r1"[33]
+[4]	"hxa-su2-leaf-r2"[33]
+
+Switch	36 "hxa-spine02"
+[1]	"hxa-su1-leaf-r1"[34]
+[2]	"hxa-su1-leaf-r2"[34]
+[3]	"hxa-su2-leaf-r1"[34]
+[4]	"hxa-su2-leaf-r2"[34]
+
+Switch	36 "hxa-su1-leaf-r1"
+[1]	"hxa-gpu01 mlx5_0"[1]
+[2]	"hxa-gpu02 mlx5_0"[1]
+[30]	"hxa-ufm-a1 mlx5_0"[1]
+[33]	"hxa-spine01"[1]
+[34]	"hxa-spine02"[1]
+
+Switch	36 "hxa-su1-leaf-r2"
+[1]	"hxa-gpu01 mlx5_1"[1]
+[2]	"hxa-gpu02 mlx5_1"[1]
+[33]	"hxa-spine01"[2]
+[34]	"hxa-spine02"[2]
+
+Switch	36 "hxa-su2-leaf-r1"
+[30]	"hxa-ufm-a2 mlx5_0"[1]
+[1]	"hxa-gpu03 mlx5_0"[1]
+[2]	"hxa-gpu04 mlx5_0"[1]
+[33]	"hxa-spine01"[3]
+[34]	"hxa-spine02"[3]
+
+Switch	36 "hxa-su2-leaf-r2"
+[1]	"hxa-gpu03 mlx5_1"[1]
+[2]	"hxa-gpu04 mlx5_1"[1]
+[33]	"hxa-spine01"[4]
+[34]	"hxa-spine02"[4]
+
+Hca	1 "hxa-gpu01 mlx5_0"
+[1]	"hxa-su1-leaf-r1"[1]
+
+Hca	1 "hxa-gpu01 mlx5_1"
+[1]	"hxa-su1-leaf-r2"[1]
+
+Hca	1 "hxa-gpu02 mlx5_0"
+[1]	"hxa-su1-leaf-r1"[2]
+
+Hca	1 "hxa-gpu02 mlx5_1"
+[1]	"hxa-su1-leaf-r2"[2]
+
+Hca	1 "hxa-gpu03 mlx5_0"
+[1]	"hxa-su2-leaf-r1"[1]
+
+Hca	1 "hxa-gpu03 mlx5_1"
+[1]	"hxa-su2-leaf-r2"[1]
+
+Hca	1 "hxa-gpu04 mlx5_0"
+[1]	"hxa-su2-leaf-r1"[2]
+
+Hca	1 "hxa-gpu04 mlx5_1"
+[1]	"hxa-su2-leaf-r2"[2]
+
+Hca	1 "hxa-ufm-a2 mlx5_0"
+[1]	"hxa-su2-leaf-r1"[30]

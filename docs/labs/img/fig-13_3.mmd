@@ -1,0 +1,11 @@
+flowchart TB
+    I["oob-mgmt-server<br/>inject.sh F7–F10"]:::oob -->|"ssh"| P["hxa-ibsim<br/>~/ibsim/simcmd (named pipe)"]:::ctl
+    I -->|"ssh · pkill / HUP"| SM["OpenSM master p14<br/>standby p12"]:::ib
+    P --> C["ibsim console<br/>Unlink · Link · PerformanceSet"]:::ib
+    C --> F["Simulated fabric<br/>hxa-su*-leaf · hxa-spine"]:::ib
+    SM --> F
+    F --> T["Student: ibsim-run sminfo · saquery<br/>iblinkinfo · ibqueryerrors · smpquery"]:::gpu
+    classDef gpu fill:#DCEBFA,stroke:#1F5FAD,color:#0B2545
+    classDef ib fill:#EADFF5,stroke:#6A3FA0,color:#2B1745
+    classDef ctl fill:#FDE8CF,stroke:#D9730D,color:#4A2604
+    classDef oob fill:#ECECEC,stroke:#6B6B6B,color:#2A2A2A

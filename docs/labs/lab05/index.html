@@ -1,0 +1,2596 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Free hands-on labs on NVIDIA DSX Air, errata and study files for the NCP-AIN Certification Guide by Vakeesan Thevarajah (Cloudfoxy Ltd).">
+      
+      
+        <meta name="author" content="Vakeesan Thevarajah">
+      
+      
+        <link rel="canonical" href="https://cloudfoxy-ltd.github.io/ncp-ain-guide/labs/lab05/">
+      
+      
+        <link rel="prev" href="../lab04/">
+      
+      
+        <link rel="next" href="../lab06/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Lab 5 — BGP-EVPN multi-tenancy - NCP-AIN Certification Guide — Labs & Errata</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="cyan" data-md-color-accent="purple">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#lab-5-bgp-evpn-multi-tenancy" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="NCP-AIN Certification Guide — Labs &amp; Errata" class="md-header__button md-logo" aria-label="NCP-AIN Certification Guide — Labs & Errata" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            NCP-AIN Certification Guide — Labs & Errata
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Lab 5 — BGP-EVPN multi-tenancy
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="cyan" data-md-color-accent="purple"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="cyan" data-md-color-accent="purple"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Cloudfoxy-Ltd/ncp-ain-guide" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Cloudfoxy-Ltd/ncp-ain-guide
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
+          
+  
+  
+  Hands-On Labs
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../book/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  The Book
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../errata/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Errata
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../flashcards/" class="md-tabs__link">
+          
+  
+  
+  Study Files
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../license/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Licence
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="NCP-AIN Certification Guide — Labs &amp; Errata" class="md-nav__button md-logo" aria-label="NCP-AIN Certification Guide — Labs & Errata" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    NCP-AIN Certification Guide — Labs & Errata
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Cloudfoxy-Ltd/ncp-ain-guide" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Cloudfoxy-Ltd/ncp-ain-guide
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hands-On Labs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Hands-On Labs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab00/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 0 — Air and topology
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab01/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 1 — NVUE essentials
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab02/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 2 — eBGP unnumbered underlay
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab03/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 3 — Lossless RoCE and Soft-RoCE
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab04/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 4 — AR, ECMP and telemetry
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 5 — BGP-EVPN multi-tenancy
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 5 — BGP-EVPN multi-tenancy
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#lab-at-a-glance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lab at a glance
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#objectives" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Objectives
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#background" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Background
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-by-step" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step-by-step
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Step-by-step">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#task-1-pre-checks-and-lab-3-clean-up" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 1 — Pre-checks and Lab 3 clean-up
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-2-enable-evpn-on-the-spines" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 2 — Enable EVPN on the spines
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-3-make-every-leaf-a-vtep" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 3 — Make every leaf a VTEP
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-4-tenant-vrfs-vnis-anycast-gateways-and-access-ports" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 4 — Tenant VRFs, VNIs, anycast gateways and access ports
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-5-configure-the-servers-with-netplan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 5 — Configure the servers with netplan
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-6-verify-the-evpn-control-plane" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 6 — Verify the EVPN control plane
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-7-prove-bridged-and-routed-reachability-within-a-tenant" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 7 — Prove bridged and routed reachability within a tenant
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-8-prove-tenant-isolation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 8 — Prove tenant isolation
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#verify" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verify
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#break-and-fix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Break and fix
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Break and fix">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fault-1-mismatched-l2-vni-on-one-leaf" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fault 1 — Mismatched L2 VNI on one leaf
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fault-2-missing-l3-vni-mapping" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fault 2 — Missing L3 VNI mapping
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#clean-up-save-state" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Clean-up / save state
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exam-tie-in" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exam tie-in
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#review-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Review questions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Review questions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#answers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Answers
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab06/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 6 — Air power skills
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab07/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 7 — Monitoring and troubleshooting
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab08/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 8 — InfiniBand with ibsim
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab09/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 9 — perftest over Soft-RoCE
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab10/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 10 — Kubernetes Network Operator
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab11/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 11 — NVUE templates
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab12/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 12 — Ansible automation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab13/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 13 — Capstone challenge
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../appendix/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Appendices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../book/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The Book
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../errata/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Errata
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Study Files
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Study Files
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../flashcards/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Flashcards
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lab-files/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab files
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../license/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Licence
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#lab-at-a-glance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lab at a glance
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#objectives" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Objectives
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#background" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Background
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-by-step" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step-by-step
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Step-by-step">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#task-1-pre-checks-and-lab-3-clean-up" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 1 — Pre-checks and Lab 3 clean-up
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-2-enable-evpn-on-the-spines" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 2 — Enable EVPN on the spines
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-3-make-every-leaf-a-vtep" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 3 — Make every leaf a VTEP
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-4-tenant-vrfs-vnis-anycast-gateways-and-access-ports" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 4 — Tenant VRFs, VNIs, anycast gateways and access ports
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-5-configure-the-servers-with-netplan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 5 — Configure the servers with netplan
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-6-verify-the-evpn-control-plane" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 6 — Verify the EVPN control plane
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-7-prove-bridged-and-routed-reachability-within-a-tenant" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 7 — Prove bridged and routed reachability within a tenant
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-8-prove-tenant-isolation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 8 — Prove tenant isolation
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#verify" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verify
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#break-and-fix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Break and fix
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Break and fix">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fault-1-mismatched-l2-vni-on-one-leaf" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fault 1 — Mismatched L2 VNI on one leaf
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fault-2-missing-l3-vni-mapping" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fault 2 — Missing L3 VNI mapping
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#clean-up-save-state" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Clean-up / save state
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exam-tie-in" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exam tie-in
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#review-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Review questions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Review questions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#answers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Answers
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="lab-5-bgp-evpn-multi-tenancy">Lab 5 — BGP-EVPN Multi-Tenancy<a class="headerlink" href="#lab-5-bgp-evpn-multi-tenancy" title="Permanent link">&para;</a></h1>
+<div class="admonition abstract">
+<p class="admonition-title">Companion to the NCP-AIN Certification Guide</p>
+<p>This free lab is part of the hands-on companion to <em>NCP-AIN Certification Guide</em> by Vakeesan Thevarajah (Cloudfoxy Ltd). The book explains the theory, design choices and hardware behaviour behind every step. <a class="md-button md-button--primary" href="../../book/">Get the book</a> <a class="md-button" href="../../sample/NCP-AIN_Sample.pdf">Free sample</a></p>
+</div>
+<h2 id="lab-at-a-glance">Lab at a glance<a class="headerlink" href="#lab-at-a-glance" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Detail</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Book chapters</td>
+<td>Chapter 7 (Multi-Tenancy with BGP-EVPN) · Chapter 4 (NVUE, underlay) · Chapter 10 (NetQ EVPN checks, concept only)</td>
+</tr>
+<tr>
+<td>Exam objectives</td>
+<td><strong>2.3</strong> Configure multi-tenancy BGP-EVPN to isolate tenant workloads · supports 2.6 (validation) and 5.3 (verification)</td>
+</tr>
+<tr>
+<td>Time</td>
+<td>About 120 minutes</td>
+</tr>
+<tr>
+<td>Air resources used</td>
+<td>hxb-spine01–02, hxb-leaf-r1–r4, hxb-gpu01–04, oob-mgmt-server (hxa-ibsim can stay idle)</td>
+</tr>
+<tr>
+<td>Prerequisite labs</td>
+<td>Lab 0 (setup), Lab 1 (NVUE), Lab 2 (eBGP unnumbered underlay with loopbacks advertised). Lab 3's temporary VLAN 100 must be removed (Task 1)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="objectives">Objectives<a class="headerlink" href="#objectives" title="Permanent link">&para;</a></h2>
+<p>By the end of this lab you will be able to:</p>
+<ol>
+<li>Enable EVPN on a Cumulus Linux 5.x fabric: VTEP source address, global EVPN state and the <code>l2vpn-evpn</code> address family on leaves and spines.</li>
+<li>Build two isolated tenants, <strong>AURORA</strong> (L3 VNI 104001) and <strong>BOREALIS</strong> (L3 VNI 104002), each with two L2 VNIs.</li>
+<li>Configure a <strong>distributed anycast gateway</strong> (VRR <code>.1</code>) in every tenant subnet with the Cumulus Linux 5.15+ <code>ipv4</code> syntax.</li>
+<li>Configure the four servers with rail-aligned addressing and per-NIC policy routing using netplan.</li>
+<li>Verify EVPN with NVUE and vtysh (VNIs, type-2 and type-5 routes, MAC tables), prove bridged and routed (symmetric IRB) reachability, and prove that AURORA cannot reach BOREALIS.</li>
+<li>Diagnose and fix two classic EVPN faults: a mismatched L2 VNI and a missing L3 VNI.</li>
+</ol>
+<h2 id="background">Background<a class="headerlink" href="#background" title="Permanent link">&para;</a></h2>
+<p>In Lab 2 you built a routed underlay: eBGP unnumbered on <code>swp31</code>–<code>swp32</code>, with every leaf loopback (10.255.0.11–.14) reachable from every other leaf. That underlay knows nothing about tenants. In this lab each leaf becomes a <strong>VTEP</strong> (VXLAN tunnel endpoint) using its loopback as the tunnel source, and <strong>BGP-EVPN</strong> runs over the same eBGP sessions to tell every VTEP which MAC addresses, host IPs and prefixes live behind which other VTEP (book Section 7.2).</p>
+<p>Each tenant gets a <strong>VRF</strong> mapped to an <strong>L3 VNI</strong>, and each tenant subnet gets a VLAN mapped to an <strong>L2 VNI</strong>. With <strong>symmetric IRB</strong>, the ingress leaf routes a packet into the tenant's L3 VNI, and the egress leaf routes it out of the L3 VNI into the destination VLAN. A leaf therefore needs only the VLANs it serves locally, plus the L3 VNI (book Section 7.3). Every leaf answers on the same gateway address and MAC (the <strong>anycast gateway</strong>, implemented as VRR), so a host's gateway is always its own leaf.</p>
+<p>The helix-b-air topology is <strong>rail-aligned</strong>, as a real GPU cluster would be. Each "GPU server" has one NIC on an odd rail leaf (r1 or r3) and one on an even rail leaf (r2 or r4). VLAN 110 (AURORA) and VLAN 210 (BOREALIS) live on leaves r1 and r3, while VLAN 111 and VLAN 211 live on leaves r2 and r4. So traffic between two servers on the <strong>same rail</strong> is bridged across the fabric in an L2 VNI, and traffic <strong>between rails</strong> is routed through the tenant's L3 VNI. You will see both.</p>
+<figure>
+<p><img alt="Figure 5.1: Lab 5 tenant plan on helix-b-air" loading="lazy" src="../img/fig-5_1.png" /></p>
+<figcaption><strong>Figure 5.1: Lab 5 tenant plan on helix-b-air.</strong> Each server has one NIC on an odd rail (VLAN 110 or 210) and one on an even rail (VLAN 111 or 211). AURORA (green) and BOREALIS (purple) share every leaf and spine but live in separate VRFs with separate L3 VNIs. Every leaf is a VTEP on its loopback; the spines only relay EVPN routes.</figcaption>
+</figure>
+<p>The tenant plan used throughout this lab:</p>
+<table>
+<thead>
+<tr>
+<th>Tenant</th>
+<th>VRF / L3 VNI</th>
+<th>VLAN / L2 VNI</th>
+<th>Subnet</th>
+<th>Anycast gateway</th>
+<th>Leaves</th>
+<th>Leaf ports</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AURORA</td>
+<td>AURORA / 104001</td>
+<td>110 / 10110</td>
+<td>172.16.10.0/24</td>
+<td>172.16.10.1</td>
+<td>r1, r3</td>
+<td>swp1</td>
+</tr>
+<tr>
+<td>AURORA</td>
+<td>AURORA / 104001</td>
+<td>111 / 10111</td>
+<td>172.16.11.0/24</td>
+<td>172.16.11.1</td>
+<td>r2, r4</td>
+<td>swp1</td>
+</tr>
+<tr>
+<td>BOREALIS</td>
+<td>BOREALIS / 104002</td>
+<td>210 / 10210</td>
+<td>172.17.10.0/24</td>
+<td>172.17.10.1</td>
+<td>r1, r3</td>
+<td>swp2</td>
+</tr>
+<tr>
+<td>BOREALIS</td>
+<td>BOREALIS / 104002</td>
+<td>211 / 10211</td>
+<td>172.17.11.0/24</td>
+<td>172.17.11.1</td>
+<td>r2, r4</td>
+<td>swp2</td>
+</tr>
+</tbody>
+</table>
+<p>Each SVI also has a <strong>unique</strong> address per leaf, using the leaf's loopback last octet: <code>.11</code> on leaf-r1, <code>.12</code> on leaf-r2, <code>.13</code> on leaf-r3 and <code>.14</code> on leaf-r4 (for example 172.16.10.11 on leaf-r1 and 172.16.10.13 on leaf-r3). The VRR MAC is <code>00:00:5e:00:01:01</code> on every leaf, as in the book.</p>
+<div class="admonition note">
+<p class="admonition-title">Version note</p>
+<p>Your switches run Cumulus Linux 5.16.1. From Cumulus Linux 5.15, NVUE moves SVI addressing under an <code>ipv4</code> object and VRF membership directly under the interface: <code>nv set interface vlan110 vrf AURORA</code>, <code>… ipv4 address …</code>, <code>… ipv4 vrr address …</code>, <code>… ipv4 vrr mac-address …</code> and <code>… ipv4 vrr state enabled</code>. The book's Chapter 7 shows the earlier 5.x form (<code>… ip vrf AURORA</code>, <code>… ip address …</code>, <code>… ip vrr … state up</code>). The concepts are identical. If a command is rejected on your release, press <strong>Tab</strong> after <code>nv set interface vlan110</code> to see which form it expects, and check the Cumulus Linux user guide for your release.</p>
+</div>
+<h2 id="step-by-step">Step-by-step<a class="headerlink" href="#step-by-step" title="Permanent link">&para;</a></h2>
+<h3 id="task-1-pre-checks-and-lab-3-clean-up">Task 1 — Pre-checks and Lab 3 clean-up<a class="headerlink" href="#task-1-pre-checks-and-lab-3-clean-up" title="Permanent link">&para;</a></h3>
+<ol>
+<li>
+<p>From the oob-mgmt-server, log in to hxb-leaf-r1 and confirm the underlay is healthy. Every leaf should have two Established sessions, one per spine.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>ubuntu@oob-mgmt-server:~$ ssh cumulus@hxb-leaf-r1
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>cumulus@hxb-leaf-r1:mgmt:~$ sudo vtysh -c &quot;show bgp ipv4 unicast summary&quot;
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>cumulus@hxb-leaf-r1:mgmt:~$ ip route show 10.255.0.13
+</code></pre></div>
+<p><strong>Expected output (illustrative):</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt Desc
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>hxb-spine01(swp31) 4   65100       412       409        0    0    0 03:21:07            5        6 N/A
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>hxb-spine02(swp32) 4   65100       410       409        0    0    0 03:21:05            5        6 N/A
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>10.255.0.13 nhid 38 proto bgp metric 20
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>        nexthop via inet6 fe80::4ab0:2dff:fe11:2201 dev swp31 weight 1
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>        nexthop via inet6 fe80::4ab0:2dff:fe8c:9a02 dev swp32 weight 1
+</code></pre></div>
+</li>
+</ol>
+<p><strong>Checkpoint:</strong>
+- Both uplink sessions are Established on every leaf (repeat on r2–r4).
+- Each remote leaf loopback is reachable over <strong>two</strong> next hops (ECMP through both spines). VXLAN tunnels ride on these loopback routes, so do not continue until they are present.</p>
+<ol>
+<li>
+<p>Remove Lab 3's temporary VLAN 100 from hxb-leaf-r1. The host ports will be re-assigned to tenant VLANs in Task 4.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv show bridge domain br_default vlan
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv unset interface vlan100
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv unset bridge domain br_default vlan 100
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv config diff
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv config apply -y
+</code></pre></div>
+</li>
+</ol>
+<p><strong>Checkpoint:</strong>
+- <code>nv show bridge domain br_default vlan</code> no longer lists VLAN 100. (If Lab 3 left the SVI unconfigured, the <code>nv unset interface vlan100</code> line simply has nothing to remove.)
+- Lab 3's QoS configuration (<code>nv show qos roce</code>) is untouched. You keep it; RoCE QoS and EVPN work together (book Section 7.5).</p>
+<ol>
+<li>
+<p>On hxb-gpu01 and hxb-gpu03, remove Lab 3's temporary 172.16.100.x address. List the netplan files and delete (or move aside) the file that Lab 3 created for <code>eth1</code>; Task 5 writes a new one for both NICs.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>ubuntu@hxb-gpu01:~$ ls /etc/netplan/
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>ubuntu@hxb-gpu01:~$ sudo grep -l &quot;172.16.100&quot; /etc/netplan/*.yaml
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>ubuntu@hxb-gpu01:~$ sudo mv /etc/netplan/&lt;lab3-file&gt;.yaml /root/
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>ubuntu@hxb-gpu01:~$ sudo ip addr flush dev eth1
+</code></pre></div>
+</li>
+</ol>
+<p><strong>Checkpoint:</strong>
+- <code>ip -br addr show eth1</code> shows no IPv4 address on hxb-gpu01 and hxb-gpu03.
+- The file that configures <code>eth0</code> (the OOB management NIC, usually <code>50-cloud-init.yaml</code>) is still in place. Do not touch it, or you will lose SSH access from the oob-mgmt-server.</p>
+<h3 id="task-2-enable-evpn-on-the-spines">Task 2 — Enable EVPN on the spines<a class="headerlink" href="#task-2-enable-evpn-on-the-spines" title="Permanent link">&para;</a></h3>
+<p>The spines are not VTEPs. They only need the <code>l2vpn-evpn</code> address family on their leaf-facing sessions so that they relay EVPN routes between leaves (book Chapter 7, Q1). Configure <strong>both</strong> spines.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>ubuntu@oob-mgmt-server:~$ ssh cumulus@hxb-spine01
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>cumulus@hxb-spine01:mgmt:~$ nv set evpn state enabled
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>cumulus@hxb-spine01:mgmt:~$ nv set vrf default router bgp address-family l2vpn-evpn state enabled
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>cumulus@hxb-spine01:mgmt:~$ nv set vrf default router bgp neighbor swp1 address-family l2vpn-evpn state enabled
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>cumulus@hxb-spine01:mgmt:~$ nv set vrf default router bgp neighbor swp2 address-family l2vpn-evpn state enabled
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>cumulus@hxb-spine01:mgmt:~$ nv set vrf default router bgp neighbor swp3 address-family l2vpn-evpn state enabled
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>cumulus@hxb-spine01:mgmt:~$ nv set vrf default router bgp neighbor swp4 address-family l2vpn-evpn state enabled
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>cumulus@hxb-spine01:mgmt:~$ nv config diff
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>cumulus@hxb-spine01:mgmt:~$ nv config apply -y
+</code></pre></div>
+<p>Repeat exactly the same commands on hxb-spine02.</p>
+<div class="admonition note">
+<p class="admonition-title">Version note</p>
+<p>Some Cumulus Linux releases enable EVPN route relay on the spines with the address family alone, without <code>nv set evpn state enabled</code>. Setting it is harmless on a spine because the spine has no VNIs and no <code>nve vxlan source</code>, so it never becomes a VTEP. If NVUE rejects it on your release, leave it out.</p>
+</div>
+<p><strong>Checkpoint:</strong>
+- <code>nv config diff</code> showed only the <code>evpn</code> and <code>l2vpn-evpn</code> changes, with no change to the IPv4 underlay.
+- <code>nv show vrf default router bgp neighbor swp1 address-family</code> lists <code>l2vpn-evpn</code> as enabled (the EVPN sessions only come up once the leaves are configured in Task 3).</p>
+<h3 id="task-3-make-every-leaf-a-vtep">Task 3 — Make every leaf a VTEP<a class="headerlink" href="#task-3-make-every-leaf-a-vtep" title="Permanent link">&para;</a></h3>
+<p>On each leaf, enable EVPN, set the VTEP source to the leaf's loopback and activate the <code>l2vpn-evpn</code> address family on both uplinks. Start with hxb-leaf-r1.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>ubuntu@oob-mgmt-server:~$ ssh cumulus@hxb-leaf-r1
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv set evpn state enabled
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv set nve vxlan source address 10.255.0.11
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv set vrf default router bgp address-family l2vpn-evpn state enabled
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv set vrf default router bgp neighbor swp31 address-family l2vpn-evpn state enabled
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv set vrf default router bgp neighbor swp32 address-family l2vpn-evpn state enabled
+</code></pre></div>
+<p>Do not apply yet: you will apply the complete leaf configuration at the end of Task 4. The only per-leaf value in this task is the VTEP source address:</p>
+<table>
+<thead>
+<tr>
+<th>Leaf</th>
+<th><code>nv set nve vxlan source address …</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>hxb-leaf-r1</td>
+<td>10.255.0.11</td>
+</tr>
+<tr>
+<td>hxb-leaf-r2</td>
+<td>10.255.0.12</td>
+</tr>
+<tr>
+<td>hxb-leaf-r3</td>
+<td>10.255.0.13</td>
+</tr>
+<tr>
+<td>hxb-leaf-r4</td>
+<td>10.255.0.14</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Checkpoint:</strong>
+- <code>nv config diff</code> on each leaf shows the four EVPN/NVE lines and the two neighbour address-family lines.
+- The VTEP source is the leaf's own <code>/32</code> loopback from Lab 2, which every other leaf can already reach (Task 1).</p>
+<h3 id="task-4-tenant-vrfs-vnis-anycast-gateways-and-access-ports">Task 4 — Tenant VRFs, VNIs, anycast gateways and access ports<a class="headerlink" href="#task-4-tenant-vrfs-vnis-anycast-gateways-and-access-ports" title="Permanent link">&para;</a></h3>
+<p>The complete tenant configuration for each leaf follows. Enter it on top of Task 3's pending changes, check the diff, then apply. Note which VLANs each leaf carries: a leaf only needs its <strong>local</strong> VLANs plus both L3 VNIs (symmetric IRB).</p>
+<ol>
+<li>
+<p><strong>hxb-leaf-r1</strong> (VLANs 110 and 210, SVI host part <code>.11</code>):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv set vrf AURORA evpn vni 104001
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv set vrf BOREALIS evpn vni 104002
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv set vrf AURORA router bgp address-family ipv4-unicast redistribute connected state enabled
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv set vrf AURORA router bgp address-family ipv4-unicast route-export to-evpn state enabled
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv set vrf BOREALIS router bgp address-family ipv4-unicast redistribute connected state enabled
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv set vrf BOREALIS router bgp address-family ipv4-unicast route-export to-evpn state enabled
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv set bridge domain br_default vlan 110 vni 10110
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv set bridge domain br_default vlan 210 vni 10210
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv set interface vlan110 vrf AURORA
+<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv set interface vlan110 ipv4 address 172.16.10.11/24
+<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv set interface vlan110 ipv4 vrr address 172.16.10.1/24
+<a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv set interface vlan110 ipv4 vrr mac-address 00:00:5e:00:01:01
+<a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv set interface vlan110 ipv4 vrr state enabled
+<a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv set interface vlan210 vrf BOREALIS
+<a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv set interface vlan210 ipv4 address 172.17.10.11/24
+<a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv set interface vlan210 ipv4 vrr address 172.17.10.1/24
+<a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv set interface vlan210 ipv4 vrr mac-address 00:00:5e:00:01:01
+<a id="__codelineno-6-18" name="__codelineno-6-18" href="#__codelineno-6-18"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv set interface vlan210 ipv4 vrr state enabled
+<a id="__codelineno-6-19" name="__codelineno-6-19" href="#__codelineno-6-19"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv set interface swp1 bridge domain br_default access 110
+<a id="__codelineno-6-20" name="__codelineno-6-20" href="#__codelineno-6-20"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv set interface swp2 bridge domain br_default access 210
+<a id="__codelineno-6-21" name="__codelineno-6-21" href="#__codelineno-6-21"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv config diff
+<a id="__codelineno-6-22" name="__codelineno-6-22" href="#__codelineno-6-22"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv config apply -y
+</code></pre></div>
+</li>
+</ol>
+<p>What each group does:</p>
+<table>
+<thead>
+<tr>
+<th>Commands</th>
+<th>Purpose</th>
+<th>Book reference</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>vrf … evpn vni 104001/104002</code></td>
+<td>Creates the tenant VRF and maps it to its <strong>L3 VNI</strong>. NVUE allocates the hidden L3 VNI VLAN automatically</td>
+<td>Section 7.4 Step 2</td>
+</tr>
+<tr>
+<td><code>redistribute connected</code> + <code>route-export to-evpn</code></td>
+<td>Advertises each tenant subnet as an EVPN <strong>type-5</strong> route</td>
+<td>Step 5</td>
+</tr>
+<tr>
+<td><code>bridge domain br_default vlan … vni …</code></td>
+<td>Creates the VLAN and maps it to its <strong>L2 VNI</strong> on the single VXLAN device</td>
+<td>Step 3</td>
+</tr>
+<tr>
+<td><code>interface vlanX vrf …</code> / <code>ipv4 address</code> / <code>ipv4 vrr …</code></td>
+<td>SVI in the tenant VRF with a unique address and the <strong>anycast gateway</strong> <code>.1</code></td>
+<td>Step 4</td>
+</tr>
+<tr>
+<td><code>interface swpX bridge domain br_default access …</code></td>
+<td>Host-facing access port in the tenant VLAN</td>
+<td>Step 6</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The VRR MAC must be identical on every leaf for the same gateway. A different MAC on one leaf breaks the anycast gateway after a host moves or when ARP caches age (book Chapter 7, common mistakes). Copy the MAC exactly.</p>
+</div>
+<ol>
+<li>
+<p><strong>hxb-leaf-r2</strong> (VLANs 111 and 211, SVI host part <code>.12</code>). Run the six <code>vrf</code> lines exactly as on leaf-r1, then:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>cumulus@hxb-leaf-r2:mgmt:~$ nv set bridge domain br_default vlan 111 vni 10111
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>cumulus@hxb-leaf-r2:mgmt:~$ nv set bridge domain br_default vlan 211 vni 10211
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>cumulus@hxb-leaf-r2:mgmt:~$ nv set interface vlan111 vrf AURORA
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>cumulus@hxb-leaf-r2:mgmt:~$ nv set interface vlan111 ipv4 address 172.16.11.12/24
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>cumulus@hxb-leaf-r2:mgmt:~$ nv set interface vlan111 ipv4 vrr address 172.16.11.1/24
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>cumulus@hxb-leaf-r2:mgmt:~$ nv set interface vlan111 ipv4 vrr mac-address 00:00:5e:00:01:01
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>cumulus@hxb-leaf-r2:mgmt:~$ nv set interface vlan111 ipv4 vrr state enabled
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>cumulus@hxb-leaf-r2:mgmt:~$ nv set interface vlan211 vrf BOREALIS
+<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>cumulus@hxb-leaf-r2:mgmt:~$ nv set interface vlan211 ipv4 address 172.17.11.12/24
+<a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>cumulus@hxb-leaf-r2:mgmt:~$ nv set interface vlan211 ipv4 vrr address 172.17.11.1/24
+<a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a>cumulus@hxb-leaf-r2:mgmt:~$ nv set interface vlan211 ipv4 vrr mac-address 00:00:5e:00:01:01
+<a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a>cumulus@hxb-leaf-r2:mgmt:~$ nv set interface vlan211 ipv4 vrr state enabled
+<a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a>cumulus@hxb-leaf-r2:mgmt:~$ nv set interface swp1 bridge domain br_default access 111
+<a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a>cumulus@hxb-leaf-r2:mgmt:~$ nv set interface swp2 bridge domain br_default access 211
+<a id="__codelineno-7-15" name="__codelineno-7-15" href="#__codelineno-7-15"></a>cumulus@hxb-leaf-r2:mgmt:~$ nv config diff
+<a id="__codelineno-7-16" name="__codelineno-7-16" href="#__codelineno-7-16"></a>cumulus@hxb-leaf-r2:mgmt:~$ nv config apply -y
+</code></pre></div>
+</li>
+<li>
+<p><strong>hxb-leaf-r3</strong> is the same as leaf-r1 (VLANs 110 and 210) with SVI addresses <code>.13</code>: <code>172.16.10.13/24</code> on vlan110 and <code>172.17.10.13/24</code> on vlan210. The VRR addresses and MAC do not change.</p>
+</li>
+<li>
+<p><strong>hxb-leaf-r4</strong> is the same as leaf-r2 (VLANs 111 and 211) with SVI addresses <code>.14</code>: <code>172.16.11.14/24</code> on vlan111 and <code>172.17.11.14/24</code> on vlan211.</p>
+</li>
+</ol>
+<p>Summary of per-leaf values:</p>
+<table>
+<thead>
+<tr>
+<th>Leaf</th>
+<th>VTEP</th>
+<th>VLAN → VNI</th>
+<th>Unique SVI addresses</th>
+<th>swp1 access</th>
+<th>swp2 access</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>hxb-leaf-r1</td>
+<td>10.255.0.11</td>
+<td>110 → 10110 · 210 → 10210</td>
+<td>172.16.10.11 · 172.17.10.11</td>
+<td>110</td>
+<td>210</td>
+</tr>
+<tr>
+<td>hxb-leaf-r2</td>
+<td>10.255.0.12</td>
+<td>111 → 10111 · 211 → 10211</td>
+<td>172.16.11.12 · 172.17.11.12</td>
+<td>111</td>
+<td>211</td>
+</tr>
+<tr>
+<td>hxb-leaf-r3</td>
+<td>10.255.0.13</td>
+<td>110 → 10110 · 210 → 10210</td>
+<td>172.16.10.13 · 172.17.10.13</td>
+<td>110</td>
+<td>210</td>
+</tr>
+<tr>
+<td>hxb-leaf-r4</td>
+<td>10.255.0.14</td>
+<td>111 → 10111 · 211 → 10211</td>
+<td>172.16.11.14 · 172.17.11.14</td>
+<td>111</td>
+<td>211</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition info">
+<p class="admonition-title">Field note</p>
+<p>Four leaves typed by hand is exactly where one wrong digit creeps in. Break/fix exercise 1 is that digit. In Lab 11 you generate this same configuration from one NVUE template, and in Lab 12 from Ansible variables, so every leaf is built from one source.</p>
+</div>
+<p><strong>Checkpoint (on each leaf):</strong>
+- <code>nv config apply</code> completed without errors.
+- <code>nv show vrf AURORA evpn</code> shows VNI 104001 and <code>nv show vrf BOREALIS evpn</code> shows 104002.
+- <code>nv show bridge domain br_default vlan</code> lists only the two local tenant VLANs, each with its VNI.
+- <code>nv show interface vlan110</code> (or vlan111) shows the unique address, the VRR address <code>.1</code> and VRF AURORA.</p>
+<h3 id="task-5-configure-the-servers-with-netplan">Task 5 — Configure the servers with netplan<a class="headerlink" href="#task-5-configure-the-servers-with-netplan" title="Permanent link">&para;</a></h3>
+<p>Each server has one NIC in each of its tenant's two subnets. Both subnets are therefore directly connected, and by default Linux reaches the other rail's subnet <strong>directly through the other NIC</strong> (bridged in its L2 VNI), never through the gateway. To exercise routing across rails through the L3 VNI, as a real rail-aligned GPU node does, each NIC gets its own <strong>routing table</strong> and a <strong>source-based rule</strong>:</p>
+<ul>
+<li>Traffic sourced from the eth1 address uses table 101, which reaches the rest of the tenant (<code>172.16.0.0/16</code> or <code>172.17.0.0/16</code>) through eth1's anycast gateway.</li>
+<li>Traffic sourced from the eth2 address uses table 102, through eth2's gateway.</li>
+<li>A higher-priority rule keeps each NIC's own subnet on the main table, so same-subnet traffic stays bridged.</li>
+<li>The main table also gets a tenant supernet route via eth1's gateway, so any future subnet of the same tenant is reachable. The OOB default route on <code>eth0</code> is untouched.</li>
+</ul>
+<figure>
+<p><img alt="Figure 5.2: Per-NIC routing on hxb-gpu01" loading="lazy" src="../img/fig-5_2.png" /></p>
+<figcaption><strong>Figure 5.2: Per-NIC routing on hxb-gpu01.</strong> Source-based rules pick a routing table per NIC. Traffic from 172.16.10.101 leaves eth1 towards leaf-r1's anycast gateway, so a packet to the other rail (172.16.11.0/24) is routed through L3 VNI 104001. Traffic without a chosen source uses the main table and reaches 172.16.11.0/24 directly on eth2.</figcaption>
+</figure>
+<ol>
+<li>
+<p>On hxb-gpu01, create <code>/etc/netplan/60-fabric.yaml</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>ubuntu@oob-mgmt-server:~$ ssh ubuntu@hxb-gpu01
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>ubuntu@hxb-gpu01:~$ sudo nano /etc/netplan/60-fabric.yaml
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>network:
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>  version: 2
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>  ethernets:
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>    eth1:
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>      mtu: 9000
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>      addresses: [172.16.10.101/24]
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>      routes:
+<a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a>        - to: 172.16.0.0/16          # rest of AURORA, main table
+<a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a>          via: 172.16.10.1
+<a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a>          metric: 200
+<a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a>        - to: 172.16.0.0/16          # rest of AURORA, eth1-sourced traffic
+<a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a>          via: 172.16.10.1
+<a id="__codelineno-9-13" name="__codelineno-9-13" href="#__codelineno-9-13"></a>          on-link: true
+<a id="__codelineno-9-14" name="__codelineno-9-14" href="#__codelineno-9-14"></a>          table: 101
+<a id="__codelineno-9-15" name="__codelineno-9-15" href="#__codelineno-9-15"></a>      routing-policy:
+<a id="__codelineno-9-16" name="__codelineno-9-16" href="#__codelineno-9-16"></a>        - from: 172.16.10.101
+<a id="__codelineno-9-17" name="__codelineno-9-17" href="#__codelineno-9-17"></a>          to: 172.16.10.0/24
+<a id="__codelineno-9-18" name="__codelineno-9-18" href="#__codelineno-9-18"></a>          table: 254                 # own subnet stays on the main table (bridged)
+<a id="__codelineno-9-19" name="__codelineno-9-19" href="#__codelineno-9-19"></a>          priority: 100
+<a id="__codelineno-9-20" name="__codelineno-9-20" href="#__codelineno-9-20"></a>        - from: 172.16.10.101
+<a id="__codelineno-9-21" name="__codelineno-9-21" href="#__codelineno-9-21"></a>          table: 101
+<a id="__codelineno-9-22" name="__codelineno-9-22" href="#__codelineno-9-22"></a>          priority: 110
+<a id="__codelineno-9-23" name="__codelineno-9-23" href="#__codelineno-9-23"></a>    eth2:
+<a id="__codelineno-9-24" name="__codelineno-9-24" href="#__codelineno-9-24"></a>      mtu: 9000
+<a id="__codelineno-9-25" name="__codelineno-9-25" href="#__codelineno-9-25"></a>      addresses: [172.16.11.101/24]
+<a id="__codelineno-9-26" name="__codelineno-9-26" href="#__codelineno-9-26"></a>      routes:
+<a id="__codelineno-9-27" name="__codelineno-9-27" href="#__codelineno-9-27"></a>        - to: 172.16.0.0/16
+<a id="__codelineno-9-28" name="__codelineno-9-28" href="#__codelineno-9-28"></a>          via: 172.16.11.1
+<a id="__codelineno-9-29" name="__codelineno-9-29" href="#__codelineno-9-29"></a>          on-link: true
+<a id="__codelineno-9-30" name="__codelineno-9-30" href="#__codelineno-9-30"></a>          table: 102
+<a id="__codelineno-9-31" name="__codelineno-9-31" href="#__codelineno-9-31"></a>      routing-policy:
+<a id="__codelineno-9-32" name="__codelineno-9-32" href="#__codelineno-9-32"></a>        - from: 172.16.11.101
+<a id="__codelineno-9-33" name="__codelineno-9-33" href="#__codelineno-9-33"></a>          to: 172.16.11.0/24
+<a id="__codelineno-9-34" name="__codelineno-9-34" href="#__codelineno-9-34"></a>          table: 254
+<a id="__codelineno-9-35" name="__codelineno-9-35" href="#__codelineno-9-35"></a>          priority: 100
+<a id="__codelineno-9-36" name="__codelineno-9-36" href="#__codelineno-9-36"></a>        - from: 172.16.11.101
+<a id="__codelineno-9-37" name="__codelineno-9-37" href="#__codelineno-9-37"></a>          table: 102
+<a id="__codelineno-9-38" name="__codelineno-9-38" href="#__codelineno-9-38"></a>          priority: 110
+</code></pre></div>
+</li>
+<li>
+<p>Apply it:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>ubuntu@hxb-gpu01:~$ sudo chmod 600 /etc/netplan/60-fabric.yaml
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>ubuntu@hxb-gpu01:~$ sudo netplan try
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>ubuntu@hxb-gpu01:~$ sudo netplan apply
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>ubuntu@hxb-gpu01:~$ ip -br addr show eth1; ip -br addr show eth2
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>ubuntu@hxb-gpu01:~$ ip rule show
+<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>ubuntu@hxb-gpu01:~$ ip route show table 101
+</code></pre></div>
+<p><strong>Expected output (illustrative):</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>eth1             UP             172.16.10.101/24 fe80::4ab0:2dff:fe31:a101/64
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>eth2             UP             172.16.11.101/24 fe80::4ab0:2dff:fe31:a102/64
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>0:      from all lookup local
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>100:    from 172.16.10.101 to 172.16.10.0/24 lookup main
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>100:    from 172.16.11.101 to 172.16.11.0/24 lookup main
+<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>110:    from 172.16.10.101 lookup 101
+<a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a>110:    from 172.16.11.101 lookup 102
+<a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a>32766:  from all lookup main
+<a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a>32767:  from all lookup default
+<a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a>172.16.0.0/16 via 172.16.10.1 dev eth1 proto static onlink
+</code></pre></div>
+<p><code>netplan try</code> rolls back automatically after 120 seconds unless you press Enter, which protects you from a typo. Press Enter when it asks.</p>
+</li>
+<li>
+<p>Repeat on the other three servers, changing only the values in this table (the structure is identical; BOREALIS servers use <code>172.17.0.0/16</code> as the tenant supernet):</p>
+<table>
+<thead>
+<tr>
+<th>Server</th>
+<th>eth1 address / gateway</th>
+<th>eth2 address / gateway</th>
+<th>Tenant supernet</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>hxb-gpu01</td>
+<td>172.16.10.101/24 · 172.16.10.1</td>
+<td>172.16.11.101/24 · 172.16.11.1</td>
+<td>172.16.0.0/16</td>
+</tr>
+<tr>
+<td>hxb-gpu02</td>
+<td>172.16.10.102/24 · 172.16.10.1</td>
+<td>172.16.11.102/24 · 172.16.11.1</td>
+<td>172.16.0.0/16</td>
+</tr>
+<tr>
+<td>hxb-gpu03</td>
+<td>172.17.10.103/24 · 172.17.10.1</td>
+<td>172.17.11.103/24 · 172.17.11.1</td>
+<td>172.17.0.0/16</td>
+</tr>
+<tr>
+<td>hxb-gpu04</td>
+<td>172.17.10.104/24 · 172.17.10.1</td>
+<td>172.17.11.104/24 · 172.17.11.1</td>
+<td>172.17.0.0/16</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ol>
+<p>Remember to change the <code>from:</code> and <code>to:</code> values in both <code>routing-policy</code> blocks, not just the addresses.</p>
+<div class="admonition note">
+<p class="admonition-title">Version note</p>
+<p>The MTU of 9000 leaves room for the roughly 50 bytes of VXLAN overhead inside the 9216-byte fabric MTU (book Section 7.5). If Lab 2 left the uplinks at a smaller MTU, set the hosts to 1500 for now and see Lab 7. Netplan keys shown (<code>routes</code>, <code>on-link</code>, <code>table</code>, <code>routing-policy</code>, <code>priority</code>) are documented for Ubuntu 24.04's netplan; <code>sudo netplan try</code> will reject a malformed file without changing anything.</p>
+</div>
+<ol>
+<li>
+<p>On every server, ping the anycast gateway from <strong>each</strong> NIC. This populates the leaves' ARP and MAC tables, so every host is advertised in EVPN before the tests in Task 6.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>ubuntu@hxb-gpu01:~$ ping -c 2 -I 172.16.10.101 172.16.10.1
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>ubuntu@hxb-gpu01:~$ ping -c 2 -I 172.16.11.101 172.16.11.1
+</code></pre></div>
+</li>
+</ol>
+<p><strong>Checkpoint:</strong>
+- Every server reaches both of its gateways with 0% loss.
+- <code>ip rule show</code> on each server shows the four rules at priorities 100 and 110.
+- <code>ip route</code> on each server still shows the default route on <code>eth0</code>.</p>
+<h3 id="task-6-verify-the-evpn-control-plane">Task 6 — Verify the EVPN control plane<a class="headerlink" href="#task-6-verify-the-evpn-control-plane" title="Permanent link">&para;</a></h3>
+<ol>
+<li>
+<p>Check the EVPN sessions and VNIs on hxb-leaf-r1:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ sudo vtysh -c &quot;show bgp l2vpn evpn summary&quot;
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv show evpn vni
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>cumulus@hxb-leaf-r1:mgmt:~$ sudo vtysh -c &quot;show evpn vni&quot;
+</code></pre></div>
+<p><strong>Expected output (illustrative):</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>BGP router identifier 10.255.0.11, local AS number 65101 vrf-id 0
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>Neighbor           V   AS   MsgRcvd MsgSent  Up/Down State/PfxRcd PfxSnt
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>hxb-spine01(swp31) 4 65100      96      88 00:12:40           18     10
+<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>hxb-spine02(swp32) 4 65100      95      88 00:12:38           18     10
+<a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a>
+<a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a>VNI        Type VxLAN IF              # MACs   # ARPs   # Remote VTEPs  Tenant VRF
+<a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a>10110      L2   vxlan48               3        4        1               AURORA
+<a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a>10210      L2   vxlan48               3        4        1               BOREALIS
+<a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a>104001     L3   vxlan48               4        4        n/a             AURORA
+<a id="__codelineno-14-10" name="__codelineno-14-10" href="#__codelineno-14-10"></a>104002     L3   vxlan48               4        4        n/a             BOREALIS
+</code></pre></div>
+</li>
+</ol>
+<p><strong>What to notice:</strong> two L2 VNIs and two L3 VNIs, each tied to the correct VRF. Each L2 VNI has exactly <strong>one</strong> remote VTEP, hxb-leaf-r3, because only leaf-r1 and leaf-r3 carry VLANs 110 and 210. (The book's Chapter 7 output shows 7 remote VTEPs because its full Helix-B has 8 rail leaves carrying every VLAN.) <code>nv show evpn vni</code> shows the same VNIs in NVUE format.</p>
+<ol>
+<li>
+<p>Look at the type-2 (MAC/IP) and type-5 (IP prefix) routes:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ sudo vtysh -c &quot;show bgp l2vpn evpn route type macip&quot;
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>cumulus@hxb-leaf-r1:mgmt:~$ sudo vtysh -c &quot;show bgp l2vpn evpn route type prefix&quot;
+</code></pre></div>
+<p><strong>Expected output (illustrative, abbreviated):</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>Route Distinguisher: 10.255.0.13:2
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>*&gt; [2]:[0]:[48]:[4a:b0:2d:32:a1:01]:[32]:[172.16.10.102]
+<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>                    10.255.0.13                            0 65100 65103 i
+<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a>                    RT:65103:10110 RT:65103:104001 ET:8 Rmac:4a:b0:2d:0c:13:00
+<a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a>Route Distinguisher: 10.255.0.12:4
+<a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a>*&gt; [5]:[0]:[24]:[172.16.11.0]
+<a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a>                    10.255.0.12                            0 65100 65102 ?
+<a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a>                    RT:65102:104001 ET:8 Rmac:4a:b0:2d:0c:12:00
+<a id="__codelineno-16-9" name="__codelineno-16-9" href="#__codelineno-16-9"></a>Route Distinguisher: 10.255.0.14:5
+<a id="__codelineno-16-10" name="__codelineno-16-10" href="#__codelineno-16-10"></a>*&gt; [5]:[0]:[24]:[172.17.11.0]
+<a id="__codelineno-16-11" name="__codelineno-16-11" href="#__codelineno-16-11"></a>                    10.255.0.14                            0 65100 65104 ?
+<a id="__codelineno-16-12" name="__codelineno-16-12" href="#__codelineno-16-12"></a>                    RT:65104:104002 ET:8 Rmac:4a:b0:2d:0c:14:00
+</code></pre></div>
+</li>
+</ol>
+<p><strong>What to notice:</strong>
+- A <strong>type-2</strong> route for hxb-gpu02's eth1 carries <strong>two</strong> route targets: the L2 VNI's (<code>…:10110</code>) for bridging, and the L3 VNI's (<code>…:104001</code>) plus the router MAC for symmetric routing.
+- <strong>Type-5</strong> routes carry the tenant subnets with only the L3 VNI route target. AURORA prefixes carry <code>…:104001</code>, BOREALIS prefixes <code>…:104002</code>. These route targets are the isolation mechanism (book Section 7.2).
+- The next hop of every route is the <strong>originating leaf's VTEP loopback</strong>, not the spine. The spines relayed the routes without changing the next hop.</p>
+<div class="admonition note">
+<p class="admonition-title">Version note</p>
+<p>Recent FRR releases also accept the numeric form, for example <code>show bgp l2vpn evpn route type 2</code> and <code>… type 5</code>. The book uses <code>macip</code> and <code>prefix</code>, which work on all Cumulus Linux 5.x releases.</p>
+</div>
+<ol>
+<li>
+<p>Check the MAC tables per VNI and the tenant routing tables:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ sudo vtysh -c &quot;show evpn mac vni all&quot;
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>cumulus@hxb-leaf-r1:mgmt:~$ sudo vtysh -c &quot;show ip route vrf AURORA&quot;
+<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>cumulus@hxb-leaf-r1:mgmt:~$ sudo vtysh -c &quot;show ip route vrf BOREALIS&quot;
+</code></pre></div>
+<p><strong>Expected output (illustrative, abbreviated):</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>VNI 10110 #MACs (local and remote) 3
+<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>MAC               Type   Flags Intf/Remote ES/VTEP            VLAN  Seq #&#39;s
+<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a>4a:b0:2d:31:a1:01 local        swp1                           110   0/0
+<a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a>4a:b0:2d:32:a1:01 remote       10.255.0.13                          0/0
+<a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a>00:00:5e:00:01:01 local        vlan110                        110   0/0
+<a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a>
+<a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a>VRF AURORA:
+<a id="__codelineno-18-8" name="__codelineno-18-8" href="#__codelineno-18-8"></a>C&gt;* 172.16.10.0/24 is directly connected, vlan110, 00:14:02
+<a id="__codelineno-18-9" name="__codelineno-18-9" href="#__codelineno-18-9"></a>B&gt;* 172.16.11.0/24 [20/0] via 10.255.0.12, vlan4024_l3 onlink, weight 1, 00:13:51
+<a id="__codelineno-18-10" name="__codelineno-18-10" href="#__codelineno-18-10"></a>  *                       via 10.255.0.14, vlan4024_l3 onlink, weight 1, 00:13:51
+<a id="__codelineno-18-11" name="__codelineno-18-11" href="#__codelineno-18-11"></a>B&gt;* 172.16.11.101/32 [20/0] via 10.255.0.12, vlan4024_l3 onlink, weight 1, 00:09:12
+<a id="__codelineno-18-12" name="__codelineno-18-12" href="#__codelineno-18-12"></a>B&gt;* 172.16.11.102/32 [20/0] via 10.255.0.14, vlan4024_l3 onlink, weight 1, 00:08:57
+</code></pre></div>
+</li>
+</ol>
+<p><strong>Checkpoint:</strong>
+- <code>show evpn mac vni all</code> lists the local host MAC on <code>swp1</code> (or <code>swp2</code>) and the remote host MAC behind the other odd-rail leaf's VTEP.
+- VRF AURORA contains <strong>only</strong> 172.16.x prefixes and host routes, reached through the L3 VNI interface (the auto-created L3 VNI VLAN name, such as <code>vlan4024_l3</code>, varies). VRF BOREALIS contains only 172.17.x.
+- Repeat the checks on hxb-leaf-r2: its L2 VNIs are 10111 and 10211, with hxb-leaf-r4 as the remote VTEP.</p>
+<h3 id="task-7-prove-bridged-and-routed-reachability-within-a-tenant">Task 7 — Prove bridged and routed reachability within a tenant<a class="headerlink" href="#task-7-prove-bridged-and-routed-reachability-within-a-tenant" title="Permanent link">&para;</a></h3>
+<ol>
+<li>
+<p><strong>Same rail, same subnet (bridged in L2 VNI 10110).</strong> From hxb-gpu01 eth1 to hxb-gpu02 eth1:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>ubuntu@hxb-gpu01:~$ ping -c 3 -I 172.16.10.101 172.16.10.102
+</code></pre></div>
+<p><strong>Expected output (illustrative):</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>PING 172.16.10.102 (172.16.10.102) from 172.16.10.101 : 56(84) bytes of data.
+<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>64 bytes from 172.16.10.102: icmp_seq=1 ttl=64 time=1.84 ms
+<a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a>64 bytes from 172.16.10.102: icmp_seq=2 ttl=64 time=1.12 ms
+<a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a>64 bytes from 172.16.10.102: icmp_seq=3 ttl=64 time=1.09 ms
+</code></pre></div>
+</li>
+</ol>
+<p><strong>TTL 64</strong> means no router touched the packet. It crossed leaf-r1 → spine → leaf-r3 inside VXLAN VNI 10110, but it was <strong>bridged</strong>.</p>
+<ol>
+<li>
+<p><strong>Across rails, different subnet (routed in L3 VNI 104001).</strong> From hxb-gpu01 eth1 (VLAN 110 on leaf-r1) to hxb-gpu02 eth2 (VLAN 111 on leaf-r4):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>ubuntu@hxb-gpu01:~$ ping -c 3 -I 172.16.10.101 172.16.11.102
+<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>ubuntu@hxb-gpu01:~$ ping -c 1 -t 1 -I 172.16.10.101 172.16.11.102
+</code></pre></div>
+<p><strong>Expected output (illustrative):</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>64 bytes from 172.16.11.102: icmp_seq=1 ttl=62 time=2.41 ms
+<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a>64 bytes from 172.16.11.102: icmp_seq=2 ttl=62 time=1.37 ms
+<a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a>64 bytes from 172.16.11.102: icmp_seq=3 ttl=62 time=1.33 ms
+<a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a>
+<a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a>From 172.16.10.11 icmp_seq=1 Time to live exceeded
+</code></pre></div>
+</li>
+</ol>
+<p><strong>What to notice:</strong> the reply arrives with <strong>TTL 62</strong>. The reply was routed <strong>twice</strong>, once by leaf-r4 (ingress for the reply) and once by leaf-r1 (egress). That is symmetric IRB: both VTEPs route, and the L3 VNI carries the packet between them (book Figure 7.4). The TTL-1 probe is answered by leaf-r1's own SVI address (<code>.11</code>), which proves that the first routing hop is the local leaf, the anycast gateway. The source address shown may differ on your release.</p>
+<ol>
+<li>
+<p>Compare with the default path without a chosen source:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>ubuntu@hxb-gpu01:~$ ping -c 2 172.16.11.102
+</code></pre></div>
+<p><strong>Expected:</strong> replies with <strong>TTL 64</strong>. With no source chosen, the main table sends the packet out of eth2 directly into VLAN 111, so it is bridged through leaf-r2 and leaf-r4. This is why real rail-aligned hosts use per-NIC routing: the NIC choice decides which rail carries the traffic.</p>
+</li>
+<li>
+<p>Repeat the equivalent tests for BOREALIS from hxb-gpu03:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a>ubuntu@hxb-gpu03:~$ ping -c 3 -I 172.17.10.103 172.17.10.104
+<a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a>ubuntu@hxb-gpu03:~$ ping -c 3 -I 172.17.10.103 172.17.11.104
+</code></pre></div>
+</li>
+</ol>
+<p><strong>Checkpoint:</strong>
+- Same-subnet tests succeed with TTL 64 (bridged over the L2 VNI).
+- Cross-rail tests succeed with TTL 62 (routed over the L3 VNI) for both tenants.
+- Large frames also pass: <code>ping -c 2 -M do -s 8972 -I 172.16.10.101 172.16.10.102</code> succeeds, which confirms that the 9216-byte underlay carries 9000-byte tenant frames plus VXLAN overhead.</p>
+<h3 id="task-8-prove-tenant-isolation">Task 8 — Prove tenant isolation<a class="headerlink" href="#task-8-prove-tenant-isolation" title="Permanent link">&para;</a></h3>
+<p>A well-behaved server in AURORA has no route to BOREALIS at all, so a simple ping would leave through <code>eth0</code> and prove nothing about the fabric. To test the fabric, temporarily point hxb-gpu01 at its gateway for the BOREALIS range, as a misconfigured or hostile host might.</p>
+<ol>
+<li>
+<p>Add a temporary route and try to reach BOREALIS hosts:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a>ubuntu@hxb-gpu01:~$ sudo ip route add 172.17.0.0/16 via 172.16.10.1 dev eth1 table 101
+<a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a>ubuntu@hxb-gpu01:~$ ping -c 3 -I 172.16.10.101 172.17.10.103
+<a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a>ubuntu@hxb-gpu01:~$ ping -c 3 -I 172.16.10.101 172.17.11.104
+</code></pre></div>
+<p><strong>Expected output (illustrative):</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>From 172.16.10.11 icmp_seq=1 Destination Net Unreachable
+<a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a>From 172.16.10.11 icmp_seq=2 Destination Net Unreachable
+<a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a>--- 172.17.10.103 ping statistics ---
+<a id="__codelineno-26-4" name="__codelineno-26-4" href="#__codelineno-26-4"></a>3 packets transmitted, 0 received, +2 errors, 100% packet loss
+</code></pre></div>
+</li>
+</ol>
+<p>hxb-gpu03 is attached to <strong>the same leaf and the same physical switch</strong> (leaf-r1 swp2), yet it is unreachable. The packet entered VRF AURORA on leaf-r1, and VRF AURORA has no route to 172.17.0.0/16. Depending on the release you may see "Destination Net Unreachable" from the leaf, or simply 100% loss.</p>
+<ol>
+<li>
+<p>Prove it on the leaf:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ sudo vtysh -c &quot;show ip route vrf AURORA 172.17.10.103&quot;
+<a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a>cumulus@hxb-leaf-r1:mgmt:~$ ip route show vrf AURORA | grep 172.17
+<a id="__codelineno-27-3" name="__codelineno-27-3" href="#__codelineno-27-3"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv show vrf AURORA evpn
+</code></pre></div>
+<p><strong>Expected:</strong> <code>% Network not in table</code> and no output from the <code>grep</code>. The BOREALIS type-5 and type-2 routes reached leaf-r1 (you saw them in Task 6), but they carry BOREALIS's route targets (<code>…:104002</code>), so VRF AURORA never imported them.</p>
+</li>
+<li>
+<p>Remove the temporary route:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a>ubuntu@hxb-gpu01:~$ sudo ip route del 172.17.0.0/16 via 172.16.10.1 dev eth1 table 101
+</code></pre></div>
+</li>
+</ol>
+<p><strong>Checkpoint:</strong>
+- AURORA → BOREALIS fails even between hosts on the same leaf.
+- <code>show ip route vrf AURORA</code> contains only 172.16.x routes, and <code>show ip route vrf BOREALIS</code> only 172.17.x routes.
+- The temporary route is removed (<code>ip route show table 101</code> shows only 172.16.0.0/16).</p>
+<figure>
+<p><img alt="Figure 5.3: What each test in Tasks 7 and 8 proves" loading="lazy" src="../img/fig-5_3.png" /></p>
+<figcaption><strong>Figure 5.3: What each test in Tasks 7 and 8 proves.</strong> The same physical fabric carries three kinds of flow. Same-rail traffic is bridged in an L2 VNI (TTL 64). Cross-rail traffic in the same tenant is routed twice, through the L3 VNI (TTL 62). Traffic between tenants has no route in the source VRF and is dropped at the first leaf.</figcaption>
+</figure>
+<h2 id="verify">Verify<a class="headerlink" href="#verify" title="Permanent link">&para;</a></h2>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Both spines have <code>l2vpn-evpn</code> enabled on swp1–swp4 and are not VTEPs (<code>nv show nve vxlan</code> shows no source address on the spines).</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Each leaf has <code>nv show nve vxlan</code> source = its loopback, and <code>sudo vtysh -c "show bgp l2vpn evpn summary"</code> shows two Established EVPN sessions.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <code>nv show evpn vni</code> on each leaf lists its two local L2 VNIs and both L3 VNIs (104001 → AURORA, 104002 → BOREALIS).</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <code>show bgp l2vpn evpn route type macip</code> shows remote host MAC/IP routes with both L2 and L3 route targets; <code>type prefix</code> shows the four tenant subnets.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <code>show evpn mac vni all</code> shows local and remote host MACs.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Same-rail pings within a tenant succeed with TTL 64; cross-rail pings within a tenant (sourced with <code>-I</code>) succeed with TTL 62.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> AURORA cannot reach BOREALIS even with a forced route on the host, and each VRF contains only its own prefixes.</li>
+</ul>
+<h2 id="break-and-fix">Break and fix<a class="headerlink" href="#break-and-fix" title="Permanent link">&para;</a></h2>
+<p>Run each fault on its own, fix it, and re-verify before starting the next.</p>
+<h3 id="fault-1-mismatched-l2-vni-on-one-leaf">Fault 1 — Mismatched L2 VNI on one leaf<a class="headerlink" href="#fault-1-mismatched-l2-vni-on-one-leaf" title="Permanent link">&para;</a></h3>
+<p><strong>Inject</strong> (on hxb-leaf-r3, a "typo" in the VNI for VLAN 110):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a>cumulus@hxb-leaf-r3:mgmt:~$ nv unset bridge domain br_default vlan 110 vni 10110
+<a id="__codelineno-29-2" name="__codelineno-29-2" href="#__codelineno-29-2"></a>cumulus@hxb-leaf-r3:mgmt:~$ nv set bridge domain br_default vlan 110 vni 10119
+<a id="__codelineno-29-3" name="__codelineno-29-3" href="#__codelineno-29-3"></a>cumulus@hxb-leaf-r3:mgmt:~$ nv config apply -y
+</code></pre></div>
+<p><strong>Symptoms:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a>ubuntu@hxb-gpu01:~$ ping -c 3 -I 172.16.10.101 172.16.10.102      # same subnet, bridged
+<a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a>3 packets transmitted, 0 received, 100% packet loss
+<a id="__codelineno-30-3" name="__codelineno-30-3" href="#__codelineno-30-3"></a>ubuntu@hxb-gpu02:~$ ping -c 2 -I 172.16.10.102 172.16.10.1        # its gateway
+<a id="__codelineno-30-4" name="__codelineno-30-4" href="#__codelineno-30-4"></a>2 packets transmitted, 2 received, 0% packet loss
+</code></pre></div>
+<p>hxb-gpu02 still reaches its gateway: the access port, VLAN and SVI on leaf-r3 are fine. Only the stretch of VLAN 110 between leaf-r1 and leaf-r3 is broken. Routed traffic to 172.16.10.102 from the other rail may still work, because gpu02's type-2 route still carries the correct L3 VNI route target. A half-working tenant is a typical sign of a VNI mismatch.</p>
+<p><strong>Diagnosis:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ sudo vtysh -c &quot;show evpn vni 10110&quot;
+<a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a>cumulus@hxb-leaf-r3:mgmt:~$ sudo vtysh -c &quot;show evpn vni&quot;
+<a id="__codelineno-31-3" name="__codelineno-31-3" href="#__codelineno-31-3"></a>cumulus@hxb-leaf-r1:mgmt:~$ sudo vtysh -c &quot;show evpn mac vni 10110&quot;
+<a id="__codelineno-31-4" name="__codelineno-31-4" href="#__codelineno-31-4"></a>cumulus@hxb-leaf-r3:mgmt:~$ nv show bridge domain br_default vlan
+</code></pre></div>
+<ul>
+<li>On leaf-r1, VNI 10110 now has <strong>0 remote VTEPs</strong>: leaf-r3 no longer sends a type-3 route for 10110.</li>
+<li>On leaf-r3, <code>show evpn vni</code> lists <strong>10119</strong> instead of 10110, also with 0 remote VTEPs.</li>
+<li>gpu02's MAC is missing from <code>show evpn mac vni 10110</code> on leaf-r1.</li>
+<li><code>nv show bridge domain br_default vlan</code> on leaf-r3 shows VLAN 110 → 10119. Compare with the tenant plan.</li>
+</ul>
+<p><strong>Fix:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a>cumulus@hxb-leaf-r3:mgmt:~$ nv unset bridge domain br_default vlan 110 vni 10119
+<a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a>cumulus@hxb-leaf-r3:mgmt:~$ nv set bridge domain br_default vlan 110 vni 10110
+<a id="__codelineno-32-3" name="__codelineno-32-3" href="#__codelineno-32-3"></a>cumulus@hxb-leaf-r3:mgmt:~$ nv config apply -y
+<a id="__codelineno-32-4" name="__codelineno-32-4" href="#__codelineno-32-4"></a>ubuntu@hxb-gpu01:~$ ping -c 3 -I 172.16.10.101 172.16.10.102
+</code></pre></div>
+<p><strong>Checkpoint:</strong> VNI 10110 shows 1 remote VTEP on both leaf-r1 and leaf-r3, and the bridged ping succeeds with TTL 64.</p>
+<h3 id="fault-2-missing-l3-vni-mapping">Fault 2 — Missing L3 VNI mapping<a class="headerlink" href="#fault-2-missing-l3-vni-mapping" title="Permanent link">&para;</a></h3>
+<p>This is the book's Chapter 7 troubleshooting scenario, reproduced on your fabric.</p>
+<p><strong>Inject</strong> (on hxb-leaf-r4, "built from an old template"):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a>cumulus@hxb-leaf-r4:mgmt:~$ nv unset vrf AURORA evpn vni 104001
+<a id="__codelineno-33-2" name="__codelineno-33-2" href="#__codelineno-33-2"></a>cumulus@hxb-leaf-r4:mgmt:~$ nv config apply -y
+</code></pre></div>
+<p><strong>Symptoms:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a>ubuntu@hxb-gpu01:~$ ping -c 3 -I 172.16.10.101 172.16.11.102      # cross-rail, routed
+<a id="__codelineno-34-2" name="__codelineno-34-2" href="#__codelineno-34-2"></a>3 packets transmitted, 0 received, 100% packet loss
+<a id="__codelineno-34-3" name="__codelineno-34-3" href="#__codelineno-34-3"></a>ubuntu@hxb-gpu01:~$ ping -c 3 -I 172.16.11.101 172.16.11.102      # same subnet on the even rail, bridged
+<a id="__codelineno-34-4" name="__codelineno-34-4" href="#__codelineno-34-4"></a>3 packets transmitted, 3 received, 0% packet loss
+<a id="__codelineno-34-5" name="__codelineno-34-5" href="#__codelineno-34-5"></a>ubuntu@hxb-gpu03:~$ ping -c 3 -I 172.17.10.103 172.17.11.104      # BOREALIS cross-rail
+<a id="__codelineno-34-6" name="__codelineno-34-6" href="#__codelineno-34-6"></a>3 packets transmitted, 3 received, 0% packet loss
+</code></pre></div>
+<p>Bridged AURORA traffic and all of BOREALIS still work. Only <strong>routed</strong> AURORA traffic to or from hosts behind leaf-r4 fails.</p>
+<p><strong>Diagnosis:</strong> follow book Figure 7.7.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a>cumulus@hxb-leaf-r4:mgmt:~$ sudo vtysh -c &quot;show evpn vni&quot;
+<a id="__codelineno-35-2" name="__codelineno-35-2" href="#__codelineno-35-2"></a>cumulus@hxb-leaf-r4:mgmt:~$ nv show vrf AURORA evpn
+<a id="__codelineno-35-3" name="__codelineno-35-3" href="#__codelineno-35-3"></a>cumulus@hxb-leaf-r4:mgmt:~$ sudo vtysh -c &quot;show ip route vrf AURORA&quot;
+<a id="__codelineno-35-4" name="__codelineno-35-4" href="#__codelineno-35-4"></a>cumulus@hxb-leaf-r1:mgmt:~$ sudo vtysh -c &quot;show ip route vrf AURORA&quot;
+</code></pre></div>
+<ul>
+<li><code>show evpn vni</code> on leaf-r4 lists L2 VNIs 10111 and 10211 and L3 VNI 104002, but <strong>no L3 VNI 104001</strong>.</li>
+<li><code>nv show vrf AURORA evpn</code> on leaf-r4 has no VNI.</li>
+<li>VRF AURORA on leaf-r4 has only its connected subnet: no remote /32s or type-5 routes were imported.</li>
+<li>On leaf-r1, the host route to 172.16.11.102 behind leaf-r4 has disappeared (or the traffic is black-holed), because leaf-r4 no longer advertises AURORA's routed information with the L3 VNI.</li>
+</ul>
+<p><strong>Fix:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a>cumulus@hxb-leaf-r4:mgmt:~$ nv set vrf AURORA evpn vni 104001
+<a id="__codelineno-36-2" name="__codelineno-36-2" href="#__codelineno-36-2"></a>cumulus@hxb-leaf-r4:mgmt:~$ nv config apply -y
+<a id="__codelineno-36-3" name="__codelineno-36-3" href="#__codelineno-36-3"></a>ubuntu@hxb-gpu01:~$ ping -c 3 -I 172.16.10.101 172.16.11.102
+</code></pre></div>
+<p><strong>Checkpoint:</strong> <code>show evpn vni</code> on leaf-r4 lists 104001 → AURORA again, and the cross-rail ping succeeds with TTL 62. In production you would also fix the template (Lab 11) and add an EVPN validation (<code>netq check evpn</code>, book Chapter 10) to the post-change checks.</p>
+<h2 id="clean-up-save-state">Clean-up / save state<a class="headerlink" href="#clean-up-save-state" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Confirm that all faults are fixed and that the Verify checklist passes.</li>
+<li>
+<p>NVUE auto-saves the applied configuration to <code>/etc/nvue.d/startup.yaml</code> by default. Save explicitly on each switch in case auto-save is off:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-37-1" name="__codelineno-37-1" href="#__codelineno-37-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv config save
+</code></pre></div>
+</li>
+<li>
+<p>Keep this configuration. Labs 7, 9, 10, 12 and 13 build on the AURORA and BOREALIS tenants and the server netplan files.</p>
+</li>
+<li>In the Air console, take a checkpoint of the simulation (Lab 6 covers checkpoints in detail), then put the simulation to sleep to stop spending compute-hour credits.</li>
+</ol>
+<h2 id="exam-tie-in">Exam tie-in<a class="headerlink" href="#exam-tie-in" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>2.3 (multi-tenancy BGP-EVPN):</strong> you configured every building block the objective names: tenant VRFs mapped to L3 VNIs (<code>nv set vrf &lt;T&gt; evpn vni</code>), VLAN-to-L2 VNI mappings, the VTEP source, the <code>l2vpn-evpn</code> address family, anycast gateways and type-5 export.</li>
+<li><strong>Isolation mechanism:</strong> route targets decide which VRF imports a route. You proved that AURORA ignores BOREALIS routes even on the same leaf.</li>
+<li><strong>Route types:</strong> type 2 (MAC/IP with both L2 and L3 route targets), type 3 (flood list, visible as the remote VTEP count) and type 5 (tenant prefixes).</li>
+<li><strong>Symmetric IRB:</strong> a leaf needs only its local VLANs plus the L3 VNI. The TTL-62 test shows that both ingress and egress VTEPs route.</li>
+<li><strong>Troubleshooting (domain 5):</strong> a missing L3 VNI breaks only routed traffic; a mismatched L2 VNI breaks only bridged traffic in one VLAN. Know which verification command reveals each.</li>
+</ul>
+<h2 id="review-questions">Review questions<a class="headerlink" href="#review-questions" title="Permanent link">&para;</a></h2>
+<ol>
+<li>hxb-leaf-r1's <code>show evpn vni</code> shows one remote VTEP for VNI 10110, while the book's example shows seven. Which is wrong?</li>
+<li>Why do the spines need the <code>l2vpn-evpn</code> address family but no <code>nve vxlan source</code> or tenant VRFs?</li>
+<li>A cross-rail ping between two AURORA hosts returns TTL 62. What does that tell you about the path?</li>
+<li>On one leaf, <code>show evpn vni</code> lists the L2 VNIs but not L3 VNI 104001. Which traffic fails and which still works?</li>
+<li>hxb-gpu01 and hxb-gpu03 connect to the same physical leaf. What prevents them from communicating, even if a host adds a route through its gateway?</li>
+</ol>
+<h3 id="answers">Answers<a class="headerlink" href="#answers" title="Permanent link">&para;</a></h3>
+<ol>
+<li>Neither. The remote VTEP count per L2 VNI equals the number of other leaves that carry that VLAN. In helix-b-air only leaf-r3 also carries VLAN 110, so the answer is one. The book's full Helix-B stretches each VLAN across eight rail leaves, so it shows seven.</li>
+<li>In the eBGP design the spines relay EVPN routes between leaves, so the address family must be active on their sessions. They never encapsulate or decapsulate tenant traffic (they route only the outer VTEP-to-VTEP packets), so they need no VTEP address, VNIs or tenant VRFs.</li>
+<li>The packet was routed by two routers: the ingress leaf (into the L3 VNI) and the egress leaf (out of the L3 VNI into the destination VLAN). That is symmetric IRB. A bridged path would return TTL 64.</li>
+<li>Routed traffic for AURORA to or from hosts behind that leaf fails, because the leaf cannot send or receive AURORA traffic in the L3 VNI and does not import AURORA's routed type-2 and type-5 information. Bridged traffic in the local L2 VNIs, and all BOREALIS traffic, still works.</li>
+<li>The tenant VRFs. The ports are in different VLANs whose SVIs are in different VRFs (AURORA and BOREALIS). VRF AURORA contains no BOREALIS routes because BOREALIS routes carry BOREALIS's route targets, which AURORA does not import. The packet is dropped in VRF AURORA on the first leaf.</li>
+</ol>
+<hr />
+<div class="admonition abstract">
+<p class="admonition-title">Go deeper</p>
+<p>The matching book chapters cover the exam objectives for this lab in full, with a Q&amp;A pack of about 40 exam-style questions per chapter. <a class="md-button md-button--primary" href="../../book/">Get the book</a> <a class="md-button" href="https://github.com/Cloudfoxy-Ltd/ncp-ain-guide/issues/new?template=erratum.yml">Report a problem with this lab</a></p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../lab04/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Lab 4 — AR, ECMP and telemetry">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Lab 4 — AR, ECMP and telemetry
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../lab06/" class="md-footer__link md-footer__link--next" aria-label="Next: Lab 6 — Air power skills">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Lab 6 — Air power skills
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      © 2026 Vakeesan Thevarajah · Cloudfoxy Ltd · Lab guide CC BY-NC-SA 4.0 · Independent, not endorsed by NVIDIA
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.footer", "navigation.top", "content.code.copy", "search.highlight", "search.suggest", "toc.follow"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

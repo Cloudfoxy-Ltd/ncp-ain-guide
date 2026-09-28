@@ -1,0 +1,10 @@
+sequenceDiagram
+    participant L as hxb-leaf-r1 swp31
+    participant S as hxb-spine01 swp1
+    L->>S: IPv6 router advertisement (link-local fe80::a)
+    S->>L: IPv6 router advertisement (link-local fe80::b)
+    L->>S: TCP 179 to fe80::b, BGP OPEN AS 65101
+    S->>L: BGP OPEN AS 65100 (remote-as external accepts any other AS)
+    Note over L,S: Session Established, extended next hop negotiated
+    L->>S: UPDATE 10.255.0.11/32 next hop fe80::a
+    S->>L: UPDATE 10.255.0.1/32 and other leaf loopbacks, next hop fe80::b

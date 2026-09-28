@@ -1,0 +1,39 @@
+{
+  "format": "JSON",
+  "title": "helix-b-air",
+  "ztp": null,
+  "content": {
+    "nodes": {
+      "hxb-spine01": {"cpu": 2, "memory": 4096, "storage": 20, "os": "cumulus-vx-5.16.1"},
+      "hxb-spine02": {"cpu": 2, "memory": 4096, "storage": 20, "os": "cumulus-vx-5.16.1"},
+      "hxb-leaf-r1": {"cpu": 2, "memory": 4096, "storage": 20, "os": "cumulus-vx-5.16.1"},
+      "hxb-leaf-r2": {"cpu": 2, "memory": 4096, "storage": 20, "os": "cumulus-vx-5.16.1"},
+      "hxb-leaf-r3": {"cpu": 2, "memory": 4096, "storage": 20, "os": "cumulus-vx-5.16.1"},
+      "hxb-leaf-r4": {"cpu": 2, "memory": 4096, "storage": 20, "os": "cumulus-vx-5.16.1"},
+      "hxb-gpu01": {"cpu": 2, "memory": 4096, "storage": 20, "os": "generic/ubuntu2404"},
+      "hxb-gpu02": {"cpu": 2, "memory": 4096, "storage": 20, "os": "generic/ubuntu2404"},
+      "hxb-gpu03": {"cpu": 2, "memory": 4096, "storage": 20, "os": "generic/ubuntu2404"},
+      "hxb-gpu04": {"cpu": 2, "memory": 4096, "storage": 20, "os": "generic/ubuntu2404"},
+      "hxa-ibsim": {"cpu": 2, "memory": 2048, "storage": 10, "os": "generic/ubuntu2404"}
+    },
+    "links": [
+      [{"node": "hxb-leaf-r1", "interface": "swp31"}, {"node": "hxb-spine01", "interface": "swp1"}],
+      [{"node": "hxb-leaf-r1", "interface": "swp32"}, {"node": "hxb-spine02", "interface": "swp1"}],
+      [{"node": "hxb-leaf-r2", "interface": "swp31"}, {"node": "hxb-spine01", "interface": "swp2"}],
+      [{"node": "hxb-leaf-r2", "interface": "swp32"}, {"node": "hxb-spine02", "interface": "swp2"}],
+      [{"node": "hxb-leaf-r3", "interface": "swp31"}, {"node": "hxb-spine01", "interface": "swp3"}],
+      [{"node": "hxb-leaf-r3", "interface": "swp32"}, {"node": "hxb-spine02", "interface": "swp3"}],
+      [{"node": "hxb-leaf-r4", "interface": "swp31"}, {"node": "hxb-spine01", "interface": "swp4"}],
+      [{"node": "hxb-leaf-r4", "interface": "swp32"}, {"node": "hxb-spine02", "interface": "swp4"}],
+      [{"node": "hxb-leaf-r1", "interface": "swp1"}, {"node": "hxb-gpu01", "interface": "eth1"}],
+      [{"node": "hxb-leaf-r2", "interface": "swp1"}, {"node": "hxb-gpu01", "interface": "eth2"}],
+      [{"node": "hxb-leaf-r1", "interface": "swp2"}, {"node": "hxb-gpu03", "interface": "eth1"}],
+      [{"node": "hxb-leaf-r2", "interface": "swp2"}, {"node": "hxb-gpu03", "interface": "eth2"}],
+      [{"node": "hxb-leaf-r3", "interface": "swp1"}, {"node": "hxb-gpu02", "interface": "eth1"}],
+      [{"node": "hxb-leaf-r4", "interface": "swp1"}, {"node": "hxb-gpu02", "interface": "eth2"}],
+      [{"node": "hxb-leaf-r3", "interface": "swp2"}, {"node": "hxb-gpu04", "interface": "eth1"}],
+      [{"node": "hxb-leaf-r4", "interface": "swp2"}, {"node": "hxb-gpu04", "interface": "eth2"}]
+    ],
+    "oob": {"nodes": {"oob-mgmt-server": {"cpu": 2, "memory": 4096, "storage": 20}}}
+  }
+}

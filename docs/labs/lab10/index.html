@@ -1,0 +1,2130 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Free hands-on labs on NVIDIA DSX Air, errata and study files for the NCP-AIN Certification Guide by Vakeesan Thevarajah (Cloudfoxy Ltd).">
+      
+      
+        <meta name="author" content="Vakeesan Thevarajah">
+      
+      
+        <link rel="canonical" href="https://cloudfoxy-ltd.github.io/ncp-ain-guide/labs/lab10/">
+      
+      
+        <link rel="prev" href="../lab09/">
+      
+      
+        <link rel="next" href="../lab11/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Lab 10 — Kubernetes Network Operator - NCP-AIN Certification Guide — Labs & Errata</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="cyan" data-md-color-accent="purple">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#lab-10-kubernetes-and-the-nvidia-network-operator" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="NCP-AIN Certification Guide — Labs &amp; Errata" class="md-header__button md-logo" aria-label="NCP-AIN Certification Guide — Labs & Errata" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            NCP-AIN Certification Guide — Labs & Errata
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Lab 10 — Kubernetes Network Operator
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="cyan" data-md-color-accent="purple"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="cyan" data-md-color-accent="purple"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Cloudfoxy-Ltd/ncp-ain-guide" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Cloudfoxy-Ltd/ncp-ain-guide
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
+          
+  
+  
+  Hands-On Labs
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../book/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  The Book
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../errata/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Errata
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../flashcards/" class="md-tabs__link">
+          
+  
+  
+  Study Files
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../license/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Licence
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="NCP-AIN Certification Guide — Labs &amp; Errata" class="md-nav__button md-logo" aria-label="NCP-AIN Certification Guide — Labs & Errata" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    NCP-AIN Certification Guide — Labs & Errata
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Cloudfoxy-Ltd/ncp-ain-guide" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Cloudfoxy-Ltd/ncp-ain-guide
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hands-On Labs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Hands-On Labs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab00/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 0 — Air and topology
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab01/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 1 — NVUE essentials
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab02/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 2 — eBGP unnumbered underlay
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab03/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 3 — Lossless RoCE and Soft-RoCE
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab04/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 4 — AR, ECMP and telemetry
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab05/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 5 — BGP-EVPN multi-tenancy
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab06/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 6 — Air power skills
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab07/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 7 — Monitoring and troubleshooting
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab08/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 8 — InfiniBand with ibsim
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab09/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 9 — perftest over Soft-RoCE
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 10 — Kubernetes Network Operator
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 10 — Kubernetes Network Operator
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#lab-at-a-glance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lab at a glance
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#objectives" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Objectives
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#background" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Background
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-by-step" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step-by-step
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Step-by-step">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#task-1-prepare-both-nodes-gpu01-and-gpu02" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 1 — Prepare both nodes (gpu01 and gpu02)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-2-create-the-cluster" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 2 — Create the cluster
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-3-install-helm-and-the-network-operator" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 3 — Install Helm and the Network Operator
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-4-apply-a-nicclusterpolicy-for-the-secondary-network" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 4 — Apply a NicClusterPolicy for the secondary network
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-5-ippool-and-macvlannetwork-on-eth1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 5 — IPPool and MacvlanNetwork on eth1
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-6-pods-on-the-high-speed-network" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 6 — Pods on the high-speed network
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-7-what-rdma-hardware-would-add" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 7 — What RDMA hardware would add
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#verify" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verify
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#break-and-fix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Break and fix
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#clean-up-save-state" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Clean-up / save state
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exam-tie-in" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exam tie-in
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#review-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Review questions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Review questions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#answers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Answers
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab11/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 11 — NVUE templates
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab12/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 12 — Ansible automation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab13/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 13 — Capstone challenge
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../appendix/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Appendices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../book/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The Book
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../errata/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Errata
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Study Files
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Study Files
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../flashcards/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Flashcards
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lab-files/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab files
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../license/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Licence
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#lab-at-a-glance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lab at a glance
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#objectives" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Objectives
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#background" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Background
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-by-step" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step-by-step
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Step-by-step">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#task-1-prepare-both-nodes-gpu01-and-gpu02" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 1 — Prepare both nodes (gpu01 and gpu02)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-2-create-the-cluster" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 2 — Create the cluster
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-3-install-helm-and-the-network-operator" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 3 — Install Helm and the Network Operator
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-4-apply-a-nicclusterpolicy-for-the-secondary-network" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 4 — Apply a NicClusterPolicy for the secondary network
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-5-ippool-and-macvlannetwork-on-eth1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 5 — IPPool and MacvlanNetwork on eth1
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-6-pods-on-the-high-speed-network" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 6 — Pods on the high-speed network
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-7-what-rdma-hardware-would-add" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 7 — What RDMA hardware would add
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#verify" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verify
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#break-and-fix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Break and fix
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#clean-up-save-state" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Clean-up / save state
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exam-tie-in" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exam tie-in
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#review-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Review questions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Review questions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#answers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Answers
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="lab-10-kubernetes-and-the-nvidia-network-operator">Lab 10 — Kubernetes and the NVIDIA Network Operator<a class="headerlink" href="#lab-10-kubernetes-and-the-nvidia-network-operator" title="Permanent link">&para;</a></h1>
+<div class="admonition abstract">
+<p class="admonition-title">Companion to the NCP-AIN Certification Guide</p>
+<p>This free lab is part of the hands-on companion to <em>NCP-AIN Certification Guide</em> by Vakeesan Thevarajah (Cloudfoxy Ltd). The book explains the theory, design choices and hardware behaviour behind every step. <a class="md-button md-button--primary" href="../../book/">Get the book</a> <a class="md-button" href="../../sample/NCP-AIN_Sample.pdf">Free sample</a></p>
+</div>
+<h2 id="lab-at-a-glance">Lab at a glance<a class="headerlink" href="#lab-at-a-glance" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Book chapters</td>
+<td>16 (NVIDIA Network Operator: deploy and verify)</td>
+</tr>
+<tr>
+<td>Exam objectives</td>
+<td>4.1 Deploy the Network Operator · 4.2 Verify Network Operator functionality</td>
+</tr>
+<tr>
+<td>Time</td>
+<td>90 minutes</td>
+</tr>
+<tr>
+<td>Air resources</td>
+<td>hxb-gpu01 (control plane + worker), hxb-gpu02 (worker), EVPN fabric from Lab 5</td>
+</tr>
+<tr>
+<td>Prerequisites</td>
+<td>Lab 5 (AURORA VLAN 110 working between gpu01 and gpu02)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="objectives">Objectives<a class="headerlink" href="#objectives" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Build a two-node Kubernetes cluster with kubeadm on hxb-gpu01 and hxb-gpu02.</li>
+<li>Install the NVIDIA Network Operator with Helm in namespace <code>nvidia-network-operator</code>.</li>
+<li>Apply a <strong>NicClusterPolicy</strong> that deploys the secondary-network stack (Multus, CNI plugins, NV-IPAM).</li>
+<li>Create an NV-IPAM <strong>IPPool</strong> and a <strong>MacvlanNetwork</strong> on eth1 (AURORA 172.16.10.0/24).</li>
+<li>Attach pods to the high-speed network with the networks annotation and ping pod-to-pod across the EVPN fabric.</li>
+<li>Verify the operator the way objective 4.2 expects.</li>
+</ul>
+<h2 id="background">Background<a class="headerlink" href="#background" title="Permanent link">&para;</a></h2>
+<p>On Helix, training pods need a second interface on the RDMA fabric in addition to the default cluster network. The Network Operator (Chapter 16) deploys everything needed from one custom resource, the NicClusterPolicy: the DOCA driver container, RDMA device plugins, Multus, CNI plugins and NV-IPAM. Network CRs such as MacvlanNetwork, HostDeviceNetwork and IPoIBNetwork then generate NetworkAttachmentDefinitions that pods request by annotation.</p>
+<p>Air's servers have virtio NICs, not ConnectX, so this lab deploys only the parts that don't need NVIDIA hardware: <strong>Multus, CNI plugins and NV-IPAM</strong>. The driver container and RDMA device plugins are explained but left out. Everything else (the operator, the CRDs, the reconcile loop, the NADs and the pod attachments) is real.</p>
+<figure>
+<p><img alt="Figure 10.1: What this lab deploys" loading="lazy" src="../img/fig-10_1.png" /></p>
+<figcaption><strong>Figure 10.1: What this lab deploys.</strong> The operator reconciles the NicClusterPolicy into Multus, CNI plugins and NV-IPAM on both nodes. The MacvlanNetwork becomes a NetworkAttachmentDefinition; pods that name it in their annotation get net1 on eth1, with an address from the IPPool.</figcaption>
+</figure>
+<div class="admonition note">
+<p class="admonition-title">Version note</p>
+<p>Kubernetes, the Network Operator and container images move quickly. This lab was written against the Kubernetes 1.34 package repository and Network Operator 26.7 (image tag <code>network-operator-v26.7.0</code>, as in NVIDIA's quick-start guides at the time of writing). Use the versions that <code>helm search repo</code> and the Network Operator release notes show for your date.</p>
+</div>
+<h2 id="step-by-step">Step-by-step<a class="headerlink" href="#step-by-step" title="Permanent link">&para;</a></h2>
+<h3 id="task-1-prepare-both-nodes-gpu01-and-gpu02">Task 1 — Prepare both nodes (gpu01 and gpu02)<a class="headerlink" href="#task-1-prepare-both-nodes-gpu01-and-gpu02" title="Permanent link">&para;</a></h3>
+<p>Run every step in this task on <strong>both</strong> servers. The cluster uses the OOB network (eth0) for Kubernetes traffic, and eth1 stays free for the secondary network.</p>
+<ol>
+<li>
+<p>Record each node's eth0 address; you'll need gpu01's.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>ubuntu@hxb-gpu01:~$ ip -4 -br addr show eth0
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>eth0             UP             192.168.200.21/24
+</code></pre></div>
+<p><em>(Illustrative: the OOB network uses 192.168.200.0/24.)</em></p>
+</li>
+<li>
+<p>Kernel settings for Kubernetes networking, and swap off:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>ubuntu@hxb-gpu01:~$ sudo swapoff -a ; sudo sed -i &#39;/ swap / s/^/#/&#39; /etc/fstab
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>ubuntu@hxb-gpu01:~$ printf &#39;overlay\nbr_netfilter\n&#39; | sudo tee /etc/modules-load.d/k8s.conf
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>ubuntu@hxb-gpu01:~$ sudo modprobe overlay ; sudo modprobe br_netfilter
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>ubuntu@hxb-gpu01:~$ printf &#39;net.bridge.bridge-nf-call-iptables=1\nnet.bridge.bridge-nf-call-ip6tables=1\nnet.ipv4.ip_forward=1\n&#39; | sudo tee /etc/sysctl.d/k8s.conf
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>ubuntu@hxb-gpu01:~$ sudo sysctl --system &gt;/dev/null
+</code></pre></div>
+</li>
+<li>
+<p>Install containerd and use the systemd cgroup driver:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>ubuntu@hxb-gpu01:~$ sudo apt-get update &amp;&amp; sudo apt-get install -y containerd apt-transport-https ca-certificates curl gpg
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>ubuntu@hxb-gpu01:~$ sudo mkdir -p /etc/containerd
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>ubuntu@hxb-gpu01:~$ containerd config default | sudo tee /etc/containerd/config.toml &gt;/dev/null
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>ubuntu@hxb-gpu01:~$ sudo sed -i &#39;s/SystemdCgroup = false/SystemdCgroup = true/&#39; /etc/containerd/config.toml
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>ubuntu@hxb-gpu01:~$ sudo systemctl restart containerd
+</code></pre></div>
+</li>
+<li>
+<p>Install kubeadm, kubelet and kubectl from the Kubernetes package repository:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>ubuntu@hxb-gpu01:~$ KVER=v1.34
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>ubuntu@hxb-gpu01:~$ curl -fsSL https://pkgs.k8s.io/core:/stable:/$KVER/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>ubuntu@hxb-gpu01:~$ echo &quot;deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/$KVER/deb/ /&quot; | sudo tee /etc/apt/sources.list.d/kubernetes.list
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>ubuntu@hxb-gpu01:~$ sudo apt-get update &amp;&amp; sudo apt-get install -y kubelet kubeadm kubectl
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>ubuntu@hxb-gpu01:~$ sudo apt-mark hold kubelet kubeadm kubectl
+</code></pre></div>
+</li>
+</ol>
+<p><strong>Checkpoint</strong></p>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <code>kubeadm version</code> works on both nodes; containerd is active.</li>
+</ul>
+<h3 id="task-2-create-the-cluster">Task 2 — Create the cluster<a class="headerlink" href="#task-2-create-the-cluster" title="Permanent link">&para;</a></h3>
+<ol>
+<li>
+<p>On <strong>gpu01</strong>, initialise the control plane on the OOB address, with the pod CIDR that Flannel expects:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>ubuntu@hxb-gpu01:~$ sudo kubeadm init --apiserver-advertise-address=192.168.200.21 --pod-network-cidr=10.244.0.0/16
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>...
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>Your Kubernetes control-plane has initialized successfully!
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>...
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>kubeadm join 192.168.200.21:6443 --token abcdef.0123456789abcdef \
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>    --discovery-token-ca-cert-hash sha256:1f2e...
+</code></pre></div>
+<p><em>(Illustrative: copy your own join command.)</em></p>
+</li>
+<li>
+<p>Set up kubectl for the <code>ubuntu</code> user and let pods run on the control-plane node (a two-node lab needs both):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>ubuntu@hxb-gpu01:~$ mkdir -p ~/.kube &amp;&amp; sudo cp /etc/kubernetes/admin.conf ~/.kube/config &amp;&amp; sudo chown $(id -u):$(id -g) ~/.kube/config
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>ubuntu@hxb-gpu01:~$ kubectl taint nodes --all node-role.kubernetes.io/control-plane-
+</code></pre></div>
+</li>
+<li>
+<p>Install the Flannel pod network (the primary CNI, <code>eth0</code> in pods):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>ubuntu@hxb-gpu01:~$ kubectl apply -f https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel.yml
+</code></pre></div>
+</li>
+<li>
+<p>On <strong>gpu02</strong>, run the join command from step 1 with <code>sudo</code>.</p>
+</li>
+<li>
+<p>Back on gpu01:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>ubuntu@hxb-gpu01:~$ kubectl get nodes -o wide
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>NAME        STATUS   ROLES           AGE   VERSION   INTERNAL-IP
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>hxb-gpu01   Ready    control-plane   6m    v1.34.x   192.168.200.21
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>hxb-gpu02   Ready    &lt;none&gt;          1m    v1.34.x   192.168.200.22
+</code></pre></div>
+<p><em>(Illustrative.)</em></p>
+</li>
+</ol>
+<p><strong>Checkpoint</strong></p>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Both nodes <code>Ready</code>; <code>kubectl get pods -A</code> shows Flannel and CoreDNS running.</li>
+</ul>
+<h3 id="task-3-install-helm-and-the-network-operator">Task 3 — Install Helm and the Network Operator<a class="headerlink" href="#task-3-install-helm-and-the-network-operator" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>ubuntu@hxb-gpu01:~$ curl -fsSL https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>ubuntu@hxb-gpu01:~$ helm repo add nvidia https://helm.ngc.nvidia.com/nvidia
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>ubuntu@hxb-gpu01:~$ helm repo update
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>ubuntu@hxb-gpu01:~$ helm search repo nvidia/network-operator --versions | head -4
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>NAME                        CHART VERSION   APP VERSION DESCRIPTION
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>nvidia/network-operator     26.7.0          v26.7.0     Nvidia network operator
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>...
+</code></pre></div>
+<p><em>(Illustrative.)</em> Install the version shown at the top:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>ubuntu@hxb-gpu01:~$ helm install network-operator nvidia/network-operator \
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>    -n nvidia-network-operator --create-namespace --version 26.7.0 --wait
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>ubuntu@hxb-gpu01:~$ kubectl -n nvidia-network-operator get pods
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>NAME                                                          READY   STATUS    RESTARTS
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>network-operator-6d8c7b9f9-4kq2x                              1/1     Running   0
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>network-operator-node-feature-discovery-master-...            1/1     Running   0
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>network-operator-node-feature-discovery-worker-...            1/1     Running   0
+</code></pre></div>
+<p><em>(Illustrative.)</em> At this point only the controller (and Node Feature Discovery, if the chart enables it) runs. Nothing is deployed to the nodes until you create a NicClusterPolicy.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>ubuntu@hxb-gpu01:~$ kubectl api-resources | grep -iE &#39;mellanox|nv-ipam&#39;
+</code></pre></div>
+<p>You should see the CRDs from Chapter 16: <code>nicclusterpolicies</code>, <code>macvlannetworks</code>, <code>hostdevicenetworks</code>, <code>ipoibnetworks</code>, and NV-IPAM's <code>ippools</code> and <code>cidrpools</code>.</p>
+<h3 id="task-4-apply-a-nicclusterpolicy-for-the-secondary-network">Task 4 — Apply a NicClusterPolicy for the secondary network<a class="headerlink" href="#task-4-apply-a-nicclusterpolicy-for-the-secondary-network" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>ubuntu@hxb-gpu01:~$ mkdir -p ~/netop &amp;&amp; cat &gt; ~/netop/nicclusterpolicy.yaml &lt;&lt;&#39;EOF&#39;
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>apiVersion: mellanox.com/v1alpha1
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>kind: NicClusterPolicy
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>metadata:
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>  name: nic-cluster-policy
+<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>spec:
+<a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a>  # No ofedDriver / rdmaSharedDevicePlugin: Air servers have no NVIDIA NICs.
+<a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a>  secondaryNetwork:
+<a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a>    multus:
+<a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a>      image: multus-cni
+<a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a>      repository: nvcr.io/nvidia/mellanox
+<a id="__codelineno-11-12" name="__codelineno-11-12" href="#__codelineno-11-12"></a>      version: network-operator-v26.7.0
+<a id="__codelineno-11-13" name="__codelineno-11-13" href="#__codelineno-11-13"></a>    cniPlugins:
+<a id="__codelineno-11-14" name="__codelineno-11-14" href="#__codelineno-11-14"></a>      image: plugins
+<a id="__codelineno-11-15" name="__codelineno-11-15" href="#__codelineno-11-15"></a>      repository: nvcr.io/nvidia/mellanox
+<a id="__codelineno-11-16" name="__codelineno-11-16" href="#__codelineno-11-16"></a>      version: network-operator-v26.7.0
+<a id="__codelineno-11-17" name="__codelineno-11-17" href="#__codelineno-11-17"></a>  nvIpam:
+<a id="__codelineno-11-18" name="__codelineno-11-18" href="#__codelineno-11-18"></a>    image: nvidia-k8s-ipam
+<a id="__codelineno-11-19" name="__codelineno-11-19" href="#__codelineno-11-19"></a>    repository: nvcr.io/nvidia/mellanox
+<a id="__codelineno-11-20" name="__codelineno-11-20" href="#__codelineno-11-20"></a>    version: network-operator-v26.7.0
+<a id="__codelineno-11-21" name="__codelineno-11-21" href="#__codelineno-11-21"></a>    enableWebhook: false
+<a id="__codelineno-11-22" name="__codelineno-11-22" href="#__codelineno-11-22"></a>EOF
+<a id="__codelineno-11-23" name="__codelineno-11-23" href="#__codelineno-11-23"></a>ubuntu@hxb-gpu01:~$ kubectl apply -f ~/netop/nicclusterpolicy.yaml
+<a id="__codelineno-11-24" name="__codelineno-11-24" href="#__codelineno-11-24"></a>ubuntu@hxb-gpu01:~$ kubectl -n nvidia-network-operator get pods -w
+</code></pre></div>
+<p>Wait until the Multus, CNI-plugins and NV-IPAM pods are <code>Running</code> on both nodes (Ctrl+C to stop watching), then check the policy status:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>ubuntu@hxb-gpu01:~$ kubectl get nicclusterpolicy nic-cluster-policy -o jsonpath=&#39;{.status.state}{&quot;\n&quot;}&#39;
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>ready
+</code></pre></div>
+<div class="admonition tip">
+<p class="admonition-title">Exam focus</p>
+<p>"NicClusterPolicy <strong>ready</strong>" is the first thing objective 4.2 asks you to verify. If it stays <code>notReady</code>, <code>kubectl describe nicclusterpolicy nic-cluster-policy</code> lists which component is failing, and the operator logs say why.</p>
+</div>
+<p><strong>Checkpoint</strong></p>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> NicClusterPolicy state is <code>ready</code>; component pods Running on both nodes.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <code>ls /etc/cni/net.d/</code> on each node shows a Multus configuration file.</li>
+</ul>
+<h3 id="task-5-ippool-and-macvlannetwork-on-eth1">Task 5 — IPPool and MacvlanNetwork on eth1<a class="headerlink" href="#task-5-ippool-and-macvlannetwork-on-eth1" title="Permanent link">&para;</a></h3>
+<ol>
+<li>
+<p>Create an NV-IPAM pool inside AURORA's 172.16.10.0/24. Keep it clear of host addresses (.101, .102) and the gateway (.1): hand out .200 onwards.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>ubuntu@hxb-gpu01:~$ cat &gt; ~/netop/ippool.yaml &lt;&lt;&#39;EOF&#39;
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>apiVersion: nv-ipam.nvidia.com/v1alpha1
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>kind: IPPool
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>metadata:
+<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>  name: aurora-pool
+<a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a>  namespace: nvidia-network-operator
+<a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a>spec:
+<a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a>  subnet: 172.16.10.0/24
+<a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a>  perNodeBlockSize: 8
+<a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a>  gateway: 172.16.10.1
+<a id="__codelineno-13-11" name="__codelineno-13-11" href="#__codelineno-13-11"></a>  exclusions:
+<a id="__codelineno-13-12" name="__codelineno-13-12" href="#__codelineno-13-12"></a>    - startIP: 172.16.10.1
+<a id="__codelineno-13-13" name="__codelineno-13-13" href="#__codelineno-13-13"></a>      endIP: 172.16.10.199
+<a id="__codelineno-13-14" name="__codelineno-13-14" href="#__codelineno-13-14"></a>EOF
+<a id="__codelineno-13-15" name="__codelineno-13-15" href="#__codelineno-13-15"></a>ubuntu@hxb-gpu01:~$ kubectl apply -f ~/netop/ippool.yaml
+<a id="__codelineno-13-16" name="__codelineno-13-16" href="#__codelineno-13-16"></a>ubuntu@hxb-gpu01:~$ kubectl -n nvidia-network-operator get ippool aurora-pool -o yaml | grep -A8 &#39;status:&#39;
+</code></pre></div>
+</li>
+</ol>
+<p>The status shows the per-node blocks NV-IPAM allocated, one block of 8 addresses per node.</p>
+<div class="admonition note">
+<p class="admonition-title">Version note</p>
+<p>If your NV-IPAM release rejects <code>exclusions</code>, remove that block and use a smaller dedicated range by choosing a narrower <code>subnet</code> (for example <code>172.16.10.192/27</code>) with the same gateway.</p>
+</div>
+<ol>
+<li>
+<p>Create the MacvlanNetwork. The operator turns it into a NetworkAttachmentDefinition in the <code>default</code> namespace.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>ubuntu@hxb-gpu01:~$ cat &gt; ~/netop/macvlan.yaml &lt;&lt;&#39;EOF&#39;
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>apiVersion: mellanox.com/v1alpha1
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>kind: MacvlanNetwork
+<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>metadata:
+<a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a>  name: aurora-net
+<a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a>spec:
+<a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a>  networkNamespace: &quot;default&quot;
+<a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a>  master: &quot;eth1&quot;
+<a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a>  mode: &quot;bridge&quot;
+<a id="__codelineno-14-10" name="__codelineno-14-10" href="#__codelineno-14-10"></a>  mtu: 9000
+<a id="__codelineno-14-11" name="__codelineno-14-11" href="#__codelineno-14-11"></a>  ipam: |
+<a id="__codelineno-14-12" name="__codelineno-14-12" href="#__codelineno-14-12"></a>    {
+<a id="__codelineno-14-13" name="__codelineno-14-13" href="#__codelineno-14-13"></a>      &quot;type&quot;: &quot;nv-ipam&quot;,
+<a id="__codelineno-14-14" name="__codelineno-14-14" href="#__codelineno-14-14"></a>      &quot;poolName&quot;: &quot;aurora-pool&quot;
+<a id="__codelineno-14-15" name="__codelineno-14-15" href="#__codelineno-14-15"></a>    }
+<a id="__codelineno-14-16" name="__codelineno-14-16" href="#__codelineno-14-16"></a>EOF
+<a id="__codelineno-14-17" name="__codelineno-14-17" href="#__codelineno-14-17"></a>ubuntu@hxb-gpu01:~$ kubectl apply -f ~/netop/macvlan.yaml
+<a id="__codelineno-14-18" name="__codelineno-14-18" href="#__codelineno-14-18"></a>ubuntu@hxb-gpu01:~$ kubectl get macvlannetwork aurora-net -o jsonpath=&#39;{.status.state}{&quot;\n&quot;}&#39;
+<a id="__codelineno-14-19" name="__codelineno-14-19" href="#__codelineno-14-19"></a>ready
+<a id="__codelineno-14-20" name="__codelineno-14-20" href="#__codelineno-14-20"></a>ubuntu@hxb-gpu01:~$ kubectl get network-attachment-definitions
+<a id="__codelineno-14-21" name="__codelineno-14-21" href="#__codelineno-14-21"></a>NAME         AGE
+<a id="__codelineno-14-22" name="__codelineno-14-22" href="#__codelineno-14-22"></a>aurora-net   10s
+</code></pre></div>
+</li>
+</ol>
+<h3 id="task-6-pods-on-the-high-speed-network">Task 6 — Pods on the high-speed network<a class="headerlink" href="#task-6-pods-on-the-high-speed-network" title="Permanent link">&para;</a></h3>
+<ol>
+<li>
+<p>Two test pods, pinned one per node:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>ubuntu@hxb-gpu01:~$ cat &gt; ~/netop/pods.yaml &lt;&lt;&#39;EOF&#39;
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>apiVersion: v1
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>kind: Pod
+<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a>metadata:
+<a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a>  name: pod-a
+<a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a>  annotations:
+<a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a>    k8s.v1.cni.cncf.io/networks: aurora-net
+<a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a>spec:
+<a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a>  nodeName: hxb-gpu01
+<a id="__codelineno-15-10" name="__codelineno-15-10" href="#__codelineno-15-10"></a>  containers:
+<a id="__codelineno-15-11" name="__codelineno-15-11" href="#__codelineno-15-11"></a>  - name: net
+<a id="__codelineno-15-12" name="__codelineno-15-12" href="#__codelineno-15-12"></a>    image: nicolaka/netshoot
+<a id="__codelineno-15-13" name="__codelineno-15-13" href="#__codelineno-15-13"></a>    command: [&quot;sleep&quot;, &quot;infinity&quot;]
+<a id="__codelineno-15-14" name="__codelineno-15-14" href="#__codelineno-15-14"></a>---
+<a id="__codelineno-15-15" name="__codelineno-15-15" href="#__codelineno-15-15"></a>apiVersion: v1
+<a id="__codelineno-15-16" name="__codelineno-15-16" href="#__codelineno-15-16"></a>kind: Pod
+<a id="__codelineno-15-17" name="__codelineno-15-17" href="#__codelineno-15-17"></a>metadata:
+<a id="__codelineno-15-18" name="__codelineno-15-18" href="#__codelineno-15-18"></a>  name: pod-b
+<a id="__codelineno-15-19" name="__codelineno-15-19" href="#__codelineno-15-19"></a>  annotations:
+<a id="__codelineno-15-20" name="__codelineno-15-20" href="#__codelineno-15-20"></a>    k8s.v1.cni.cncf.io/networks: aurora-net
+<a id="__codelineno-15-21" name="__codelineno-15-21" href="#__codelineno-15-21"></a>spec:
+<a id="__codelineno-15-22" name="__codelineno-15-22" href="#__codelineno-15-22"></a>  nodeName: hxb-gpu02
+<a id="__codelineno-15-23" name="__codelineno-15-23" href="#__codelineno-15-23"></a>  containers:
+<a id="__codelineno-15-24" name="__codelineno-15-24" href="#__codelineno-15-24"></a>  - name: net
+<a id="__codelineno-15-25" name="__codelineno-15-25" href="#__codelineno-15-25"></a>    image: nicolaka/netshoot
+<a id="__codelineno-15-26" name="__codelineno-15-26" href="#__codelineno-15-26"></a>    command: [&quot;sleep&quot;, &quot;infinity&quot;]
+<a id="__codelineno-15-27" name="__codelineno-15-27" href="#__codelineno-15-27"></a>EOF
+<a id="__codelineno-15-28" name="__codelineno-15-28" href="#__codelineno-15-28"></a>ubuntu@hxb-gpu01:~$ kubectl apply -f ~/netop/pods.yaml
+<a id="__codelineno-15-29" name="__codelineno-15-29" href="#__codelineno-15-29"></a>ubuntu@hxb-gpu01:~$ kubectl get pods -o wide
+</code></pre></div>
+</li>
+<li>
+<p>Check that each pod has two interfaces:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>ubuntu@hxb-gpu01:~$ kubectl exec pod-a -- ip -br addr
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>lo               UNKNOWN        127.0.0.1/8
+<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>eth0@if12        UP             10.244.0.12/24
+<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a>net1@if3         UP             172.16.10.200/24
+<a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a>ubuntu@hxb-gpu01:~$ kubectl exec pod-b -- ip -br addr | grep net1
+<a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a>net1@if3         UP             172.16.10.208/24
+</code></pre></div>
+<p><em>(Illustrative addresses.)</em> <code>eth0</code> is the Flannel cluster network; <code>net1</code> is the macvlan interface on the node's eth1, in AURORA.</p>
+</li>
+<li>
+<p>Ping pod-to-pod across the EVPN fabric, and from a pod to a host and to the gateway:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>ubuntu@hxb-gpu01:~$ kubectl exec pod-a -- ping -c 3 -I net1 172.16.10.208
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>ubuntu@hxb-gpu01:~$ kubectl exec pod-a -- ping -c 3 -I net1 172.16.10.102
+<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>ubuntu@hxb-gpu01:~$ kubectl exec pod-a -- ping -c 3 -I net1 172.16.10.1
+</code></pre></div>
+</li>
+</ol>
+<p>pod-a's frames leave gpu01 eth1 into leaf-r1, cross the fabric in VNI 10110 and reach pod-b on gpu02 behind leaf-r3. Confirm on leaf-r1 that EVPN learned the pods' MAC addresses:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ sudo vtysh -c &#39;show evpn mac vni 10110&#39;
+</code></pre></div>
+<figure>
+<p><img alt="Figure 10.2: Pod-to-pod across the fabric" loading="lazy" src="../img/fig-10_2.png" /></p>
+<figcaption><strong>Figure 10.2: Pod-to-pod across the fabric.</strong> Each pod's net1 is a macvlan child of the node's eth1, so to the fabric a pod looks like another host in VLAN 110. EVPN advertises its MAC and IP like any server.</figcaption>
+</figure>
+<p><strong>Checkpoint</strong></p>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Both pods Running with net1 in 172.16.10.0/24 from the IPPool.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> pod-a ↔ pod-b ping works over net1; EVPN on leaf-r1 shows the pods' MACs.</li>
+</ul>
+<h3 id="task-7-what-rdma-hardware-would-add">Task 7 — What RDMA hardware would add<a class="headerlink" href="#task-7-what-rdma-hardware-would-add" title="Permanent link">&para;</a></h3>
+<p>On Helix-B's real nodes you'd add these to the same NicClusterPolicy (Chapter 16), and each needs NVIDIA NICs:</p>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>What it adds</th>
+<th>Why it isn't in this lab</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ofedDriver</code> (DOCA driver container)</td>
+<td>Installs the DOCA-OFED drivers on each node</td>
+<td>Needs ConnectX/BlueField hardware</td>
+</tr>
+<tr>
+<td><code>rdmaSharedDevicePlugin</code></td>
+<td>Advertises <code>rdma/rdma_shared_device_a</code> in node Allocatable; pods request it with <code>IPC_LOCK</code></td>
+<td>Selects RDMA devices of physical NICs</td>
+</tr>
+<tr>
+<td>SR-IOV device plugin / network operator</td>
+<td>One VF per pod per rail (<code>nvidia.com/rail0</code> …) — the Spectrum-X quick start pattern</td>
+<td>Needs SR-IOV capable NICs</td>
+</tr>
+<tr>
+<td>NIC Configuration Operator</td>
+<td>Applies the Spectrum-X NIC profile (<code>spectrumXOptimized</code>)</td>
+<td>Firmware settings on SuperNICs</td>
+</tr>
+<tr>
+<td><code>ib-kubernetes</code></td>
+<td>Adds pod GUIDs to UFM PKeys on InfiniBand</td>
+<td>Needs UFM and an IB fabric</td>
+</tr>
+</tbody>
+</table>
+<p>With those in place, the verification ladder from Chapter 16 continues: Allocatable shows the RDMA resource, the pod sees <code>/dev/infiniband</code>, <code>ibv_devinfo</code> works in the pod, and <code>ib_write_bw</code> runs pod-to-pod.</p>
+<h2 id="verify">Verify<a class="headerlink" href="#verify" title="Permanent link">&para;</a></h2>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Operator pods Running; NicClusterPolicy <code>ready</code>.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> IPPool allocated per-node blocks; MacvlanNetwork <code>ready</code>; NAD <code>aurora-net</code> exists.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Pods got net1 addresses from the pool and reach each other across leaves.</li>
+</ul>
+<h2 id="break-and-fix">Break and fix<a class="headerlink" href="#break-and-fix" title="Permanent link">&para;</a></h2>
+<p><strong>Fault 1 — wrong master interface</strong></p>
+<ul>
+<li><em>Inject:</em> change <code>master: "eth1"</code> to <code>master: "ens1f0"</code> in <code>macvlan.yaml</code>, apply, and recreate pod-b (<code>kubectl delete pod pod-b &amp;&amp; kubectl apply -f ~/netop/pods.yaml</code>).</li>
+<li><em>Symptom:</em> pod-b stuck in <code>ContainerCreating</code>.</li>
+<li><em>Diagnosis:</em> <code>kubectl describe pod pod-b</code> shows a Multus/CNI error such as <code>failed to lookup master "ens1f0": Link not found</code>.</li>
+<li><em>Fix:</em> set <code>master: "eth1"</code>, re-apply, recreate the pod.</li>
+</ul>
+<p><strong>Fault 2 — pool exhausted</strong></p>
+<ul>
+<li><em>Inject:</em> set <code>perNodeBlockSize: 1</code> in the IPPool (on a new pool name, say <code>tiny-pool</code>, referenced by a new MacvlanNetwork) and start two pods on the same node.</li>
+<li><em>Symptom:</em> the second pod stays in <code>ContainerCreating</code> with an IPAM allocation error.</li>
+<li><em>Diagnosis:</em> <code>kubectl get ippool tiny-pool -o yaml</code> shows a one-address block per node.</li>
+<li><em>Fix:</em> size <code>perNodeBlockSize</code> for the pods per node you expect.</li>
+</ul>
+<h2 id="clean-up-save-state">Clean-up / save state<a class="headerlink" href="#clean-up-save-state" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>ubuntu@hxb-gpu01:~$ kubectl delete -f ~/netop/pods.yaml
+</code></pre></div>
+<p>Leave the cluster in place if you plan to revisit it; it survives checkpoints. If memory is tight for later labs, <code>sudo systemctl stop kubelet containerd</code> on both nodes frees it.</p>
+<h2 id="exam-tie-in">Exam tie-in<a class="headerlink" href="#exam-tie-in" title="Permanent link">&para;</a></h2>
+<ul>
+<li>4.1: Helm install into <code>nvidia-network-operator</code>; NicClusterPolicy decides what gets deployed; network CRs (Macvlan, HostDevice, IPoIB, SR-IOV) create NADs.</li>
+<li>4.2: verify operator pods, NicClusterPolicy <code>ready</code>, node resources, NADs, pod interfaces, and finally an RDMA test between pods.</li>
+<li>Know which components need NVIDIA hardware (driver container, RDMA device plugin, SR-IOV, NIC configuration) and which don't (Multus, CNI plugins, NV-IPAM).</li>
+</ul>
+<h2 id="review-questions">Review questions<a class="headerlink" href="#review-questions" title="Permanent link">&para;</a></h2>
+<ol>
+<li>What does the Network Operator deploy before you create a NicClusterPolicy?</li>
+<li>How does a pod ask for the secondary network?</li>
+<li>Which resource would a real RoCE pod request in addition, and which capability does it need?</li>
+<li><code>kubectl get nicclusterpolicy</code> shows <code>notReady</code>. What are your next two commands?</li>
+<li>Why does pod-b's net1 appear to the fabric as another host in VLAN 110?</li>
+</ol>
+<h3 id="answers">Answers<a class="headerlink" href="#answers" title="Permanent link">&para;</a></h3>
+<ol>
+<li>Only the operator controller (plus Node Feature Discovery if enabled in the chart). Components are deployed when a NicClusterPolicy exists.</li>
+<li>With the annotation <code>k8s.v1.cni.cncf.io/networks: &lt;network-name&gt;</code>, which Multus resolves to the NetworkAttachmentDefinition created by the network CR.</li>
+<li>An RDMA resource such as <code>rdma/rdma_shared_device_a</code> (or an SR-IOV VF resource), and the <code>IPC_LOCK</code> capability so it can pin memory.</li>
+<li><code>kubectl describe nicclusterpolicy nic-cluster-policy</code> (which component is failing) and <code>kubectl -n nvidia-network-operator logs deploy/network-operator</code> (why).</li>
+<li>net1 is a macvlan child of gpu02's eth1 with its own MAC address, bridged onto eth1, which is an access port in VLAN 110. EVPN learns and advertises its MAC and IP like any server.</li>
+</ol>
+<hr />
+<div class="admonition abstract">
+<p class="admonition-title">Go deeper</p>
+<p>The matching book chapters cover the exam objectives for this lab in full, with a Q&amp;A pack of about 40 exam-style questions per chapter. <a class="md-button md-button--primary" href="../../book/">Get the book</a> <a class="md-button" href="https://github.com/Cloudfoxy-Ltd/ncp-ain-guide/issues/new?template=erratum.yml">Report a problem with this lab</a></p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../lab09/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Lab 9 — perftest over Soft-RoCE">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Lab 9 — perftest over Soft-RoCE
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../lab11/" class="md-footer__link md-footer__link--next" aria-label="Next: Lab 11 — NVUE templates">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Lab 11 — NVUE templates
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      © 2026 Vakeesan Thevarajah · Cloudfoxy Ltd · Lab guide CC BY-NC-SA 4.0 · Independent, not endorsed by NVIDIA
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.footer", "navigation.top", "content.code.copy", "search.highlight", "search.suggest", "toc.follow"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

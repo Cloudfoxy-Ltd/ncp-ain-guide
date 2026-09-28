@@ -1,0 +1,72 @@
+site_name: NCP-AIN Certification Guide — Labs & Errata
+site_url: https://cloudfoxy-ltd.github.io/ncp-ain-guide/
+site_description: Free hands-on labs on NVIDIA DSX Air, errata and study files for the NCP-AIN Certification Guide by Vakeesan Thevarajah (Cloudfoxy Ltd).
+site_author: Vakeesan Thevarajah
+copyright: © 2026 Vakeesan Thevarajah · Cloudfoxy Ltd · Lab guide CC BY-NC-SA 4.0 · Independent, not endorsed by NVIDIA
+repo_url: https://github.com/Cloudfoxy-Ltd/ncp-ain-guide
+repo_name: Cloudfoxy-Ltd/ncp-ain-guide
+edit_uri: ""
+docs_dir: site-src
+site_dir: docs
+theme:
+  name: material
+  palette:
+    - scheme: slate
+      primary: cyan
+      accent: purple
+      toggle: { icon: material/brightness-4, name: Switch to light mode }
+    - scheme: default
+      primary: cyan
+      accent: purple
+      toggle: { icon: material/brightness-7, name: Switch to dark mode }
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.footer
+    - navigation.top
+    - content.code.copy
+    - search.highlight
+    - search.suggest
+    - toc.follow
+  icon:
+    repo: fontawesome/brands/github
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - tables
+  - toc: { permalink: true }
+  - pymdownx.details
+  - pymdownx.tasklist: { custom_checkbox: true }
+  - pymdownx.highlight: { anchor_linenums: true }
+  - pymdownx.inlinehilite
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+nav:
+  - Home: index.md
+  - Hands-On Labs:
+      - Overview: labs/index.md
+      - Lab 0 — Air and topology: labs/lab00.md
+      - Lab 1 — NVUE essentials: labs/lab01.md
+      - Lab 2 — eBGP unnumbered underlay: labs/lab02.md
+      - Lab 3 — Lossless RoCE and Soft-RoCE: labs/lab03.md
+      - Lab 4 — AR, ECMP and telemetry: labs/lab04.md
+      - Lab 5 — BGP-EVPN multi-tenancy: labs/lab05.md
+      - Lab 6 — Air power skills: labs/lab06.md
+      - Lab 7 — Monitoring and troubleshooting: labs/lab07.md
+      - Lab 8 — InfiniBand with ibsim: labs/lab08.md
+      - Lab 9 — perftest over Soft-RoCE: labs/lab09.md
+      - Lab 10 — Kubernetes Network Operator: labs/lab10.md
+      - Lab 11 — NVUE templates: labs/lab11.md
+      - Lab 12 — Ansible automation: labs/lab12.md
+      - Lab 13 — Capstone challenge: labs/lab13.md
+      - Appendices: labs/appendix.md
+  - The Book: book.md
+  - Errata: errata.md
+  - Study Files:
+      - Flashcards: flashcards/README.md
+      - Lab files: lab-files/README.md
+  - Licence: license.md

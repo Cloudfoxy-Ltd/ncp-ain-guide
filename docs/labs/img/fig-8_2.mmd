@@ -1,0 +1,16 @@
+flowchart TB
+    S1["hxa-spine01<br/>LID 2"]:::ib
+    S2["hxa-spine02<br/>LID 3"]:::ib
+    A1["su1-leaf-r1<br/>LID 4"]:::ib
+    A2["su1-leaf-r2<br/>LID 6"]:::ib
+    B1["su2-leaf-r1<br/>LID 7"]:::ib
+    B2["su2-leaf-r2<br/>LID 9"]:::ib
+    S1 --- A1 & A2 & B1 & B2
+    S2 --- A1 & A2 & B1 & B2
+    A1 --- U1["ufm-a1<br/>SM master"]:::ctl
+    A1 & A2 --- G1["gpu01, gpu02<br/>mlx5_0 · mlx5_1"]:::gpu
+    B1 & B2 --- G3["gpu03, gpu04<br/>mlx5_0 · mlx5_1"]:::gpu
+    B1 --- U2["ufm-a2<br/>SM standby"]:::ctl
+    classDef ib fill:#EADFF5,stroke:#6A3FA0,color:#2B1745
+    classDef ctl fill:#FDE8CF,stroke:#D9730D,color:#4A2604
+    classDef gpu fill:#DCEBFA,stroke:#1F5FAD,color:#0B2545

@@ -1,0 +1,21 @@
+flowchart TB
+    subgraph SP["Spines — AS 65100"]
+        S1["hxb-spine01<br/>lo 10.255.0.1<br/>swp1–4"]:::ctl
+        S2["hxb-spine02<br/>lo 10.255.0.2<br/>swp1–4"]:::ctl
+    end
+    subgraph LF["Rail leaves"]
+        L1["hxb-leaf-r1<br/>AS 65101<br/>lo 10.255.0.11"]:::eth
+        L2["hxb-leaf-r2<br/>AS 65102<br/>lo 10.255.0.12"]:::eth
+        L3["hxb-leaf-r3<br/>AS 65103<br/>lo 10.255.0.13"]:::eth
+        L4["hxb-leaf-r4<br/>AS 65104<br/>lo 10.255.0.14"]:::eth
+    end
+    S1 ---|"swp1 — swp31"| L1
+    S1 ---|"swp2 — swp31"| L2
+    S1 ---|"swp3 — swp31"| L3
+    S1 ---|"swp4 — swp31"| L4
+    S2 ---|"swp1 — swp32"| L1
+    S2 ---|"swp2 — swp32"| L2
+    S2 ---|"swp3 — swp32"| L3
+    S2 ---|"swp4 — swp32"| L4
+    classDef eth fill:#DDF2DC,stroke:#2E7D32,color:#123B14
+    classDef ctl fill:#FDE8CF,stroke:#D9730D,color:#4A2604

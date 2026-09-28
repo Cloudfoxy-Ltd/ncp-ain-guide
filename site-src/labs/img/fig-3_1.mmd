@@ -1,0 +1,11 @@
+flowchart TB
+    subgraph LEAF["hxb-leaf-r1 · nv set qos roce (lossless)"]
+        direction LR
+        P1["swp1<br/>access VLAN 100<br/>tcpdump here"]:::eth --- BR["br_default<br/>VLAN 100"]:::eth --- P2["swp2<br/>access VLAN 100"]:::eth
+    end
+    G1["hxb-gpu01 eth1<br/>172.16.100.101/24<br/>rxe0 · ib_write_bw client"]:::gpu --> P1
+    G3["hxb-gpu03 eth1<br/>172.16.100.103/24<br/>rxe0 · ib_write_bw server"]:::gpu --> P2
+    OOB["oob-mgmt-server<br/>jump host"]:::oob -.->|"ssh"| LEAF
+    classDef gpu fill:#DCEBFA,stroke:#1F5FAD,color:#0B2545
+    classDef eth fill:#DDF2DC,stroke:#2E7D32,color:#123B14
+    classDef oob fill:#ECECEC,stroke:#6B6B6B,color:#2A2A2A

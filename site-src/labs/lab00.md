@@ -1,7 +1,9 @@
 # Lab 0 — DSX Air Account, Free Trial and the Helix Lab Topology
 
 !!! abstract "Companion to the NCP-AIN Certification Guide"
-    This free lab is part of the hands-on companion to *NCP-AIN Certification Guide* by Vakeesan Thevarajah (Cloudfoxy Ltd). The book explains the theory, design choices and hardware behaviour behind every step. [Get the book](../book.md){ .md-button .md-button--primary } [Free sample](../sample/NCP-AIN_Sample.pdf){ .md-button }
+    This free lab is part of the hands-on companion to *NCP-AIN Certification Guide* by Vakeesan Thevarajah (Cloudfoxy Ltd). The book explains the theory, design choices and hardware behaviour behind every step.
+
+    [Get the book](../book.md){ .md-button .md-button--primary } [Free sample](../sample/NCP-AIN_Sample.pdf){ .md-button }
 
 
 ## Lab at a glance
@@ -234,8 +236,8 @@ Do the same on the spines (`nv set interface swp1-4 link state up`) and compare 
 **Fault: "ssh says No route to host" and the switch's eth0 has a 169.254.x.x address.**
 
 - *Symptom:* the name resolves on the oob-mgmt-server, but SSH fails with *No route to host*. On the switch console, `ip -br addr show eth0` shows a `169.254.x.x` (link-local) address.
-- *Diagnosis:* the switch's DHCP request on the OOB network got no answer, so it fell back to a link-local address. Check the oob-mgmt-server: `ip -br addr` (it should own 192.168.200.1/24) and `ps aux | grep -E '[d]hcpd|[d]nsmasq'` (a DHCP service should be running).
-- *Fix:* restart the DHCP service on the oob-mgmt-server (`sudo systemctl restart isc-dhcp-server` or `dnsmasq`, whichever is installed), then renew on the switch with `sudo ifdown eth0 && sudo ifup eth0`. If the oob-mgmt-server has no 192.168.200.1 address, stop and start the simulation. As a temporary workaround, give the switch the address that `getent hosts <switch>` shows on the oob-mgmt-server: `nv set interface eth0 ip address <ip>/24`, `nv set interface eth0 ip gateway 192.168.200.1`, `nv config apply -y`.
+- *Diagnosis:* the switch hasn't finished loading yet. Cumulus VX switches can take several minutes after the simulation starts, which is longer than the servers. Until the switch is fully up, eth0 may only have a link-local address.
+- *Fix:* wait a few more minutes and retry. You don't need to change anything. When `ip -br addr show eth0` on the switch console shows a 192.168.200.x address, SSH will work.
 
 **Fault: "A leaf sees spine02 on swp31."**
 
@@ -272,4 +274,6 @@ Always finish a session with `nv config save` on the switches and **Stop Simulat
 ---
 
 !!! abstract "Go deeper"
-    The matching book chapters cover the exam objectives for this lab in full, with a Q&A pack of about 40 exam-style questions per chapter. [Get the book](../book.md){ .md-button .md-button--primary } [Report a problem with this lab](https://github.com/Cloudfoxy-Ltd/ncp-ain-guide/issues/new?template=erratum.yml){ .md-button }
+    The matching book chapters cover the exam objectives for this lab in full, with a Q&A pack of about 40 exam-style questions per chapter.
+
+    [Get the book](../book.md){ .md-button .md-button--primary } [Report a problem with this lab](https://github.com/Cloudfoxy-Ltd/ncp-ain-guide/issues/new?template=erratum.yml){ .md-button }

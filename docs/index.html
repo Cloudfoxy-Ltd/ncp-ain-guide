@@ -27,7 +27,7 @@
     
     
       
-        <title>NCP-AIN Certification Guide — Labs & Errata</title>
+        <title>Home - NCP-AIN Certification Guide</title>
       
     
     
@@ -48,10 +48,12 @@
         
         
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
-        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
       
     
+    
+      <link rel="stylesheet" href="stylesheets/extra.css">
     
     <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -69,7 +71,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="cyan" data-md-color-accent="purple">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -78,7 +80,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#ncp-ain-certification-guide" class="md-skip">
+        <a href="#build-the-ai-factory-fabric-pass-the-exam" class="md-skip">
           Skip to content
         </a>
       
@@ -92,7 +94,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="." title="NCP-AIN Certification Guide — Labs &amp; Errata" class="md-header__button md-logo" aria-label="NCP-AIN Certification Guide — Labs & Errata" data-md-component="logo">
+    <a href="." title="NCP-AIN Certification Guide" class="md-header__button md-logo" aria-label="NCP-AIN Certification Guide" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -106,7 +108,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            NCP-AIN Certification Guide — Labs & Errata
+            NCP-AIN Certification Guide
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -125,20 +127,20 @@
     
     
     
-    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="cyan" data-md-color-accent="purple"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
     
-      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
       </label>
     
   
     
     
     
-    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="cyan" data-md-color-accent="purple"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
     
-      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_0" hidden>
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
       </label>
     
   
@@ -348,7 +350,9 @@
           
             
               
-              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" hidden>
                 <div class="md-sidebar__scrollwrap">
                   <div class="md-sidebar__inner">
                     
@@ -359,13 +363,13 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="." title="NCP-AIN Certification Guide — Labs &amp; Errata" class="md-nav__button md-logo" aria-label="NCP-AIN Certification Guide — Labs & Errata" data-md-component="logo">
+    <a href="." title="NCP-AIN Certification Guide" class="md-nav__button md-logo" aria-label="NCP-AIN Certification Guide" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
 
     </a>
-    NCP-AIN Certification Guide — Labs & Errata
+    NCP-AIN Certification Guide
   </label>
   
     <div class="md-nav__source">
@@ -449,10 +453,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#free-hands-on-lab-guide" class="md-nav__link">
+  <a href="#start-practising" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Free Hands-On Lab Guide
+        Start practising
       
     </span>
   </a>
@@ -471,32 +475,21 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#free-companion-files" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Free companion files
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#where-to-buy" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Where to buy
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#about-the-book" class="md-nav__link">
     <span class="md-ellipsis">
       
         About the book
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#go-from-lab-to-certified" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Go from lab to certified
       
     </span>
   </a>
@@ -1222,7 +1215,9 @@
             
             
               
-              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" hidden>
                 <div class="md-sidebar__scrollwrap">
                   <div class="md-sidebar__inner">
                     
@@ -1241,10 +1236,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#free-hands-on-lab-guide" class="md-nav__link">
+  <a href="#start-practising" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Free Hands-On Lab Guide
+        Start practising
       
     </span>
   </a>
@@ -1263,32 +1258,21 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#free-companion-files" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Free companion files
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#where-to-buy" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Where to buy
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#about-the-book" class="md-nav__link">
     <span class="md-ellipsis">
       
         About the book
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#go-from-lab-to-certified" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Go from lab to certified
       
     </span>
   </a>
@@ -1309,50 +1293,72 @@
               <article class="md-content__inner md-typeset">
                 
                   
+  
 
 
 
-<h1 id="ncp-ain-certification-guide">NCP-AIN Certification Guide<a class="headerlink" href="#ncp-ain-certification-guide" title="Permanent link">&para;</a></h1>
-<p><strong>NVIDIA AI Networking with Spectrum-X and InfiniBand</strong>
-by <strong>Vakeesan Thevarajah</strong> (CCIE #43898) · published by <strong>Cloudfoxy Ltd</strong></p>
-<p><img align="right" alt="Book cover" src="assets/cover.jpg" width="220" /></p>
-<p>This is the official companion site for the book: <strong>a free hands-on lab guide</strong>, corrections, updated commands and free study files.</p>
-<p><a class="md-button md-button--primary" href="labs/">Start the free labs</a> <a class="md-button" href="book/">About the book</a></p>
-<h2 id="free-hands-on-lab-guide">Free Hands-On Lab Guide<a class="headerlink" href="#free-hands-on-lab-guide" title="Permanent link">&para;</a></h2>
-<p>Fourteen step-by-step labs on NVIDIA DSX Air (free trial) that build a small AI-factory fabric and take you through NVUE, BGP unnumbered, lossless RoCE, EVPN multi-tenancy, InfiniBand with a simulated fabric, perftest, Kubernetes with the NVIDIA Network Operator, NVUE templates and Ansible. <a href="labs/">Read the labs online</a> or <a href="downloads/NCP-AIN_Lab_Guide.pdf">download the PDF</a>.</p>
+
+<div class="bw-hero">
+<div class="bw-hero__inner">
+<div>
+<p><span class="bw-eyebrow">NCP-AIN · Free hands-on labs</span></p>
+<h1 id="build-the-ai-factory-fabric-pass-the-exam">Build the <span class="bw-outline">AI&nbsp;factory</span> fabric. Pass the exam.<a class="headerlink" href="#build-the-ai-factory-fabric-pass-the-exam" title="Permanent link">&para;</a></h1>
+<p class="bw-hero__lead">Fourteen free, step-by-step labs on NVIDIA DSX Air. You cover Spectrum-X Ethernet, lossless RoCE, EVPN, InfiniBand, Kubernetes and automation. They're the companion to the <em>NCP-AIN Certification Guide</em>.</p>
+<p><a class="md-button md-button--primary" href="labs/">Start the free labs</a> <a class="md-button" href="book/">Get the book</a></p>
+<p class="bw-hero__by">by <strong>Vakeesan Thevarajah</strong> · CCIE #43898 · published by <strong>Cloudfoxy Ltd</strong></p>
+</div>
+<div class="bw-cover">
+<p><img alt="NCP-AIN Certification Guide cover" src="assets/cover.jpg" /></p>
+</div>
+</div>
+</div>
+<div class="bw-stats">
+  <div class="bw-stat"><b>14</b><span>Free labs</span></div>
+  <div class="bw-stat"><b>23</b><span>Book chapters</span></div>
+  <div class="bw-stat"><b>490</b><span>Flashcards</span></div>
+  <div class="bw-stat"><b>3</b><span>Mock exams</span></div>
+</div>
+
+<h2 id="start-practising">Start practising<a class="headerlink" href="#start-practising" title="Permanent link">&para;</a></h2>
+<div class="grid cards">
+<ul>
+<li>
+<p><span class="twemoji lg middle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M5 19a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1c0-.21-.07-.41-.18-.57L13 8.35V4h-2v4.35L5.18 18.43c-.11.16-.18.36-.18.57m1 3a3 3 0 0 1-3-3c0-.6.18-1.16.5-1.63L9 7.81V6a1 1 0 0 1-1-1V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v1a1 1 0 0 1-1 1v1.81l5.5 9.56c.32.47.5 1.03.5 1.63a3 3 0 0 1-3 3zm7-6 1.34-1.34L16.27 18H7.73l2.66-4.61zm-.5-4a.5.5 0 0 1 .5.5.5.5 0 0 1-.5.5.5.5 0 0 1-.5-.5.5.5 0 0 1 .5-.5"/></svg></span> <strong>Hands-On Lab Guide</strong></p>
+<hr />
+<p>You build the Helix AI factory in DSX Air, then configure it, break it and fix it. Everything runs on the free trial.</p>
+<p><a href="labs/"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13.22 19.03a.75.75 0 0 1 0-1.06L18.19 13H3.75a.75.75 0 0 1 0-1.5h14.44l-4.97-4.97a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0"/></svg></span> Read the labs</a> · <a href="downloads/NCP-AIN_Lab_Guide.pdf">PDF</a></p>
+</li>
+<li>
+<p><span class="twemoji lg middle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M11.19 2.25c-.26 0-.52.06-.77.15L3.06 5.45a1.994 1.994 0 0 0-1.09 2.6L6.93 20a2 2 0 0 0 1.81 1.25c.26 0 .53-.03.79-.15l7.37-3.05a2.02 2.02 0 0 0 1.23-1.8c.01-.25-.04-.54-.13-.8L13 3.5a1.95 1.95 0 0 0-1.81-1.25m3.48 0 3.45 8.35V4.25a2 2 0 0 0-2-2m4.01 1.54v9.03l2.43-5.86a1.99 1.99 0 0 0-1.09-2.6m-10.28-.14 4.98 12.02-7.39 3.06L3.8 7.29"/></svg></span> <strong>Flashcard deck</strong></p>
+<hr />
+<p>About 490 cards (front, back and chapter) for Anki, Quizlet or any flashcard app.</p>
+<p><a href="flashcards/ncp-ain-flashcards.csv"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13.22 19.03a.75.75 0 0 1 0-1.06L18.19 13H3.75a.75.75 0 0 1 0-1.5h14.44l-4.97-4.97a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0"/></svg></span> Download CSV</a> · <a href="flashcards/">Import guide</a></p>
+</li>
+<li>
+<p><span class="twemoji lg middle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m14 2 6 6v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zm4 18V9h-5V4H6v16zm-6-1-4-4h2.5v-3h3v3H16z"/></svg></span> <strong>Lab files</strong></p>
+<hr />
+<p>The DSX Air topology (JSON), the InfiniBand simulator fabric and the OpenSM partitions used in the labs.</p>
+<p><a href="lab-files/"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13.22 19.03a.75.75 0 0 1 0-1.06L18.19 13H3.75a.75.75 0 0 1 0-1.5h14.44l-4.97-4.97a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0"/></svg></span> Get the files</a></p>
+</li>
+<li>
+<p><span class="twemoji lg middle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m19 1-5 5v11l5-4.5zm2 4v13.5c-1.1-.35-2.3-.5-3.5-.5-1.7 0-4.15.65-5.5 1.5V6c-1.45-1.1-3.55-1.5-5.5-1.5S2.45 4.9 1 6v14.65c0 .25.25.5.5.5.1 0 .15-.05.25-.05C3.1 20.45 5.05 20 6.5 20c1.95 0 4.05.4 5.5 1.5 1.35-.85 3.8-1.5 5.5-1.5 1.65 0 3.35.3 4.75 1.05.1.05.15.05.25.05.25 0 .5-.25.5-.5V6c-.6-.45-1.25-.75-2-1M10 18.41C8.75 18.09 7.5 18 6.5 18c-1.06 0-2.32.19-3.5.5V7.13c.91-.4 2.14-.63 3.5-.63s2.59.23 3.5.63z"/></svg></span> <strong>Free sample</strong></p>
+<hr />
+<p>The front matter, Chapter 1 with its Q&amp;A pack, and Chapter 2 of the book.</p>
+<p><a href="sample/NCP-AIN_Sample.pdf"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13.22 19.03a.75.75 0 0 1 0-1.06L18.19 13H3.75a.75.75 0 0 1 0-1.5h14.44l-4.97-4.97a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0"/></svg></span> Read the sample</a></p>
+</li>
+</ul>
+</div>
 <h2 id="errata-and-updates">Errata and updates<a class="headerlink" href="#errata-and-updates" title="Permanent link">&para;</a></h2>
-<p>NVIDIA ships new software releases several times a year, so some commands will change after publication.
-See the <strong><a href="errata/">errata page</a></strong> for confirmed corrections, listed by edition, chapter and page.</p>
-<p>Found an error? <strong><a href="https://github.com/Cloudfoxy-Ltd/ncp-ain-guide/issues/new?template=erratum.yml">Report it here</a></strong> (a free GitHub account is needed), and include the edition, page and what you expected to see.</p>
-<h2 id="free-companion-files">Free companion files<a class="headerlink" href="#free-companion-files" title="Permanent link">&para;</a></h2>
-<table>
-<thead>
-<tr>
-<th>File</th>
-<th>What it is</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><a href="flashcards/ncp-ain-flashcards.csv">Flashcard deck (CSV)</a></td>
-<td>About 490 cards (front, back, chapter) for Anki, Quizlet or any flashcard app. See the <a href="flashcards/">import guide</a>.</td>
-</tr>
-<tr>
-<td><a href="sample/NCP-AIN_Sample.pdf">Free sample (PDF)</a></td>
-<td>Front matter, Chapter 1 with its Q&amp;A pack, and Chapter 2.</td>
-</tr>
-<tr>
-<td><a href="lab-files/">Lab files</a></td>
-<td>DSX Air topology (JSON), InfiniBand simulator fabric and partitions for the Hands-On Lab Guide.</td>
-</tr>
-</tbody>
-</table>
-<h2 id="where-to-buy">Where to buy<a class="headerlink" href="#where-to-buy" title="Permanent link">&para;</a></h2>
-<p>Complete ebook and PDF on Leanpub; Kindle and paperback (Volumes I and II) on Amazon. Links and details on <a href="book/">the book page</a>.</p>
+<p>NVIDIA ships new software releases several times a year, so some commands will change after publication. The <strong><a href="errata/">errata page</a></strong> lists confirmed corrections by edition, chapter and page.</p>
+<p>Found an error? <strong><a href="https://github.com/Cloudfoxy-Ltd/ncp-ain-guide/issues/new?template=erratum.yml">Report it here</a></strong>. You'll need a free GitHub account. Include the edition, the page and what you expected to see.</p>
 <h2 id="about-the-book">About the book<a class="headerlink" href="#about-the-book" title="Permanent link">&para;</a></h2>
-<p>The book covers every objective in NVIDIA's published NCP-AIN exam blueprint and uses one running example, the Helix AI Factory, throughout. Each chapter has technical diagrams, a hands-on lab, a troubleshooting scenario and about 40 exam-style questions with explanations. The book ends with three 75-question mock exams, a cram sheet, a command reference and a glossary.</p>
-<p><em>Independent study guide. Not produced, sponsored or endorsed by NVIDIA Corporation. All practice questions are original. NVIDIA and product names are trademarks of NVIDIA Corporation.</em></p>
-<p>© 2026 Vakeesan Thevarajah · Cloudfoxy Ltd · <a href="license/">Licence</a></p>
+<p>The book covers every objective in NVIDIA's published NCP-AIN exam blueprint. It follows one running example, the Helix AI Factory, from start to finish. Each chapter has technical diagrams, a hands-on lab, a troubleshooting scenario and about 40 exam-style questions with explanations. It ends with three 75-question mock exams, a cram sheet, a command reference and a glossary.</p>
+<div class="bw-cta">
+<h2 id="go-from-lab-to-certified">Go from lab to certified<a class="headerlink" href="#go-from-lab-to-certified" title="Permanent link">&para;</a></h2>
+<p>The labs show you <em>how</em>. The book explains <em>why</em>, and that's what the exam tests.</p>
+<p><a class="md-button md-button--primary" href="book/">Get the book</a> <a class="md-button" href="sample/NCP-AIN_Sample.pdf">Free sample</a></p>
+</div>
+<p><small><em>This is an independent study guide. It is not produced, sponsored or endorsed by NVIDIA Corporation. All practice questions are original. NVIDIA and NVIDIA product names are trademarks of NVIDIA Corporation.</em> · <a href="license/">Licence</a></small></p>
 
 
 
@@ -1360,8 +1366,13 @@ See the <strong><a href="errata/">errata page</a></strong> for confirmed correct
 
 
 
+  
+  
 
 
+
+
+  
 
 
 
@@ -1384,6 +1395,8 @@ See the <strong><a href="errata/">errata page</a></strong> for confirmed correct
         <footer class="md-footer">
   
     
+      
+        
       
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         

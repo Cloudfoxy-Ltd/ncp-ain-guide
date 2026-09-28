@@ -1,41 +1,94 @@
-# NCP-AIN Certification Guide
+---
+title: Home
+hide:
+  - navigation
+  - toc
+---
 
-**NVIDIA AI Networking with Spectrum-X and InfiniBand**
-by **Vakeesan Thevarajah** (CCIE #43898) · published by **Cloudfoxy Ltd**
+<div class="bw-hero" markdown>
+<div class="bw-hero__inner" markdown>
+<div markdown>
 
-![Book cover](assets/cover.jpg){ width="220" align=right }
+<span class="bw-eyebrow">NCP-AIN · Free hands-on labs</span>
 
-This is the official companion site for the book: **a free hands-on lab guide**, corrections, updated commands and free study files.
+<h1>Build the <span class="bw-outline">AI&nbsp;factory</span> fabric. Pass the exam.</h1>
 
-[Start the free labs](labs/index.md){ .md-button .md-button--primary } [About the book](book.md){ .md-button }
+<p class="bw-hero__lead">Fourteen free, step-by-step labs on NVIDIA DSX Air. You cover Spectrum-X Ethernet, lossless RoCE, EVPN, InfiniBand, Kubernetes and automation. They're the companion to the <em>NCP-AIN Certification Guide</em>.</p>
 
-## Free Hands-On Lab Guide
+[Start the free labs](labs/index.md){ .md-button .md-button--primary } [Get the book](book.md){ .md-button }
 
-Fourteen step-by-step labs on NVIDIA DSX Air (free trial) that build a small AI-factory fabric and take you through NVUE, BGP unnumbered, lossless RoCE, EVPN multi-tenancy, InfiniBand with a simulated fabric, perftest, Kubernetes with the NVIDIA Network Operator, NVUE templates and Ansible. [Read the labs online](labs/index.md) or [download the PDF](downloads/NCP-AIN_Lab_Guide.pdf).
+<p class="bw-hero__by">by <strong>Vakeesan Thevarajah</strong> · CCIE #43898 · published by <strong>Cloudfoxy Ltd</strong></p>
+
+</div>
+<div class="bw-cover" markdown>
+![NCP-AIN Certification Guide cover](assets/cover.jpg)
+</div>
+</div>
+</div>
+
+<div class="bw-stats">
+  <div class="bw-stat"><b>14</b><span>Free labs</span></div>
+  <div class="bw-stat"><b>23</b><span>Book chapters</span></div>
+  <div class="bw-stat"><b>490</b><span>Flashcards</span></div>
+  <div class="bw-stat"><b>3</b><span>Mock exams</span></div>
+</div>
+
+## Start practising
+
+<div class="grid cards" markdown>
+
+-   :material-flask-outline:{ .lg .middle } **Hands-On Lab Guide**
+
+    ---
+
+    You build the Helix AI factory in DSX Air, then configure it, break it and fix it. Everything runs on the free trial.
+
+    [:octicons-arrow-right-24: Read the labs](labs/index.md) · [PDF](downloads/NCP-AIN_Lab_Guide.pdf)
+
+-   :material-cards-outline:{ .lg .middle } **Flashcard deck**
+
+    ---
+
+    About 490 cards (front, back and chapter) for Anki, Quizlet or any flashcard app.
+
+    [:octicons-arrow-right-24: Download CSV](flashcards/ncp-ain-flashcards.csv) · [Import guide](flashcards/README.md)
+
+-   :material-file-download-outline:{ .lg .middle } **Lab files**
+
+    ---
+
+    The DSX Air topology (JSON), the InfiniBand simulator fabric and the OpenSM partitions used in the labs.
+
+    [:octicons-arrow-right-24: Get the files](lab-files/README.md)
+
+-   :material-book-open-page-variant-outline:{ .lg .middle } **Free sample**
+
+    ---
+
+    The front matter, Chapter 1 with its Q&A pack, and Chapter 2 of the book.
+
+    [:octicons-arrow-right-24: Read the sample](sample/NCP-AIN_Sample.pdf)
+
+</div>
 
 ## Errata and updates
 
-NVIDIA ships new software releases several times a year, so some commands will change after publication.
-See the **[errata page](errata.md)** for confirmed corrections, listed by edition, chapter and page.
+NVIDIA ships new software releases several times a year, so some commands will change after publication. The **[errata page](errata.md)** lists confirmed corrections by edition, chapter and page.
 
-Found an error? **[Report it here](https://github.com/Cloudfoxy-Ltd/ncp-ain-guide/issues/new?template=erratum.yml)** (a free GitHub account is needed), and include the edition, page and what you expected to see.
-
-## Free companion files
-
-| File | What it is |
-|---|---|
-| [Flashcard deck (CSV)](flashcards/ncp-ain-flashcards.csv) | About 490 cards (front, back, chapter) for Anki, Quizlet or any flashcard app. See the [import guide](flashcards/README.md). |
-| [Free sample (PDF)](sample/NCP-AIN_Sample.pdf) | Front matter, Chapter 1 with its Q&A pack, and Chapter 2. |
-| [Lab files](lab-files/README.md) | DSX Air topology (JSON), InfiniBand simulator fabric and partitions for the Hands-On Lab Guide. |
-
-## Where to buy
-
-Complete ebook and PDF on Leanpub; Kindle and paperback (Volumes I and II) on Amazon. Links and details on [the book page](book.md).
+Found an error? **[Report it here](https://github.com/Cloudfoxy-Ltd/ncp-ain-guide/issues/new?template=erratum.yml)**. You'll need a free GitHub account. Include the edition, the page and what you expected to see.
 
 ## About the book
 
-The book covers every objective in NVIDIA's published NCP-AIN exam blueprint and uses one running example, the Helix AI Factory, throughout. Each chapter has technical diagrams, a hands-on lab, a troubleshooting scenario and about 40 exam-style questions with explanations. The book ends with three 75-question mock exams, a cram sheet, a command reference and a glossary.
+The book covers every objective in NVIDIA's published NCP-AIN exam blueprint. It follows one running example, the Helix AI Factory, from start to finish. Each chapter has technical diagrams, a hands-on lab, a troubleshooting scenario and about 40 exam-style questions with explanations. It ends with three 75-question mock exams, a cram sheet, a command reference and a glossary.
 
-*Independent study guide. Not produced, sponsored or endorsed by NVIDIA Corporation. All practice questions are original. NVIDIA and product names are trademarks of NVIDIA Corporation.*
+<div class="bw-cta" markdown>
 
-© 2026 Vakeesan Thevarajah · Cloudfoxy Ltd · [Licence](license.md)
+## Go from lab to certified
+
+The labs show you *how*. The book explains *why*, and that's what the exam tests.
+
+[Get the book](book.md){ .md-button .md-button--primary } [Free sample](sample/NCP-AIN_Sample.pdf){ .md-button }
+
+</div>
+
+<small>*This is an independent study guide. It is not produced, sponsored or endorsed by NVIDIA Corporation. All practice questions are original. NVIDIA and NVIDIA product names are trademarks of NVIDIA Corporation.* · [Licence](license.md)</small>

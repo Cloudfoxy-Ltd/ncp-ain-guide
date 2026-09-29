@@ -15,13 +15,15 @@ The book teaches the NVIDIA networking stack behind AI factories, from first pri
 
 ## Get it
 
-| Edition | Where |
-|---|---|
-| Complete ebook and PDF (free updates) | Leanpub — *link coming soon* |
-| Kindle | Amazon — *link coming soon* |
-| Paperback, Volume I: Foundations and Spectrum-X Ethernet | Amazon — *link coming soon* |
-| Paperback, Volume II: InfiniBand, Kubernetes, Troubleshooting, Automation and Exam Readiness | Amazon — *link coming soon* |
+[Buy the ebook on Leanpub](https://leanpub.com/nvidiancp-aincertificationguide){ .md-button .md-button--primary } [Volume II paperback on Amazon](https://amzn.eu/d/07kTB52M){ .md-button } [Free sample (PDF)](sample/NCP-AIN_Sample.pdf){ .md-button }
 
-[Read the free sample (PDF)](sample/NCP-AIN_Sample.pdf){ .md-button .md-button--primary }
+| Edition | Where | ISBN |
+|---|---|---|
+| Complete ebook: PDF and EPUB, with free updates | **[Leanpub](https://leanpub.com/nvidiancp-aincertificationguide)** | <span style="white-space:nowrap">978-1-0654464-2-2</span> |
+| Paperback, Volume I: Foundations and Spectrum-X Ethernet | Amazon, *in review, coming soon* | <span style="white-space:nowrap">978-1-0654464-0-8</span> |
+| Paperback, Volume II: InfiniBand, Kubernetes, Troubleshooting, Automation and Exam Readiness | **[Amazon](https://amzn.eu/d/07kTB52M)** | <span style="white-space:nowrap">978-1-0654464-1-5</span> |
+| Kindle | Amazon, *in review, coming soon* | — |
+
+Leanpub is the best choice if you're studying now. You get the complete book in one file, and every future update and correction free.
 
 *Independent study guide. Not produced, sponsored or endorsed by NVIDIA Corporation. All practice questions are original.*

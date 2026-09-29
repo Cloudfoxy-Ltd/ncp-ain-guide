@@ -79,7 +79,7 @@ Found an error? **[Report it here](https://github.com/Cloudfoxy-Ltd/ncp-ain-guid
 
 ## About the book
 
-The book covers every objective in NVIDIA's published NCP-AIN exam blueprint. It follows one running example, the Helix AI Factory, from start to finish. Each chapter has technical diagrams, a hands-on lab, a troubleshooting scenario and about 40 exam-style questions with explanations. It ends with three 75-question mock exams, a cram sheet, a command reference and a glossary.
+The book is **[available now on Leanpub](https://leanpub.com/nvidiancp-aincertificationguide)** (ebook) and in paperback on Amazon. It covers every objective in NVIDIA's published NCP-AIN exam blueprint. It follows one running example, the Helix AI Factory, from start to finish. Each chapter has technical diagrams, a hands-on lab, a troubleshooting scenario and about 40 exam-style questions with explanations. It ends with three 75-question mock exams, a cram sheet, a command reference and a glossary.
 
 <div class="bw-cta" markdown>
 
@@ -87,7 +87,7 @@ The book covers every objective in NVIDIA's published NCP-AIN exam blueprint. It
 
 The labs show you *how*. The book explains *why*, and that's what the exam tests.
 
-[Get the book](book.md){ .md-button .md-button--primary } [Free sample](sample/NCP-AIN_Sample.pdf){ .md-button }
+[Buy on Leanpub](https://leanpub.com/nvidiancp-aincertificationguide){ .md-button .md-button--primary } [Paperbacks and all formats](book.md){ .md-button } [Free sample](sample/NCP-AIN_Sample.pdf){ .md-button }
 
 </div>
 

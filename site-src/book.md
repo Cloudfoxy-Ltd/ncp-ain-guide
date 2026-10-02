@@ -15,14 +15,16 @@ The book teaches the NVIDIA networking stack behind AI factories, from first pri
 
 ## Get it
 
-[Buy the ebook on Leanpub](https://leanpub.com/nvidiancp-aincertificationguide){ .md-button .md-button--primary } [Volume II paperback on Amazon](https://amzn.eu/d/07kTB52M){ .md-button } [Free sample (PDF)](sample/NCP-AIN_Sample.pdf){ .md-button }
+[Leanpub ebook](https://leanpub.com/nvidiancp-aincertificationguide){ .md-button .md-button--primary } [Kindle](https://www.amazon.co.uk/dp/B0HLMP7R9Q){ .md-button } [Paperback Vol I](https://www.amazon.co.uk/dp/1065446403){ .md-button } [Paperback Vol II](https://amzn.eu/d/07kTB52M){ .md-button }
+
+[Free sample (PDF)](sample/NCP-AIN_Sample.pdf)
 
 | Edition | Where | ISBN |
 |---|---|---|
 | Complete ebook: PDF and EPUB, with free updates | **[Leanpub](https://leanpub.com/nvidiancp-aincertificationguide)** | <span style="white-space:nowrap">978-1-0654464-2-2</span> |
-| Paperback, Volume I: Foundations and Spectrum-X Ethernet | Amazon, *in review, coming soon* | <span style="white-space:nowrap">978-1-0654464-0-8</span> |
+| Paperback, Volume I: Foundations and Spectrum-X Ethernet | **[Amazon](https://www.amazon.co.uk/dp/1065446403)** | <span style="white-space:nowrap">978-1-0654464-0-8</span> |
 | Paperback, Volume II: InfiniBand, Kubernetes, Troubleshooting, Automation and Exam Readiness | **[Amazon](https://amzn.eu/d/07kTB52M)** | <span style="white-space:nowrap">978-1-0654464-1-5</span> |
-| Kindle | Amazon, *in review, coming soon* | — |
+| Kindle | **[Amazon](https://www.amazon.co.uk/dp/B0HLMP7R9Q)** | — |
 
 Leanpub is the best choice if you're studying now. You get the complete book in one file, and every future update and correction free.
 

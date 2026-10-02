@@ -82,7 +82,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#lab-files-for-the-ncp-ain-hands-on-lab-guide" class="md-skip">
+        <a href="#lab-files" class="md-skip">
           Skip to content
         </a>
       
@@ -1166,7 +1166,9 @@
 
 
 
-<h1 id="lab-files-for-the-ncp-ain-hands-on-lab-guide">Lab files for the NCP-AIN Hands-On Lab Guide<a class="headerlink" href="#lab-files-for-the-ncp-ain-hands-on-lab-guide" title="Permanent link">&para;</a></h1>
+<h1 id="lab-files">Lab files<a class="headerlink" href="#lab-files" title="Permanent link">&para;</a></h1>
+<p>These are the files used in the NCP-AIN Hands-On Lab Guide. Click a file to download it. If your browser opens it as text instead, right-click the link and choose <strong>Save link as…</strong>.</p>
+<p><a class="md-button md-button--primary" download="ncp-ain-lab-files.zip" href="ncp-ain-lab-files.zip">Download all lab files (.zip)</a></p>
 <table>
 <thead>
 <tr>
@@ -1177,23 +1179,29 @@
 </thead>
 <tbody>
 <tr>
-<td><code>helix-b-air.json</code></td>
+<td><a download="helix-b-air.json" href="helix-b-air.json">helix-b-air.json</a></td>
 <td>Lab 0</td>
-<td>NVIDIA DSX Air topology: 2 spines, 4 rail leaves (Cumulus VX), 4 Ubuntu "GPU" servers, an InfiniBand simulator node, OOB network. Fits the Air free trial.</td>
+<td>NVIDIA DSX Air topology: 2 spines, 4 rail leaves (Cumulus VX), 4 Ubuntu "GPU" servers, an InfiniBand simulator node and the OOB network. It fits the Air free trial.</td>
 </tr>
 <tr>
-<td><code>helix-a.net</code></td>
-<td>Lab 8</td>
-<td>ibsim fabric file: 2 spines, 4 leaves, 4 GPU nodes × 2 HCAs, two UFM hosts</td>
+<td><a download="helix-b-air-bare.json" href="helix-b-air-bare.json">helix-b-air-bare.json</a></td>
+<td>Lab 0 (fallback)</td>
+<td>The same topology in Air's minimal JSON format. Use it if the main file fails to import.</td>
 </tr>
 <tr>
-<td><code>partitions.conf</code></td>
+<td><a download="helix-a.net" href="helix-a.net">helix-a.net</a></td>
 <td>Lab 8</td>
-<td>OpenSM partitions: RESEARCH 0x8001, PRODUCTION 0x8002, SHARED 0x0100 (limited)</td>
+<td>ibsim fabric file: 2 spines, 4 leaves, 4 GPU nodes with 2 HCAs each, and two UFM hosts.</td>
+</tr>
+<tr>
+<td><a download="partitions.conf" href="partitions.conf">partitions.conf</a></td>
+<td>Lab 8</td>
+<td>OpenSM partitions: RESEARCH 0x8001, PRODUCTION 0x8002, SHARED 0x0100 (limited).</td>
 </tr>
 </tbody>
 </table>
-<p>Import <code>helix-b-air.json</code> in Air with <strong>Create Simulation → JSON</strong>.</p>
+<p>To import <code>helix-b-air.json</code> in Air, choose <strong>Create Simulation → Import JSON</strong>.</p>
+<p>The files are also in the <a href="https://github.com/Cloudfoxy-Ltd/ncp-ain-guide/tree/main/site-src/lab-files">GitHub repository</a>. They're released under the <a href="../license/">MIT licence</a>.</p>
 
 
 

@@ -589,7 +589,7 @@ function flowFig(id,cfg){
     anim.period=Math.max(...toks.map(k=>k.end),...events.map(e=>e.t1),0)+(spec.tail??1200);
     const leads=toks.filter(k=>k.lead).sort((a,b)=>b.end-a.end);
     lastStep=leads.length?leads[0].legs[leads[0].legs.length-1].step:-1;leadEnd=leads.length?leads[0].end:0;
-    stepsEl.innerHTML='';lis=spec.steps.map(s=>{const li=document.createElement('li');li.innerHTML=s;stepsEl.appendChild(li);return li;});
+    stepsEl.innerHTML='';lis=spec.steps.map(s=>{const li=document.createElement('li');li.innerHTML="<span>"+s+"</span>";stepsEl.appendChild(li);return li;});
     if(note)note.innerHTML=spec.note||'';
     anim.t=0;anim.update(0);
   }

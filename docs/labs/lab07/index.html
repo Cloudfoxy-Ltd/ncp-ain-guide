@@ -289,6 +289,25 @@
   
   
     <li class="md-tabs__item">
+      <a href="https://cloudfoxy-ltd.github.io/ncp-ain-guide/blog/gpu-communication/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Blog
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
       <a href="../../errata/" class="md-tabs__link">
         
   
@@ -1222,6 +1241,33 @@
   
   
     <li class="md-nav__item">
+      <a href="https://cloudfoxy-ltd.github.io/ncp-ain-guide/blog/gpu-communication/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Blog
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../errata/" class="md-nav__link">
         
   
@@ -1262,10 +1308,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
         
           
-          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
             
   
   
@@ -1283,8 +1329,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_5">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1731,7 +1777,7 @@
 </tr>
 </tbody>
 </table>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv show interface | grep -E &#39;swp|vlan|lo &#39;
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv show interface | grep -E 'swp|vlan|lo '
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>lo        up    65536  loopback  IP Address: 10.255.0.11/32
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>swp1      up    9216   swp
 <a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>swp2      up    9216   swp
@@ -1741,7 +1787,7 @@
 <a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>vlan210   up    9216   svi       IP Address: 172.17.10.11/24
 </code></pre></div>
 <p><em>(Illustrative; your columns and addresses depend on the release and on Lab 5.)</em></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ sudo vtysh -c &#39;show bgp summary&#39; | grep -E &#39;Neighbor|swp&#39;
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ sudo vtysh -c 'show bgp summary' | grep -E 'Neighbor|swp'
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt Desc
 <a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>swp31           4      65100       812       805        0    0    0 06:41:12            5        7 N/A
 <a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>swp32           4      65100       810       806        0    0    0 06:41:10            5        7 N/A
@@ -1767,7 +1813,7 @@
 <li>
 <p>Generate some traffic (a 60-second ping flood inside AURORA from hxb-gpu01 to hxb-gpu02) and watch the counters move on the uplinks. Which spine carries it tells you where ECMP hashed the flow (Lab 4).</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>ubuntu@hxb-gpu01:~$ sudo ping -f -c 20000 -s 1400 172.16.10.102
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>cumulus@hxb-leaf-r1:mgmt:~$ watch -n 2 &quot;nv show interface swp31-32 counters | grep -iE &#39;packet|octet&#39;&quot;
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>cumulus@hxb-leaf-r1:mgmt:~$ watch -n 2 "nv show interface swp31-32 counters | grep -iE 'packet|octet'"
 </code></pre></div>
 <div class="admonition info">
 <p class="admonition-title">Field note</p>
@@ -1835,14 +1881,14 @@
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>#!/bin/bash
 <a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a># Mini fabric check for helix-b-air: BGP, EVPN and link state on every switch
-<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>SWITCHES=&quot;hxb-spine01 hxb-spine02 hxb-leaf-r1 hxb-leaf-r2 hxb-leaf-r3 hxb-leaf-r4&quot;
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>SWITCHES="hxb-spine01 hxb-spine02 hxb-leaf-r1 hxb-leaf-r2 hxb-leaf-r3 hxb-leaf-r4"
 <a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>for s in $SWITCHES; do
-<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>  echo &quot;===== $s&quot;
-<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>  ssh -o BatchMode=yes cumulus@$s &#39;
-<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>    echo -n &quot;BGP established: &quot;; sudo vtysh -c &quot;show bgp summary json&quot; | python3 -c &quot;import sys,json;d=json.load(sys.stdin);p=d.get(\&quot;ipv4Unicast\&quot;,{}).get(\&quot;peers\&quot;,{});print(sum(1 for v in p.values() if v.get(\&quot;state\&quot;)==\&quot;Established\&quot;),\&quot;/\&quot;,len(p))&quot;
-<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>    echo -n &quot;Down swp ports:  &quot;; ip -br link | awk &quot;/^swp/ &amp;&amp; \$2!=\&quot;UP\&quot; {printf \$1\&quot; \&quot;}&quot;; echo
-<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>    echo -n &quot;EVPN VNIs:       &quot;; sudo vtysh -c &quot;show evpn vni&quot; 2&gt;/dev/null | grep -cE &quot;^ *[0-9]+ &quot;
-<a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>  &#39;
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>  echo "===== $s"
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>  ssh -o BatchMode=yes cumulus@$s '
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>    echo -n "BGP established: "; sudo vtysh -c "show bgp summary json" | python3 -c "import sys,json;d=json.load(sys.stdin);p=d.get(\"ipv4Unicast\",{}).get(\"peers\",{});print(sum(1 for v in p.values() if v.get(\"state\")==\"Established\"),\"/\",len(p))"
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>    echo -n "Down swp ports:  "; ip -br link | awk "/^swp/ &amp;&amp; \$2!=\"UP\" {printf \$1\" \"}"; echo
+<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>    echo -n "EVPN VNIs:       "; sudo vtysh -c "show evpn vni" 2&gt;/dev/null | grep -cE "^ *[0-9]+ "
+<a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>  '
 <a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a>done
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>ubuntu@oob-mgmt-server:~$ chmod +x ~/checks/fabric-check.sh &amp;&amp; ~/checks/fabric-check.sh

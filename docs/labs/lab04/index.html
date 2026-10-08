@@ -289,6 +289,25 @@
   
   
     <li class="md-tabs__item">
+      <a href="https://cloudfoxy-ltd.github.io/ncp-ain-guide/blog/gpu-communication/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Blog
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
       <a href="../../errata/" class="md-tabs__link">
         
   
@@ -1211,6 +1230,33 @@
   
   
     <li class="md-nav__item">
+      <a href="https://cloudfoxy-ltd.github.io/ncp-ain-guide/blog/gpu-communication/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Blog
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../errata/" class="md-nav__link">
         
   
@@ -1251,10 +1297,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
         
           
-          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
             
   
   
@@ -1272,8 +1318,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_5">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1815,8 +1861,8 @@
 <li>
 <p>Ask the kernel which next hop it would use for several flows that differ only by source port. The destination port is 4791, as for RoCEv2.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ for sp in 49152 49153 49154 49155 49156 49157; do
-<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>&gt;   echo -n &quot;sport $sp: &quot;
-<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>&gt;   ip route get 10.255.0.13 from 10.255.0.11 ipproto udp sport $sp dport 4791 | grep -o &#39;dev swp3[12]&#39;
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>&gt;   echo -n "sport $sp: "
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>&gt;   ip route get 10.255.0.13 from 10.255.0.11 ipproto udp sport $sp dport 4791 | grep -o 'dev swp3[12]'
 <a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>&gt; done
 </code></pre></div>
 <p><strong>Expected output (illustrative):</strong></p>
@@ -1962,11 +2008,11 @@
 <p><strong>Symptoms.</strong> On hardware, RoCE traffic that the leaf sends out of swp32 is still placed by ECMP hash, so uplink utilisation is uneven and ECN marks appear on one uplink only, even though "AR is enabled".</p>
 <p><strong>Diagnosis.</strong> Check the global state, then every uplink. Use JSON when you script this across many leaves.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv show router adaptive-routing
-<a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a>cumulus@hxb-leaf-r1:mgmt:~$ for i in swp31 swp32; do echo -n &quot;$i: &quot;; nv show interface $i router adaptive-routing -o json | grep -o &#39;&quot;state&quot;: *&quot;[a-z]*&quot;&#39;; done
+<a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a>cumulus@hxb-leaf-r1:mgmt:~$ for i in swp31 swp32; do echo -n "$i: "; nv show interface $i router adaptive-routing -o json | grep -o '"state": *"[a-z]*"'; done
 </code></pre></div>
 <p><strong>Expected output (illustrative):</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>swp31: &quot;state&quot;: &quot;enabled&quot;
-<a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a>swp32: &quot;state&quot;: &quot;disabled&quot;
+<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>swp31: "state": "enabled"
+<a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a>swp32: "state": "disabled"
 </code></pre></div>
 <p><strong>Fix.</strong></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv set interface swp31-32 router adaptive-routing state enabled

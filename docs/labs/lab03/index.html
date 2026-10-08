@@ -289,6 +289,25 @@
   
   
     <li class="md-tabs__item">
+      <a href="https://cloudfoxy-ltd.github.io/ncp-ain-guide/blog/gpu-communication/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Blog
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
       <a href="../../errata/" class="md-tabs__link">
         
   
@@ -1222,6 +1241,33 @@
   
   
     <li class="md-nav__item">
+      <a href="https://cloudfoxy-ltd.github.io/ncp-ain-guide/blog/gpu-communication/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Blog
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../errata/" class="md-nav__link">
         
   
@@ -1262,10 +1308,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
         
           
-          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
             
   
   
@@ -1283,8 +1329,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_5">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1715,7 +1761,7 @@
 <p>Put swp1 and swp2 into the default bridge as access ports in VLAN 100, then review and apply.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv set bridge domain br_default vlan 100
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv set interface swp1-2 bridge domain br_default access 100
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv set interface swp1-2 description &quot;LAB3-TEMP VLAN100&quot;
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv set interface swp1-2 description "LAB3-TEMP VLAN100"
 <a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv config diff
 <a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv config apply -y
 </code></pre></div>
@@ -1910,7 +1956,7 @@
 <h3 id="task-3-optional-roll-the-profile-out-to-every-switch">Task 3 — Optional: roll the profile out to every switch<a class="headerlink" href="#task-3-optional-roll-the-profile-out-to-every-switch" title="Permanent link">&para;</a></h3>
 <p>RoCE QoS must be consistent on every hop. Chapter 22 and Lab 12 automate this with Ansible. For now, a shell loop from the oob-mgmt-server is enough. It runs non-interactively because NVUE commands work over <code>ssh</code>.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>ubuntu@oob-mgmt-server:~$ for sw in hxb-spine01 hxb-spine02 hxb-leaf-r2 hxb-leaf-r3 hxb-leaf-r4; do
-<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>&gt;   echo &quot;== $sw&quot;; ssh cumulus@$sw &quot;nv set qos roce &amp;&amp; nv config apply -y &amp;&amp; nv show qos roce | grep -E &#39;^mode|pfc-priority&#39;&quot;
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>&gt;   echo "== $sw"; ssh cumulus@$sw "nv set qos roce &amp;&amp; nv config apply -y &amp;&amp; nv show qos roce | grep -E '^mode|pfc-priority'"
 <a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>&gt; done
 </code></pre></div>
 <p><strong>Expected output (illustrative):</strong> each switch prints <code>mode lossless</code> and <code>pfc-priority 3</code>.</p>
@@ -1987,7 +2033,7 @@
 <a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>ubuntu@hxb-gpu01:~$ for i in 0 1 2 3; do
 <a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a>&gt;   g=$(cat /sys/class/infiniband/rxe0/ports/1/gids/$i 2&gt;/dev/null)
 <a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a>&gt;   t=$(cat /sys/class/infiniband/rxe0/ports/1/gid_attrs/types/$i 2&gt;/dev/null)
-<a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a>&gt;   echo &quot;$i $g $t&quot;
+<a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a>&gt;   echo "$i $g $t"
 <a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a>&gt; done
 </code></pre></div>
 <p><strong>Expected output (illustrative):</strong></p>
@@ -2045,7 +2091,7 @@
 <ol>
 <li>
 <p>Check the perftest options on your installed version.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>ubuntu@hxb-gpu01:~$ ib_write_bw --help | grep -iE &#39;tos|tclass|rdma_cm|gid-index&#39;
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>ubuntu@hxb-gpu01:~$ ib_write_bw --help | grep -iE 'tos|tclass|rdma_cm|gid-index'
 </code></pre></div>
 <p><strong>Expected output (illustrative):</strong></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>  -R, --rdma_cm  Connect QPs with rdma_cm and run test on those QPs
@@ -2187,14 +2233,14 @@
 </code></pre></div>
 <p><strong>Symptoms.</strong> On hardware, RoCE still reaches TC 3 and gets ECN, but the leaf no longer sends or honours PFC on priority 3, so incast bursts that outrun congestion control are dropped instead of paused. On VX there is no visible traffic effect.</p>
 <p><strong>Diagnosis.</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv show qos roce | grep -A3 -E &#39;^mode|^pfc&#39;
+<div class="highlight"><pre><span></span><code><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv show qos roce | grep -A3 -E '^mode|^pfc'
 <a id="__codelineno-36-2" name="__codelineno-36-2" href="#__codelineno-36-2"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv config history | head
 </code></pre></div>
 <p><code>mode lossy</code> and the missing PFC priority give it away. <code>nv config history</code> shows who applied the change and when.</p>
 <p><strong>Fix.</strong></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-37-1" name="__codelineno-37-1" href="#__codelineno-37-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv set qos roce mode lossless
 <a id="__codelineno-37-2" name="__codelineno-37-2" href="#__codelineno-37-2"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv config apply -y
-<a id="__codelineno-37-3" name="__codelineno-37-3" href="#__codelineno-37-3"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv show qos roce | grep -E &#39;^mode|pfc-priority&#39;
+<a id="__codelineno-37-3" name="__codelineno-37-3" href="#__codelineno-37-3"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv show qos roce | grep -E '^mode|pfc-priority'
 </code></pre></div>
 <h2 id="clean-up-save-state">Clean-up / save state<a class="headerlink" href="#clean-up-save-state" title="Permanent link">&para;</a></h2>
 <p>Lab 5 puts swp1 and swp2 into the AURORA and BOREALIS tenants, and the servers' eth1 addresses change to 172.16.10.101 and 172.17.10.103. Remove the temporary VLAN now, but <strong>keep the RoCE QoS profile</strong>: every later lab assumes it.</p>
@@ -2207,7 +2253,7 @@
 <a id="__codelineno-38-4" name="__codelineno-38-4" href="#__codelineno-38-4"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv config diff
 <a id="__codelineno-38-5" name="__codelineno-38-5" href="#__codelineno-38-5"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv config apply -y
 <a id="__codelineno-38-6" name="__codelineno-38-6" href="#__codelineno-38-6"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv config save
-<a id="__codelineno-38-7" name="__codelineno-38-7" href="#__codelineno-38-7"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv show qos roce | grep -E &#39;^mode&#39;
+<a id="__codelineno-38-7" name="__codelineno-38-7" href="#__codelineno-38-7"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv show qos roce | grep -E '^mode'
 </code></pre></div>
 <p><strong>Expected output:</strong> <code>mode lossless</code>. If <code>br_default</code> has no other members, NVUE may also remove the bridge. Lab 5 re-creates it.</p>
 </li>

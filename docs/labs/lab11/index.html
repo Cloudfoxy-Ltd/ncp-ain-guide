@@ -289,6 +289,25 @@
   
   
     <li class="md-tabs__item">
+      <a href="https://cloudfoxy-ltd.github.io/ncp-ain-guide/blog/gpu-communication/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Blog
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
       <a href="../../errata/" class="md-tabs__link">
         
   
@@ -1205,6 +1224,33 @@
   
   
     <li class="md-nav__item">
+      <a href="https://cloudfoxy-ltd.github.io/ncp-ain-guide/blog/gpu-communication/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Blog
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../errata/" class="md-nav__link">
         
   
@@ -1245,10 +1291,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
         
           
-          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
             
   
   
@@ -1266,8 +1312,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_5">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1666,11 +1712,11 @@
 <h3 id="task-1-set-up-the-project-on-the-oob-mgmt-server">Task 1 — Set up the project on the oob-mgmt-server<a class="headerlink" href="#task-1-set-up-the-project-on-the-oob-mgmt-server" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>ubuntu@oob-mgmt-server:~$ sudo apt-get update &amp;&amp; sudo apt-get install -y python3-jinja2 python3-yaml git
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>ubuntu@oob-mgmt-server:~$ mkdir -p ~/helix-nvue/{vars,templates,rendered} &amp;&amp; cd ~/helix-nvue
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>ubuntu@oob-mgmt-server:~/helix-nvue$ git init -q &amp;&amp; git config user.name &quot;Helix NetOps&quot; &amp;&amp; git config user.email netops@example.com
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>ubuntu@oob-mgmt-server:~/helix-nvue$ git init -q &amp;&amp; git config user.name "Helix NetOps" &amp;&amp; git config user.email netops@example.com
 </code></pre></div>
 <h3 id="task-2-variables">Task 2 — Variables<a class="headerlink" href="#task-2-variables" title="Permanent link">&para;</a></h3>
 <p>One file per switch. The values are the lab plan from Lab 0 and Lab 2.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>ubuntu@oob-mgmt-server:~/helix-nvue$ cat &gt; vars/hxb-leaf-r1.yaml &lt;&lt;&#39;EOF&#39;
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>ubuntu@oob-mgmt-server:~/helix-nvue$ cat &gt; vars/hxb-leaf-r1.yaml &lt;&lt;'EOF'
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>hostname: hxb-leaf-r1
 <a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>role: leaf
 <a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>asn: 65101
@@ -1716,7 +1762,7 @@
 <ol>
 <li>
 <p>One template for every switch. It produces the same <code>nv set</code> lines as Labs 1 and 2, plus two NTP servers that are new:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>ubuntu@oob-mgmt-server:~/helix-nvue$ cat &gt; templates/underlay.j2 &lt;&lt;&#39;EOF&#39;
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>ubuntu@oob-mgmt-server:~/helix-nvue$ cat &gt; templates/underlay.j2 &lt;&lt;'EOF'
 <a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a># {{ hostname }} - rendered from templates/underlay.j2 - do not edit by hand
 <a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>nv set system hostname {{ hostname }}
 <a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>nv set interface lo ip address {{ loopback }}/32
@@ -1736,16 +1782,16 @@
 </li>
 <li>
 <p>The renderer fails loudly on a missing variable (<code>StrictUndefined</code>), so a typo in a vars file can't produce a half-empty configuration:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>ubuntu@oob-mgmt-server:~/helix-nvue$ cat &gt; render.py &lt;&lt;&#39;EOF&#39;
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>ubuntu@oob-mgmt-server:~/helix-nvue$ cat &gt; render.py &lt;&lt;'EOF'
 <a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>#!/usr/bin/env python3
 <a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>import pathlib, yaml, jinja2
-<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>env = jinja2.Environment(loader=jinja2.FileSystemLoader(&quot;templates&quot;),
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>env = jinja2.Environment(loader=jinja2.FileSystemLoader("templates"),
 <a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>                         undefined=jinja2.StrictUndefined, trim_blocks=True, lstrip_blocks=True)
-<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>for f in sorted(pathlib.Path(&quot;vars&quot;).glob(&quot;*.yaml&quot;)):
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>for f in sorted(pathlib.Path("vars").glob("*.yaml")):
 <a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>    data = yaml.safe_load(f.read_text())
-<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>    out = pathlib.Path(&quot;rendered&quot;) / f&quot;{data[&#39;hostname&#39;]}.nvue&quot;
-<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>    out.write_text(env.get_template(&quot;underlay.j2&quot;).render(**data))
-<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>    print(&quot;rendered&quot;, out)
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>    out = pathlib.Path("rendered") / f"{data['hostname']}.nvue"
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>    out.write_text(env.get_template("underlay.j2").render(**data))
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>    print("rendered", out)
 <a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>EOF
 <a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>ubuntu@oob-mgmt-server:~/helix-nvue$ python3 render.py
 <a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>rendered rendered/hxb-leaf-r1.nvue
@@ -1774,7 +1820,7 @@
 </li>
 <li>
 <p>Commit it. The rendered files are the golden configuration.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>ubuntu@oob-mgmt-server:~/helix-nvue$ git add -A &amp;&amp; git commit -qm &quot;Underlay golden config for helix-b-air&quot; &amp;&amp; git log --oneline
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>ubuntu@oob-mgmt-server:~/helix-nvue$ git add -A &amp;&amp; git commit -qm "Underlay golden config for helix-b-air" &amp;&amp; git log --oneline
 </code></pre></div>
 <div class="admonition note">
 <p class="admonition-title">Version note</p>
@@ -1815,7 +1861,7 @@
 <p>Roll it out to the remaining switches with a loop. <code>nv config apply -y</code> without a timer is acceptable here because each change was just reviewed on leaf-r1 and is identical in form.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>ubuntu@oob-mgmt-server:~/helix-nvue$ for h in hxb-leaf-r2 hxb-leaf-r3 hxb-leaf-r4 hxb-spine01 hxb-spine02; do
 <a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>&gt;   scp -q rendered/$h.nvue cumulus@$h:/tmp/ &amp;&amp;
-<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>&gt;   ssh cumulus@$h &quot;nv config patch /tmp/$h.nvue &amp;&amp; nv config diff &amp;&amp; nv config apply -y &amp;&amp; nv config save&quot;
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>&gt;   ssh cumulus@$h "nv config patch /tmp/$h.nvue &amp;&amp; nv config diff &amp;&amp; nv config apply -y &amp;&amp; nv config save"
 <a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>&gt; done
 </code></pre></div>
 </li>
@@ -1866,20 +1912,20 @@
 </li>
 <li>
 <p>From the oob-mgmt-server, run the revision workflow: create a revision, PATCH a description into it, apply it, and check its state.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>ubuntu@oob-mgmt-server:~$ SW=https://hxb-leaf-r1:8765/nvue_v1 ; AUTH=&#39;-s -k -u cumulus:CumulusLinux!&#39;
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>ubuntu@oob-mgmt-server:~$ SW=https://hxb-leaf-r1:8765/nvue_v1 ; AUTH='-s -k -u cumulus:CumulusLinux!'
 <a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>ubuntu@oob-mgmt-server:~$ curl $AUTH -X POST $SW/revision
-<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>{&quot;changeset/cumulus/2026-09-28_12.03.11_K3Q9&quot;: {&quot;state&quot;: &quot;pending&quot;, &quot;transition&quot;: {&quot;issue&quot;: {}, &quot;progress&quot;: &quot;&quot;}}}
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>{"changeset/cumulus/2026-09-28_12.03.11_K3Q9": {"state": "pending", "transition": {"issue": {}, "progress": ""}}}
 </code></pre></div>
 <p><em>(Illustrative.)</em> Copy the revision ID (older releases return a <code>changeset/…</code> name, recent ones a number). In the next commands, replace <code>REV</code> with it, URL-encoding any <code>/</code> as <code>%2F</code>.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>ubuntu@oob-mgmt-server:~$ REV=&#39;changeset%2Fcumulus%2F2026-09-28_12.03.11_K3Q9&#39;
-<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>ubuntu@oob-mgmt-server:~$ curl $AUTH -X PATCH &quot;$SW/interface/swp1?rev=$REV&quot; -H &#39;Content-Type: application/json&#39; \
-<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>    -d &#39;{&quot;description&quot;: &quot;hxb-gpu01-eth1&quot;}&#39;
-<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a>ubuntu@oob-mgmt-server:~$ curl $AUTH -X PATCH &quot;$SW/revision/$REV&quot; -H &#39;Content-Type: application/json&#39; \
-<a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a>    -d &#39;{&quot;state&quot;: &quot;apply&quot;, &quot;auto-prompt&quot;: {&quot;ays&quot;: &quot;ays_yes&quot;}}&#39;
-<a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a>ubuntu@oob-mgmt-server:~$ curl $AUTH &quot;$SW/revision/$REV&quot;
-<a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a>{&quot;state&quot;: &quot;applied&quot;, ...}
-<a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a>ubuntu@oob-mgmt-server:~$ curl $AUTH &quot;$SW/interface/swp1?rev=applied&quot; | python3 -m json.tool | grep description
-<a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a>    &quot;description&quot;: &quot;hxb-gpu01-eth1&quot;,
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>ubuntu@oob-mgmt-server:~$ REV='changeset%2Fcumulus%2F2026-09-28_12.03.11_K3Q9'
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>ubuntu@oob-mgmt-server:~$ curl $AUTH -X PATCH "$SW/interface/swp1?rev=$REV" -H 'Content-Type: application/json' \
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>    -d '{"description": "hxb-gpu01-eth1"}'
+<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a>ubuntu@oob-mgmt-server:~$ curl $AUTH -X PATCH "$SW/revision/$REV" -H 'Content-Type: application/json' \
+<a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a>    -d '{"state": "apply", "auto-prompt": {"ays": "ays_yes"}}'
+<a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a>ubuntu@oob-mgmt-server:~$ curl $AUTH "$SW/revision/$REV"
+<a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a>{"state": "applied", ...}
+<a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a>ubuntu@oob-mgmt-server:~$ curl $AUTH "$SW/interface/swp1?rev=applied" | python3 -m json.tool | grep description
+<a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a>    "description": "hxb-gpu01-eth1",
 </code></pre></div>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
@@ -1892,14 +1938,14 @@
 </ol>
 <h3 id="task-7-drift-detection">Task 7 — Drift detection<a class="headerlink" href="#task-7-drift-detection" title="Permanent link">&para;</a></h3>
 <p>A switch is compliant when its applied configuration contains everything the golden file says. Let NVUE do the comparison: patch the golden file into a pending revision, look at the diff, then detach.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>ubuntu@oob-mgmt-server:~/helix-nvue$ cat &gt; drift-check.sh &lt;&lt;&#39;EOF&#39;
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>ubuntu@oob-mgmt-server:~/helix-nvue$ cat &gt; drift-check.sh &lt;&lt;'EOF'
 <a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>#!/bin/bash
 <a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a># Report switches whose applied config differs from the golden underlay file
 <a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a>for f in rendered/*.nvue; do
 <a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a>  h=$(basename $f .nvue)
 <a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a>  scp -q $f cumulus@$h:/tmp/golden.nvue
-<a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a>  d=$(ssh cumulus@$h &quot;nv config patch /tmp/golden.nvue &gt;/dev/null &amp;&amp; nv config diff; nv config detach &gt;/dev/null&quot;)
-<a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a>  if [ -z &quot;$d&quot; ]; then echo &quot;$h: compliant&quot;; else echo &quot;$h: DRIFT&quot;; echo &quot;$d&quot; | sed &#39;s/^/    /&#39;; fi
+<a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a>  d=$(ssh cumulus@$h "nv config patch /tmp/golden.nvue &gt;/dev/null &amp;&amp; nv config diff; nv config detach &gt;/dev/null")
+<a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a>  if [ -z "$d" ]; then echo "$h: compliant"; else echo "$h: DRIFT"; echo "$d" | sed 's/^/    /'; fi
 <a id="__codelineno-16-9" name="__codelineno-16-9" href="#__codelineno-16-9"></a>done
 <a id="__codelineno-16-10" name="__codelineno-16-10" href="#__codelineno-16-10"></a>EOF
 <a id="__codelineno-16-11" name="__codelineno-16-11" href="#__codelineno-16-11"></a>ubuntu@oob-mgmt-server:~/helix-nvue$ chmod +x drift-check.sh &amp;&amp; ./drift-check.sh

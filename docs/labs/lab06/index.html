@@ -289,6 +289,25 @@
   
   
     <li class="md-tabs__item">
+      <a href="https://cloudfoxy-ltd.github.io/ncp-ain-guide/blog/gpu-communication/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Blog
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
       <a href="../../errata/" class="md-tabs__link">
         
   
@@ -1266,6 +1285,33 @@
   
   
     <li class="md-nav__item">
+      <a href="https://cloudfoxy-ltd.github.io/ncp-ain-guide/blog/gpu-communication/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Blog
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../errata/" class="md-nav__link">
         
   
@@ -1306,10 +1352,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
         
           
-          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
             
   
   
@@ -1327,8 +1373,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_5">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1822,14 +1868,14 @@
 <li>
 <p>Repeat on every switch. A loop from <code>oob-mgmt-server</code> is faster. It assumes the SSH key set-up from Lab 0; otherwise you are asked for the password on each switch:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>ubuntu@oob-mgmt-server:~$ for sw in hxb-spine01 hxb-spine02 hxb-leaf-r1 hxb-leaf-r2 hxb-leaf-r3 hxb-leaf-r4; do
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>  echo &quot;== $sw&quot;; ssh cumulus@$sw &quot;nv config save &amp;&amp; nv config diff applied startup | wc -l&quot;
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>  echo "== $sw"; ssh cumulus@$sw "nv config save &amp;&amp; nv config diff applied startup | wc -l"
 <a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>done
 </code></pre></div>
 <p><strong>Expected output (illustrative):</strong> each switch prints its name followed by <code>0</code> (no lines of difference).</p>
 </li>
 <li>
 <p>On the Ubuntu servers, confirm the tenant addresses from Lab 5 are in a netplan file, not only added with <code>ip addr add</code>:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>ubuntu@oob-mgmt-server:~$ ssh ubuntu@hxb-gpu01 &quot;sudo netplan get ethernets&quot;
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>ubuntu@oob-mgmt-server:~$ ssh ubuntu@hxb-gpu01 "sudo netplan get ethernets"
 </code></pre></div>
 </li>
 </ol>
@@ -1870,8 +1916,8 @@
 <li>
 <p>When the state is <strong>Active</strong>, log in to a leaf and check that the EVPN configuration from Lab 5 is present:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv config diff applied startup
-<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>cumulus@hxb-leaf-r1:mgmt:~$ sudo vtysh -c &quot;show bgp summary&quot;
-<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>cumulus@hxb-leaf-r1:mgmt:~$ sudo vtysh -c &quot;show evpn vni&quot;
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>cumulus@hxb-leaf-r1:mgmt:~$ sudo vtysh -c "show bgp summary"
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>cumulus@hxb-leaf-r1:mgmt:~$ sudo vtysh -c "show evpn vni"
 </code></pre></div>
 <p><strong>Expected output (illustrative):</strong> the BGP summary lists both unnumbered neighbours (<code>swp31</code>, <code>swp32</code>) as Established and <code>show evpn vni</code> lists L2 VNIs 10110, 10111, 10210, 10211 and L3 VNIs 104001, 104002.</p>
 </li>
@@ -1897,7 +1943,7 @@
 <div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv unset vrf default router bgp neighbor swp31
 <a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv unset vrf default router bgp neighbor swp32
 <a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv config apply -y
-<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>cumulus@hxb-leaf-r1:mgmt:~$ sudo vtysh -c &quot;show bgp summary&quot;
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>cumulus@hxb-leaf-r1:mgmt:~$ sudo vtysh -c "show bgp summary"
 </code></pre></div>
 <p><strong>Expected output (illustrative):</strong> no neighbours listed. Leaf-r1 has dropped out of the fabric, and auto-save has written the broken configuration to startup.</p>
 </li>
@@ -2028,7 +2074,7 @@
 <ol>
 <li>
 <p>On your laptop, create a key if you don't have one, and print the public half:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>you@laptop:~$ ssh-keygen -t ed25519 -C &quot;helix-air&quot;
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>you@laptop:~$ ssh-keygen -t ed25519 -C "helix-air"
 <a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>you@laptop:~$ cat ~/.ssh/id_ed25519.pub
 </code></pre></div>
 </li>
@@ -2094,7 +2140,7 @@
 <li>
 <p>Create a shell-type instruction (choose the shell or script option the dialog offers; executor names vary by release) with this content. It makes the Lab 5 AURORA addresses persistent and installs the RDMA tools used in Labs 3 and 9:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>#!/bin/bash
-<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>cat &gt; /etc/netplan/60-helix.yaml &lt;&lt;&#39;EOF&#39;
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>cat &gt; /etc/netplan/60-helix.yaml &lt;&lt;'EOF'
 <a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>network:
 <a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>  version: 2
 <a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>  ethernets:
@@ -2115,7 +2161,7 @@
 <li>Save the instruction and watch it run (the node's instruction status shows when it has completed).</li>
 <li>
 <p>Check the result:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>ubuntu@oob-mgmt-server:~$ ssh ubuntu@hxb-gpu01 &quot;ip -br addr show eth1; dpkg -l perftest | tail -1&quot;
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>ubuntu@oob-mgmt-server:~$ ssh ubuntu@hxb-gpu01 "ip -br addr show eth1; dpkg -l perftest | tail -1"
 </code></pre></div>
 <p><strong>Expected output (illustrative):</strong></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>eth1             UP             172.16.10.101/24 fe80::…/64
@@ -2134,7 +2180,7 @@
 <a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>packages: [rdma-core, ibverbs-utils, perftest, jq]
 <a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>write_files:
 <a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a>  - path: /etc/netplan/60-helix.yaml
-<a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a>    permissions: &#39;0600&#39;
+<a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a>    permissions: '0600'
 <a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a>    content: |
 <a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a>      network:
 <a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a>        version: 2
@@ -2150,20 +2196,20 @@
 <a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>from air_sdk.endpoints import UserConfig
 <a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a>
 <a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a>api = AirApi.with_ngc_config()
-<a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a>sim = next(s for s in api.simulations.list() if s.name == &quot;helix-b-air-whatif&quot;)
-<a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a>node = next(n for n in sim.nodes.list() if n.name == &quot;hxb-gpu02&quot;)
+<a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a>sim = next(s for s in api.simulations.list() if s.name == "helix-b-air-whatif")
+<a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a>node = next(n for n in sim.nodes.list() if n.name == "hxb-gpu02")
 <a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a>
 <a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a>user_data = api.user_configs.create(
-<a id="__codelineno-15-10" name="__codelineno-15-10" href="#__codelineno-15-10"></a>    name=&quot;hxb-gpu02-userdata&quot;,
+<a id="__codelineno-15-10" name="__codelineno-15-10" href="#__codelineno-15-10"></a>    name="hxb-gpu02-userdata",
 <a id="__codelineno-15-11" name="__codelineno-15-11" href="#__codelineno-15-11"></a>    kind=UserConfig.KIND_CLOUD_INIT_USER_DATA,
-<a id="__codelineno-15-12" name="__codelineno-15-12" href="#__codelineno-15-12"></a>    content=Path(&quot;hxb-gpu02-user-data.yaml&quot;),
+<a id="__codelineno-15-12" name="__codelineno-15-12" href="#__codelineno-15-12"></a>    content=Path("hxb-gpu02-user-data.yaml"),
 <a id="__codelineno-15-13" name="__codelineno-15-13" href="#__codelineno-15-13"></a>)
 <a id="__codelineno-15-14" name="__codelineno-15-14" href="#__codelineno-15-14"></a>meta_data = api.user_configs.create(
-<a id="__codelineno-15-15" name="__codelineno-15-15" href="#__codelineno-15-15"></a>    name=&quot;hxb-gpu02-metadata&quot;,
+<a id="__codelineno-15-15" name="__codelineno-15-15" href="#__codelineno-15-15"></a>    name="hxb-gpu02-metadata",
 <a id="__codelineno-15-16" name="__codelineno-15-16" href="#__codelineno-15-16"></a>    kind=UserConfig.KIND_CLOUD_INIT_META_DATA,
-<a id="__codelineno-15-17" name="__codelineno-15-17" href="#__codelineno-15-17"></a>    content=&quot;instance-id: hxb-gpu02\nlocal-hostname: hxb-gpu02\n&quot;,
+<a id="__codelineno-15-17" name="__codelineno-15-17" href="#__codelineno-15-17"></a>    content="instance-id: hxb-gpu02\nlocal-hostname: hxb-gpu02\n",
 <a id="__codelineno-15-18" name="__codelineno-15-18" href="#__codelineno-15-18"></a>)
-<a id="__codelineno-15-19" name="__codelineno-15-19" href="#__codelineno-15-19"></a>sim.node_bulk_assign(nodes=[{&quot;node&quot;: node, &quot;user_data&quot;: user_data, &quot;meta_data&quot;: meta_data}])
+<a id="__codelineno-15-19" name="__codelineno-15-19" href="#__codelineno-15-19"></a>sim.node_bulk_assign(nodes=[{"node": node, "user_data": user_data, "meta_data": meta_data}])
 </code></pre></div>
 <p><strong>Checkpoint:</strong></p>
 <ul>
@@ -2189,56 +2235,56 @@
 <div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>you@laptop:~$ python3 -m venv ~/air-venv
 <a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>you@laptop:~$ source ~/air-venv/bin/activate
 <a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>(air-venv) you@laptop:~$ pip install nv-air-sdk
-<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a>(air-venv) you@laptop:~$ export AIR_API_KEY=&#39;nvapi-…your key…&#39;
+<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a>(air-venv) you@laptop:~$ export AIR_API_KEY='nvapi-…your key…'
 </code></pre></div>
 <p><code>AIR_API_KEY</code> is simply the variable name this lab uses. It keeps the key out of the script and out of Git.</p>
 </li>
 <li>
 <p><strong>Write the script.</strong> Save it as <code>helix_air.py</code>:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>#!/usr/bin/env python3
-<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>&quot;&quot;&quot;List, start and sleep DSX Air simulations (Lab 6).&quot;&quot;&quot;
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>"""List, start and sleep DSX Air simulations (Lab 6)."""
 <a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>import os
 <a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a>import sys
 <a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a>
 <a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a>from air_sdk import AirApi, SimState
 <a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a>
-<a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a>api = AirApi.with_api_key(api_key=os.environ[&quot;AIR_API_KEY&quot;])
+<a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a>api = AirApi.with_api_key(api_key=os.environ["AIR_API_KEY"])
 <a id="__codelineno-17-9" name="__codelineno-17-9" href="#__codelineno-17-9"></a>
 <a id="__codelineno-17-10" name="__codelineno-17-10" href="#__codelineno-17-10"></a>
 <a id="__codelineno-17-11" name="__codelineno-17-11" href="#__codelineno-17-11"></a>def list_sims():
 <a id="__codelineno-17-12" name="__codelineno-17-12" href="#__codelineno-17-12"></a>    for sim in api.simulations.list():
-<a id="__codelineno-17-13" name="__codelineno-17-13" href="#__codelineno-17-13"></a>        print(f&quot;{sim.name:&lt;28} {str(sim.state):&lt;12} {sim.id}&quot;)
+<a id="__codelineno-17-13" name="__codelineno-17-13" href="#__codelineno-17-13"></a>        print(f"{sim.name:&lt;28} {str(sim.state):&lt;12} {sim.id}")
 <a id="__codelineno-17-14" name="__codelineno-17-14" href="#__codelineno-17-14"></a>
 <a id="__codelineno-17-15" name="__codelineno-17-15" href="#__codelineno-17-15"></a>
 <a id="__codelineno-17-16" name="__codelineno-17-16" href="#__codelineno-17-16"></a>def find(name):
 <a id="__codelineno-17-17" name="__codelineno-17-17" href="#__codelineno-17-17"></a>    for sim in api.simulations.list():
 <a id="__codelineno-17-18" name="__codelineno-17-18" href="#__codelineno-17-18"></a>        if sim.name == name:
 <a id="__codelineno-17-19" name="__codelineno-17-19" href="#__codelineno-17-19"></a>            return sim
-<a id="__codelineno-17-20" name="__codelineno-17-20" href="#__codelineno-17-20"></a>    sys.exit(f&quot;No simulation called {name!r}&quot;)
+<a id="__codelineno-17-20" name="__codelineno-17-20" href="#__codelineno-17-20"></a>    sys.exit(f"No simulation called {name!r}")
 <a id="__codelineno-17-21" name="__codelineno-17-21" href="#__codelineno-17-21"></a>
 <a id="__codelineno-17-22" name="__codelineno-17-22" href="#__codelineno-17-22"></a>
 <a id="__codelineno-17-23" name="__codelineno-17-23" href="#__codelineno-17-23"></a>def start(name):
 <a id="__codelineno-17-24" name="__codelineno-17-24" href="#__codelineno-17-24"></a>    sim = find(name)
 <a id="__codelineno-17-25" name="__codelineno-17-25" href="#__codelineno-17-25"></a>    sim.start()
 <a id="__codelineno-17-26" name="__codelineno-17-26" href="#__codelineno-17-26"></a>    sim.wait_for_state(SimState.ACTIVE, error_states=SimState.INACTIVE)
-<a id="__codelineno-17-27" name="__codelineno-17-27" href="#__codelineno-17-27"></a>    print(f&quot;{name} is ACTIVE&quot;)
+<a id="__codelineno-17-27" name="__codelineno-17-27" href="#__codelineno-17-27"></a>    print(f"{name} is ACTIVE")
 <a id="__codelineno-17-28" name="__codelineno-17-28" href="#__codelineno-17-28"></a>
 <a id="__codelineno-17-29" name="__codelineno-17-29" href="#__codelineno-17-29"></a>
 <a id="__codelineno-17-30" name="__codelineno-17-30" href="#__codelineno-17-30"></a>def sleep(name):
 <a id="__codelineno-17-31" name="__codelineno-17-31" href="#__codelineno-17-31"></a>    sim = find(name)
 <a id="__codelineno-17-32" name="__codelineno-17-32" href="#__codelineno-17-32"></a>    sim.shutdown()  # stores a checkpoint unless create_checkpoint=False
 <a id="__codelineno-17-33" name="__codelineno-17-33" href="#__codelineno-17-33"></a>    sim.wait_for_state(SimState.INACTIVE)
-<a id="__codelineno-17-34" name="__codelineno-17-34" href="#__codelineno-17-34"></a>    print(f&quot;{name} is INACTIVE, checkpoint stored&quot;)
+<a id="__codelineno-17-34" name="__codelineno-17-34" href="#__codelineno-17-34"></a>    print(f"{name} is INACTIVE, checkpoint stored")
 <a id="__codelineno-17-35" name="__codelineno-17-35" href="#__codelineno-17-35"></a>    for cp in sim.checkpoints.list():
-<a id="__codelineno-17-36" name="__codelineno-17-36" href="#__codelineno-17-36"></a>        print(f&quot;  checkpoint {cp.name} (id={cp.id}) state={cp.state}&quot;)
+<a id="__codelineno-17-36" name="__codelineno-17-36" href="#__codelineno-17-36"></a>        print(f"  checkpoint {cp.name} (id={cp.id}) state={cp.state}")
 <a id="__codelineno-17-37" name="__codelineno-17-37" href="#__codelineno-17-37"></a>
 <a id="__codelineno-17-38" name="__codelineno-17-38" href="#__codelineno-17-38"></a>
-<a id="__codelineno-17-39" name="__codelineno-17-39" href="#__codelineno-17-39"></a>if __name__ == &quot;__main__&quot;:
-<a id="__codelineno-17-40" name="__codelineno-17-40" href="#__codelineno-17-40"></a>    if len(sys.argv) &lt; 2 or sys.argv[1] not in (&quot;list&quot;, &quot;start&quot;, &quot;sleep&quot;):
-<a id="__codelineno-17-41" name="__codelineno-17-41" href="#__codelineno-17-41"></a>        sys.exit(&quot;usage: helix_air.py list | start &lt;sim&gt; | sleep &lt;sim&gt;&quot;)
-<a id="__codelineno-17-42" name="__codelineno-17-42" href="#__codelineno-17-42"></a>    if sys.argv[1] == &quot;list&quot;:
+<a id="__codelineno-17-39" name="__codelineno-17-39" href="#__codelineno-17-39"></a>if __name__ == "__main__":
+<a id="__codelineno-17-40" name="__codelineno-17-40" href="#__codelineno-17-40"></a>    if len(sys.argv) &lt; 2 or sys.argv[1] not in ("list", "start", "sleep"):
+<a id="__codelineno-17-41" name="__codelineno-17-41" href="#__codelineno-17-41"></a>        sys.exit("usage: helix_air.py list | start &lt;sim&gt; | sleep &lt;sim&gt;")
+<a id="__codelineno-17-42" name="__codelineno-17-42" href="#__codelineno-17-42"></a>    if sys.argv[1] == "list":
 <a id="__codelineno-17-43" name="__codelineno-17-43" href="#__codelineno-17-43"></a>        list_sims()
-<a id="__codelineno-17-44" name="__codelineno-17-44" href="#__codelineno-17-44"></a>    elif sys.argv[1] == &quot;start&quot;:
+<a id="__codelineno-17-44" name="__codelineno-17-44" href="#__codelineno-17-44"></a>    elif sys.argv[1] == "start":
 <a id="__codelineno-17-45" name="__codelineno-17-45" href="#__codelineno-17-45"></a>        start(sys.argv[2])
 <a id="__codelineno-17-46" name="__codelineno-17-46" href="#__codelineno-17-46"></a>    else:
 <a id="__codelineno-17-47" name="__codelineno-17-47" href="#__codelineno-17-47"></a>        sleep(sys.argv[2])

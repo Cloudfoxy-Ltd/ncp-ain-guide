@@ -289,6 +289,25 @@
   
   
     <li class="md-tabs__item">
+      <a href="https://cloudfoxy-ltd.github.io/ncp-ain-guide/blog/gpu-communication/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Blog
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
       <a href="../../errata/" class="md-tabs__link">
         
   
@@ -1244,6 +1263,33 @@
   
   
     <li class="md-nav__item">
+      <a href="https://cloudfoxy-ltd.github.io/ncp-ain-guide/blog/gpu-communication/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Blog
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../errata/" class="md-nav__link">
         
   
@@ -1284,10 +1330,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
         
           
-          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
             
   
   
@@ -1305,8 +1351,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_5">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1805,7 +1851,7 @@
 <li>
 <p>From the oob-mgmt-server, log in to hxb-leaf-r1 and confirm the underlay is healthy. Every leaf should have two Established sessions, one per spine.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>ubuntu@oob-mgmt-server:~$ ssh cumulus@hxb-leaf-r1
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>cumulus@hxb-leaf-r1:mgmt:~$ sudo vtysh -c &quot;show bgp ipv4 unicast summary&quot;
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>cumulus@hxb-leaf-r1:mgmt:~$ sudo vtysh -c "show bgp ipv4 unicast summary"
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>cumulus@hxb-leaf-r1:mgmt:~$ ip route show 10.255.0.13
 </code></pre></div>
 <p><strong>Expected output (illustrative):</strong></p>
@@ -1840,7 +1886,7 @@
 <li>
 <p>On hxb-gpu01 and hxb-gpu03, remove Lab 3's temporary 172.16.100.x address. List the netplan files and delete (or move aside) the file that Lab 3 created for <code>eth1</code>; Task 5 writes a new one for both NICs.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>ubuntu@hxb-gpu01:~$ ls /etc/netplan/
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>ubuntu@hxb-gpu01:~$ sudo grep -l &quot;172.16.100&quot; /etc/netplan/*.yaml
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>ubuntu@hxb-gpu01:~$ sudo grep -l "172.16.100" /etc/netplan/*.yaml
 <a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>ubuntu@hxb-gpu01:~$ sudo mv /etc/netplan/&lt;lab3-file&gt;.yaml /root/
 <a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>ubuntu@hxb-gpu01:~$ sudo ip addr flush dev eth1
 </code></pre></div>
@@ -2205,9 +2251,9 @@
 <ol>
 <li>
 <p>Check the EVPN sessions and VNIs on hxb-leaf-r1:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ sudo vtysh -c &quot;show bgp l2vpn evpn summary&quot;
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ sudo vtysh -c "show bgp l2vpn evpn summary"
 <a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv show evpn vni
-<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>cumulus@hxb-leaf-r1:mgmt:~$ sudo vtysh -c &quot;show evpn vni&quot;
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>cumulus@hxb-leaf-r1:mgmt:~$ sudo vtysh -c "show evpn vni"
 </code></pre></div>
 <p><strong>Expected output (illustrative):</strong></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>BGP router identifier 10.255.0.11, local AS number 65101 vrf-id 0
@@ -2227,8 +2273,8 @@
 <ol>
 <li>
 <p>Look at the type-2 (MAC/IP) and type-5 (IP prefix) routes:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ sudo vtysh -c &quot;show bgp l2vpn evpn route type macip&quot;
-<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>cumulus@hxb-leaf-r1:mgmt:~$ sudo vtysh -c &quot;show bgp l2vpn evpn route type prefix&quot;
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ sudo vtysh -c "show bgp l2vpn evpn route type macip"
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>cumulus@hxb-leaf-r1:mgmt:~$ sudo vtysh -c "show bgp l2vpn evpn route type prefix"
 </code></pre></div>
 <p><strong>Expected output (illustrative, abbreviated):</strong></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>Route Distinguisher: 10.255.0.13:2
@@ -2257,13 +2303,13 @@
 <ol>
 <li>
 <p>Check the MAC tables per VNI and the tenant routing tables:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ sudo vtysh -c &quot;show evpn mac vni all&quot;
-<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>cumulus@hxb-leaf-r1:mgmt:~$ sudo vtysh -c &quot;show ip route vrf AURORA&quot;
-<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>cumulus@hxb-leaf-r1:mgmt:~$ sudo vtysh -c &quot;show ip route vrf BOREALIS&quot;
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ sudo vtysh -c "show evpn mac vni all"
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>cumulus@hxb-leaf-r1:mgmt:~$ sudo vtysh -c "show ip route vrf AURORA"
+<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>cumulus@hxb-leaf-r1:mgmt:~$ sudo vtysh -c "show ip route vrf BOREALIS"
 </code></pre></div>
 <p><strong>Expected output (illustrative, abbreviated):</strong></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>VNI 10110 #MACs (local and remote) 3
-<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>MAC               Type   Flags Intf/Remote ES/VTEP            VLAN  Seq #&#39;s
+<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>MAC               Type   Flags Intf/Remote ES/VTEP            VLAN  Seq #'s
 <a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a>4a:b0:2d:31:a1:01 local        swp1                           110   0/0
 <a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a>4a:b0:2d:32:a1:01 remote       10.255.0.13                          0/0
 <a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a>00:00:5e:00:01:01 local        vlan110                        110   0/0
@@ -2351,7 +2397,7 @@
 <ol>
 <li>
 <p>Prove it on the leaf:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ sudo vtysh -c &quot;show ip route vrf AURORA 172.17.10.103&quot;
+<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ sudo vtysh -c "show ip route vrf AURORA 172.17.10.103"
 <a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a>cumulus@hxb-leaf-r1:mgmt:~$ ip route show vrf AURORA | grep 172.17
 <a id="__codelineno-27-3" name="__codelineno-27-3" href="#__codelineno-27-3"></a>cumulus@hxb-leaf-r1:mgmt:~$ nv show vrf AURORA evpn
 </code></pre></div>
@@ -2397,9 +2443,9 @@
 </code></pre></div>
 <p>hxb-gpu02 still reaches its gateway: the access port, VLAN and SVI on leaf-r3 are fine. Only the stretch of VLAN 110 between leaf-r1 and leaf-r3 is broken. Routed traffic to 172.16.10.102 from the other rail may still work, because gpu02's type-2 route still carries the correct L3 VNI route target. A half-working tenant is a typical sign of a VNI mismatch.</p>
 <p><strong>Diagnosis:</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ sudo vtysh -c &quot;show evpn vni 10110&quot;
-<a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a>cumulus@hxb-leaf-r3:mgmt:~$ sudo vtysh -c &quot;show evpn vni&quot;
-<a id="__codelineno-31-3" name="__codelineno-31-3" href="#__codelineno-31-3"></a>cumulus@hxb-leaf-r1:mgmt:~$ sudo vtysh -c &quot;show evpn mac vni 10110&quot;
+<div class="highlight"><pre><span></span><code><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a>cumulus@hxb-leaf-r1:mgmt:~$ sudo vtysh -c "show evpn vni 10110"
+<a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a>cumulus@hxb-leaf-r3:mgmt:~$ sudo vtysh -c "show evpn vni"
+<a id="__codelineno-31-3" name="__codelineno-31-3" href="#__codelineno-31-3"></a>cumulus@hxb-leaf-r1:mgmt:~$ sudo vtysh -c "show evpn mac vni 10110"
 <a id="__codelineno-31-4" name="__codelineno-31-4" href="#__codelineno-31-4"></a>cumulus@hxb-leaf-r3:mgmt:~$ nv show bridge domain br_default vlan
 </code></pre></div>
 <ul>
@@ -2431,10 +2477,10 @@
 </code></pre></div>
 <p>Bridged AURORA traffic and all of BOREALIS still work. Only <strong>routed</strong> AURORA traffic to or from hosts behind leaf-r4 fails.</p>
 <p><strong>Diagnosis:</strong> follow book Figure 7.7.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a>cumulus@hxb-leaf-r4:mgmt:~$ sudo vtysh -c &quot;show evpn vni&quot;
+<div class="highlight"><pre><span></span><code><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a>cumulus@hxb-leaf-r4:mgmt:~$ sudo vtysh -c "show evpn vni"
 <a id="__codelineno-35-2" name="__codelineno-35-2" href="#__codelineno-35-2"></a>cumulus@hxb-leaf-r4:mgmt:~$ nv show vrf AURORA evpn
-<a id="__codelineno-35-3" name="__codelineno-35-3" href="#__codelineno-35-3"></a>cumulus@hxb-leaf-r4:mgmt:~$ sudo vtysh -c &quot;show ip route vrf AURORA&quot;
-<a id="__codelineno-35-4" name="__codelineno-35-4" href="#__codelineno-35-4"></a>cumulus@hxb-leaf-r1:mgmt:~$ sudo vtysh -c &quot;show ip route vrf AURORA&quot;
+<a id="__codelineno-35-3" name="__codelineno-35-3" href="#__codelineno-35-3"></a>cumulus@hxb-leaf-r4:mgmt:~$ sudo vtysh -c "show ip route vrf AURORA"
+<a id="__codelineno-35-4" name="__codelineno-35-4" href="#__codelineno-35-4"></a>cumulus@hxb-leaf-r1:mgmt:~$ sudo vtysh -c "show ip route vrf AURORA"
 </code></pre></div>
 <ul>
 <li><code>show evpn vni</code> on leaf-r4 lists L2 VNIs 10111 and 10211 and L3 VNI 104002, but <strong>no L3 VNI 104001</strong>.</li>

@@ -289,6 +289,25 @@
   
   
     <li class="md-tabs__item">
+      <a href="https://cloudfoxy-ltd.github.io/ncp-ain-guide/blog/gpu-communication/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Blog
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
       <a href="../../errata/" class="md-tabs__link">
         
   
@@ -1194,6 +1213,33 @@
   
   
     <li class="md-nav__item">
+      <a href="https://cloudfoxy-ltd.github.io/ncp-ain-guide/blog/gpu-communication/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Blog
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../errata/" class="md-nav__link">
         
   
@@ -1234,10 +1280,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
         
           
-          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
             
   
   
@@ -1255,8 +1301,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_5">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1644,7 +1690,7 @@
 <ol>
 <li>
 <p>Addresses and MTU on both hosts (Lab 5 set MTU 9000):</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>ubuntu@hxb-gpu01:~$ ip -br addr show eth1 ; ip link show eth1 | grep -o &#39;mtu [0-9]*&#39;
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>ubuntu@hxb-gpu01:~$ ip -br addr show eth1 ; ip link show eth1 | grep -o 'mtu [0-9]*'
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>eth1             UP             172.16.10.101/24
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>mtu 9000
 </code></pre></div>
@@ -1673,7 +1719,7 @@
 <a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>link rxe0/1 state ACTIVE physical_state LINK_UP netdev eth1
 </code></pre></div>
 <p>Check the port attributes on both hosts. Note <code>active_mtu</code>: the RoCE path MTU is the largest InfiniBand MTU (256–4096) that fits in the Ethernet MTU.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>ubuntu@hxb-gpu01:~$ ibv_devinfo -d rxe0 | grep -E &#39;state|max_mtu|active_mtu|link_layer&#39;
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>ubuntu@hxb-gpu01:~$ ibv_devinfo -d rxe0 | grep -E 'state|max_mtu|active_mtu|link_layer'
 <a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>            state:          PORT_ACTIVE (4)
 <a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>            max_mtu:        4096 (5)
 <a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>            active_mtu:     4096 (5)

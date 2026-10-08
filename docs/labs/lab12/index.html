@@ -289,6 +289,25 @@
   
   
     <li class="md-tabs__item">
+      <a href="https://cloudfoxy-ltd.github.io/ncp-ain-guide/blog/gpu-communication/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Blog
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
       <a href="../../errata/" class="md-tabs__link">
         
   
@@ -1205,6 +1224,33 @@
   
   
     <li class="md-nav__item">
+      <a href="https://cloudfoxy-ltd.github.io/ncp-ain-guide/blog/gpu-communication/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Blog
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../errata/" class="md-nav__link">
         
   
@@ -1245,10 +1291,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
         
           
-          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
             
   
   
@@ -1266,8 +1312,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_5">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1665,10 +1711,10 @@
 <h3 id="task-1-open-the-api-on-every-switch">Task 1 — Open the API on every switch<a class="headerlink" href="#task-1-open-the-api-on-every-switch" title="Permanent link">&para;</a></h3>
 <p>Lab 11 opened the API on hxb-leaf-r1 only. Do the rest from the oob-mgmt-server:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>ubuntu@oob-mgmt-server:~$ for h in hxb-spine01 hxb-spine02 hxb-leaf-r1 hxb-leaf-r2 hxb-leaf-r3 hxb-leaf-r4; do
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>&gt;   ip=$(getent hosts $h | awk &#39;{print $1}&#39;)
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>&gt;   ssh cumulus@$h &quot;nv set system api listening-address $ip &amp;&amp; nv config apply -y &amp;&amp; nv config save&quot; &gt;/dev/null &amp;&amp; echo &quot;$h $ip ok&quot;
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>&gt;   ip=$(getent hosts $h | awk '{print $1}')
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>&gt;   ssh cumulus@$h "nv set system api listening-address $ip &amp;&amp; nv config apply -y &amp;&amp; nv config save" &gt;/dev/null &amp;&amp; echo "$h $ip ok"
 <a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>&gt; done
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>ubuntu@oob-mgmt-server:~$ curl -s -k -u &#39;cumulus:CumulusLinux!&#39; https://hxb-spine02:8765/nvue_v1/system/hostname?rev=applied
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>ubuntu@oob-mgmt-server:~$ curl -s -k -u 'cumulus:CumulusLinux!' https://hxb-spine02:8765/nvue_v1/system/hostname?rev=applied
 </code></pre></div>
 <p><strong>Checkpoint</strong></p>
 <ul class="task-list">
@@ -1679,16 +1725,16 @@
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>ubuntu@oob-mgmt-server:~$ pipx install --include-deps ansible &amp;&amp; pipx ensurepath &amp;&amp; exec bash
 <a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>ubuntu@oob-mgmt-server:~$ ansible --version | head -1
 <a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>ubuntu@oob-mgmt-server:~$ ansible-galaxy collection install nvidia.nvue ansible.netcommon
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>ubuntu@oob-mgmt-server:~$ ansible-galaxy collection list | grep -E &#39;nvidia.nvue|ansible.netcommon&#39;
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>ubuntu@oob-mgmt-server:~$ ansible-galaxy collection list | grep -E 'nvidia.nvue|ansible.netcommon'
 <a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>nvidia.nvue        1.2.9
 <a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>ansible.netcommon  7.x.x
 </code></pre></div>
 <p><em>(Illustrative versions.)</em> Read the module documentation for <strong>your</strong> version before writing tasks:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>ubuntu@oob-mgmt-server:~$ ansible-doc nvidia.nvue.api | sed -n &#39;1,60p&#39;
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>ubuntu@oob-mgmt-server:~$ ansible-doc nvidia.nvue.api | sed -n '1,60p'
 </code></pre></div>
 <h3 id="task-3-project-inventory-and-variables">Task 3 — Project, inventory and variables<a class="headerlink" href="#task-3-project-inventory-and-variables" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>ubuntu@oob-mgmt-server:~$ mkdir -p ~/helix-ansible/{group_vars,host_vars,playbooks} &amp;&amp; cd ~/helix-ansible
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>ubuntu@oob-mgmt-server:~/helix-ansible$ cat &gt; inventory.yml &lt;&lt;&#39;EOF&#39;
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>ubuntu@oob-mgmt-server:~/helix-ansible$ cat &gt; inventory.yml &lt;&lt;'EOF'
 <a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>all:
 <a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>  children:
 <a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>    helixb:
@@ -1704,21 +1750,21 @@
 <a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a>            hxb-leaf-r3:
 <a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a>            hxb-leaf-r4:
 <a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a>EOF
-<a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a>ubuntu@oob-mgmt-server:~/helix-ansible$ cat &gt; group_vars/helixb.yml &lt;&lt;&#39;EOF&#39;
+<a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a>ubuntu@oob-mgmt-server:~/helix-ansible$ cat &gt; group_vars/helixb.yml &lt;&lt;'EOF'
 <a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a>ansible_connection: ansible.netcommon.httpapi
 <a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a>ansible_network_os: nvidia.nvue.httpapi
 <a id="__codelineno-3-21" name="__codelineno-3-21" href="#__codelineno-3-21"></a>ansible_httpapi_port: 8765
 <a id="__codelineno-3-22" name="__codelineno-3-22" href="#__codelineno-3-22"></a>ansible_httpapi_use_ssl: true
 <a id="__codelineno-3-23" name="__codelineno-3-23" href="#__codelineno-3-23"></a>ansible_httpapi_validate_certs: false     # lab only: self-signed certificates
 <a id="__codelineno-3-24" name="__codelineno-3-24" href="#__codelineno-3-24"></a>ansible_user: cumulus
-<a id="__codelineno-3-25" name="__codelineno-3-25" href="#__codelineno-3-25"></a>ansible_password: &quot;{{ vault_nvue_password }}&quot;
+<a id="__codelineno-3-25" name="__codelineno-3-25" href="#__codelineno-3-25"></a>ansible_password: "{{ vault_nvue_password }}"
 <a id="__codelineno-3-26" name="__codelineno-3-26" href="#__codelineno-3-26"></a>EOF
-<a id="__codelineno-3-27" name="__codelineno-3-27" href="#__codelineno-3-27"></a>ubuntu@oob-mgmt-server:~/helix-ansible$ cat &gt; group_vars/leaves.yml &lt;&lt;&#39;EOF&#39;
+<a id="__codelineno-3-27" name="__codelineno-3-27" href="#__codelineno-3-27"></a>ubuntu@oob-mgmt-server:~/helix-ansible$ cat &gt; group_vars/leaves.yml &lt;&lt;'EOF'
 <a id="__codelineno-3-28" name="__codelineno-3-28" href="#__codelineno-3-28"></a>tenant_vlans:              # staging VLANs for new AURORA subnets
 <a id="__codelineno-3-29" name="__codelineno-3-29" href="#__codelineno-3-29"></a>  - { vlan: 120, vni: 10120 }
 <a id="__codelineno-3-30" name="__codelineno-3-30" href="#__codelineno-3-30"></a>  - { vlan: 121, vni: 10121 }
 <a id="__codelineno-3-31" name="__codelineno-3-31" href="#__codelineno-3-31"></a>EOF
-<a id="__codelineno-3-32" name="__codelineno-3-32" href="#__codelineno-3-32"></a>ubuntu@oob-mgmt-server:~/helix-ansible$ cat &gt; ansible.cfg &lt;&lt;&#39;EOF&#39;
+<a id="__codelineno-3-32" name="__codelineno-3-32" href="#__codelineno-3-32"></a>ubuntu@oob-mgmt-server:~/helix-ansible$ cat &gt; ansible.cfg &lt;&lt;'EOF'
 <a id="__codelineno-3-33" name="__codelineno-3-33" href="#__codelineno-3-33"></a>[defaults]
 <a id="__codelineno-3-34" name="__codelineno-3-34" href="#__codelineno-3-34"></a>inventory = inventory.yml
 <a id="__codelineno-3-35" name="__codelineno-3-35" href="#__codelineno-3-35"></a>host_key_checking = False
@@ -1726,7 +1772,7 @@
 </code></pre></div>
 <p>Keep the password out of plain text with Ansible Vault:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>ubuntu@oob-mgmt-server:~/helix-ansible$ ansible-vault create group_vars/vault.yml
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a># in the editor, type:   vault_nvue_password: &quot;CumulusLinux!&quot;
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a># in the editor, type:   vault_nvue_password: "CumulusLinux!"
 <a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>ubuntu@oob-mgmt-server:~/helix-ansible$ mv group_vars/vault.yml group_vars/all.yml
 </code></pre></div>
 <div class="admonition info">
@@ -1739,7 +1785,7 @@
 </figure>
 <h3 id="task-4-a-read-only-playbook-first">Task 4 — A read-only playbook first<a class="headerlink" href="#task-4-a-read-only-playbook-first" title="Permanent link">&para;</a></h3>
 <p>Always prove connectivity with a read before you write.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>ubuntu@oob-mgmt-server:~/helix-ansible$ cat &gt; playbooks/facts.yml &lt;&lt;&#39;EOF&#39;
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>ubuntu@oob-mgmt-server:~/helix-ansible$ cat &gt; playbooks/facts.yml &lt;&lt;'EOF'
 <a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>- name: Read hostname and BGP ASN through the NVUE API
 <a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>  hosts: helixb
 <a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>  gather_facts: false
@@ -1751,7 +1797,7 @@
 <a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>      register: hn
 <a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>    - name: Show it
 <a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a>      ansible.builtin.debug:
-<a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a>        msg: &quot;{{ inventory_hostname }} reports {{ hn.message }}&quot;
+<a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a>        msg: "{{ inventory_hostname }} reports {{ hn.message }}"
 <a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a>EOF
 <a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a>ubuntu@oob-mgmt-server:~/helix-ansible$ ansible-playbook playbooks/facts.yml --ask-vault-pass
 <a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a>...
@@ -1764,7 +1810,7 @@
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> All six hosts <code>ok=2 failed=0</code>.</li>
 </ul>
 <h3 id="task-5-playbook-1-vlans-and-vnis-on-every-leaf">Task 5 — Playbook 1: VLANs and VNIs on every leaf<a class="headerlink" href="#task-5-playbook-1-vlans-and-vnis-on-every-leaf" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>ubuntu@oob-mgmt-server:~/helix-ansible$ cat &gt; playbooks/site-vlans.yml &lt;&lt;&#39;EOF&#39;
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>ubuntu@oob-mgmt-server:~/helix-ansible$ cat &gt; playbooks/site-vlans.yml &lt;&lt;'EOF'
 <a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>- name: Helix-B staging VLANs and VNIs
 <a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>  hosts: leaves
 <a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>  gather_facts: false
@@ -1775,8 +1821,8 @@
 <a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>      ansible.builtin.set_fact:
 <a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>        vlan_data: &gt;-
 <a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a>          {{ vlan_data | default({}) | combine({ (item.vlan | string):
-<a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a>             { &#39;vni&#39;: { (item.vni | string): {} } } }) }}
-<a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a>      loop: &quot;{{ tenant_vlans }}&quot;
+<a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a>             { 'vni': { (item.vni | string): {} } } }) }}
+<a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a>      loop: "{{ tenant_vlans }}"
 <a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a>
 <a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a>    - name: Merge VLANs and VNIs into br_default and apply
 <a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a>      nvidia.nvue.api:
@@ -1787,7 +1833,7 @@
 <a id="__codelineno-6-21" name="__codelineno-6-21" href="#__codelineno-6-21"></a>          bridge:
 <a id="__codelineno-6-22" name="__codelineno-6-22" href="#__codelineno-6-22"></a>            domain:
 <a id="__codelineno-6-23" name="__codelineno-6-23" href="#__codelineno-6-23"></a>              br_default:
-<a id="__codelineno-6-24" name="__codelineno-6-24" href="#__codelineno-6-24"></a>                vlan: &quot;{{ vlan_data }}&quot;
+<a id="__codelineno-6-24" name="__codelineno-6-24" href="#__codelineno-6-24"></a>                vlan: "{{ vlan_data }}"
 <a id="__codelineno-6-25" name="__codelineno-6-25" href="#__codelineno-6-25"></a>
 <a id="__codelineno-6-26" name="__codelineno-6-26" href="#__codelineno-6-26"></a>    - name: Read back the bridge VLANs
 <a id="__codelineno-6-27" name="__codelineno-6-27" href="#__codelineno-6-27"></a>      nvidia.nvue.api:
@@ -1799,8 +1845,8 @@
 <a id="__codelineno-6-33" name="__codelineno-6-33" href="#__codelineno-6-33"></a>      ansible.builtin.assert:
 <a id="__codelineno-6-34" name="__codelineno-6-34" href="#__codelineno-6-34"></a>        that:
 <a id="__codelineno-6-35" name="__codelineno-6-35" href="#__codelineno-6-35"></a>          - (vlans.message[item.vlan | string].vni | list | first) == (item.vni | string)
-<a id="__codelineno-6-36" name="__codelineno-6-36" href="#__codelineno-6-36"></a>        fail_msg: &quot;VLAN {{ item.vlan }} on {{ inventory_hostname }} is not mapped to VNI {{ item.vni }}&quot;
-<a id="__codelineno-6-37" name="__codelineno-6-37" href="#__codelineno-6-37"></a>      loop: &quot;{{ tenant_vlans }}&quot;
+<a id="__codelineno-6-36" name="__codelineno-6-36" href="#__codelineno-6-36"></a>        fail_msg: "VLAN {{ item.vlan }} on {{ inventory_hostname }} is not mapped to VNI {{ item.vni }}"
+<a id="__codelineno-6-37" name="__codelineno-6-37" href="#__codelineno-6-37"></a>      loop: "{{ tenant_vlans }}"
 <a id="__codelineno-6-38" name="__codelineno-6-38" href="#__codelineno-6-38"></a>EOF
 </code></pre></div>
 <ol>
@@ -1834,8 +1880,8 @@
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> You know whether your module version is idempotent and check-mode aware.</li>
 </ul>
 <h3 id="task-6-playbook-2-lossless-roce-on-every-switch">Task 6 — Playbook 2: lossless RoCE on every switch<a class="headerlink" href="#task-6-playbook-2-lossless-roce-on-every-switch" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>ubuntu@oob-mgmt-server:~/helix-ansible$ echo &#39;roce_mode: lossless&#39; &gt;&gt; group_vars/helixb.yml
-<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>ubuntu@oob-mgmt-server:~/helix-ansible$ cat &gt; playbooks/site-roce.yml &lt;&lt;&#39;EOF&#39;
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>ubuntu@oob-mgmt-server:~/helix-ansible$ echo 'roce_mode: lossless' &gt;&gt; group_vars/helixb.yml
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>ubuntu@oob-mgmt-server:~/helix-ansible$ cat &gt; playbooks/site-roce.yml &lt;&lt;'EOF'
 <a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>- name: Helix-B RoCE QoS
 <a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>  hosts: helixb                  # leaves AND spines
 <a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>  gather_facts: false
@@ -1850,8 +1896,8 @@
 <a id="__codelineno-10-14" name="__codelineno-10-14" href="#__codelineno-10-14"></a>        data:
 <a id="__codelineno-10-15" name="__codelineno-10-15" href="#__codelineno-10-15"></a>          qos:
 <a id="__codelineno-10-16" name="__codelineno-10-16" href="#__codelineno-10-16"></a>            roce:
-<a id="__codelineno-10-17" name="__codelineno-10-17" href="#__codelineno-10-17"></a>              enable: &quot;on&quot;
-<a id="__codelineno-10-18" name="__codelineno-10-18" href="#__codelineno-10-18"></a>              mode: &quot;{{ roce_mode }}&quot;
+<a id="__codelineno-10-17" name="__codelineno-10-17" href="#__codelineno-10-17"></a>              enable: "on"
+<a id="__codelineno-10-18" name="__codelineno-10-18" href="#__codelineno-10-18"></a>              mode: "{{ roce_mode }}"
 <a id="__codelineno-10-19" name="__codelineno-10-19" href="#__codelineno-10-19"></a>
 <a id="__codelineno-10-20" name="__codelineno-10-20" href="#__codelineno-10-20"></a>    - name: Read back the RoCE configuration
 <a id="__codelineno-10-21" name="__codelineno-10-21" href="#__codelineno-10-21"></a>      nvidia.nvue.api:
@@ -1862,8 +1908,8 @@
 <a id="__codelineno-10-26" name="__codelineno-10-26" href="#__codelineno-10-26"></a>    - name: Assert lossless RoCE is active
 <a id="__codelineno-10-27" name="__codelineno-10-27" href="#__codelineno-10-27"></a>      ansible.builtin.assert:
 <a id="__codelineno-10-28" name="__codelineno-10-28" href="#__codelineno-10-28"></a>        that:
-<a id="__codelineno-10-29" name="__codelineno-10-29" href="#__codelineno-10-29"></a>          - &quot;&#39;lossless&#39; in (roce_show.message | string)&quot;
-<a id="__codelineno-10-30" name="__codelineno-10-30" href="#__codelineno-10-30"></a>        fail_msg: &quot;RoCE is not {{ roce_mode }} on {{ inventory_hostname }}&quot;
+<a id="__codelineno-10-29" name="__codelineno-10-29" href="#__codelineno-10-29"></a>          - "'lossless' in (roce_show.message | string)"
+<a id="__codelineno-10-30" name="__codelineno-10-30" href="#__codelineno-10-30"></a>        fail_msg: "RoCE is not {{ roce_mode }} on {{ inventory_hostname }}"
 <a id="__codelineno-10-31" name="__codelineno-10-31" href="#__codelineno-10-31"></a>EOF
 <a id="__codelineno-10-32" name="__codelineno-10-32" href="#__codelineno-10-32"></a>ubuntu@oob-mgmt-server:~/helix-ansible$ ansible-playbook playbooks/site-roce.yml --ask-vault-pass
 </code></pre></div>
@@ -1873,7 +1919,7 @@
 </div>
 <p>Confirm on a spine and a leaf with the CLI: <code>nv show qos roce</code>. On Cumulus VX this verifies the configured intent; the lossless data plane itself needs Spectrum hardware (Lab 3).</p>
 <h3 id="task-7-commit-the-project">Task 7 — Commit the project<a class="headerlink" href="#task-7-commit-the-project" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>ubuntu@oob-mgmt-server:~/helix-ansible$ git init -q &amp;&amp; git add -A &amp;&amp; git commit -qm &quot;Helix-B VLAN and RoCE playbooks&quot;
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>ubuntu@oob-mgmt-server:~/helix-ansible$ git init -q &amp;&amp; git add -A &amp;&amp; git commit -qm "Helix-B VLAN and RoCE playbooks"
 </code></pre></div>
 <p>The vault file is encrypted, so committing it is safe; the vault password is not in the repository.</p>
 <h2 id="verify">Verify<a class="headerlink" href="#verify" title="Permanent link">&para;</a></h2>

@@ -289,6 +289,25 @@
   
   
     <li class="md-tabs__item">
+      <a href="https://cloudfoxy-ltd.github.io/ncp-ain-guide/blog/gpu-communication/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Blog
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
       <a href="../../errata/" class="md-tabs__link">
         
   
@@ -1426,6 +1445,33 @@
   
   
     <li class="md-nav__item">
+      <a href="https://cloudfoxy-ltd.github.io/ncp-ain-guide/blog/gpu-communication/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Blog
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../errata/" class="md-nav__link">
         
   
@@ -1466,10 +1512,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
         
           
-          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
             
   
   
@@ -1487,8 +1533,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_5">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -2122,7 +2168,7 @@
 <p>On <code>oob-mgmt-server</code>, create a working folder and capture the Ethernet baseline:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>ubuntu@oob-mgmt-server:~$ mkdir -p ~/capstone/baseline &amp;&amp; cd ~/capstone/baseline
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>ubuntu@oob-mgmt-server:~/capstone/baseline$ for sw in hxb-spine01 hxb-spine02 hxb-leaf-r1 hxb-leaf-r2 hxb-leaf-r3 hxb-leaf-r4; do
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>  ssh cumulus@$sw &quot;sudo vtysh -c &#39;show bgp summary&#39;; sudo vtysh -c &#39;show evpn vni&#39;; nv show qos roce; nv config show&quot; &gt; $sw.txt 2&gt;&amp;1
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>  ssh cumulus@$sw "sudo vtysh -c 'show bgp summary'; sudo vtysh -c 'show evpn vni'; nv show qos roce; nv config show" &gt; $sw.txt 2&gt;&amp;1
 <a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>done
 <a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>ubuntu@oob-mgmt-server:~/capstone/baseline$ ls
 </code></pre></div>
@@ -2132,7 +2178,7 @@
 </li>
 <li>
 <p>Record the host reachability matrix. From <code>hxb-gpu01</code>, every AURORA address should answer:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>ubuntu@hxb-gpu01:~$ for ip in 172.16.10.1 172.16.10.102 172.16.11.1 172.16.11.102; do ping -c 2 -W 1 $ip &gt;/dev/null &amp;&amp; echo &quot;$ip ok&quot; || echo &quot;$ip FAIL&quot;; done
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>ubuntu@hxb-gpu01:~$ for ip in 172.16.10.1 172.16.10.102 172.16.11.1 172.16.11.102; do ping -c 2 -W 1 $ip &gt;/dev/null &amp;&amp; echo "$ip ok" || echo "$ip FAIL"; done
 </code></pre></div>
 <p><strong>Expected output (illustrative):</strong> four lines ending in <code>ok</code>. Repeat from <code>hxb-gpu03</code> for the BOREALIS addresses (172.17.10.1, 172.17.10.104, 172.17.11.1, 172.17.11.104). Check that a cross-tenant ping (for example <code>ping 172.17.10.103</code> from <code>hxb-gpu01</code>) fails, as Lab 5 intended.</p>
 </li>
@@ -2169,29 +2215,29 @@
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>#!/bin/bash
 <a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a># Lab 13 fault injector. Usage: inject.sh F1..F10 | F7b | random
 <a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>set -euo pipefail
-<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>SVI_AF=ipv4                     # use &quot;ip&quot; if Lab 5 used the pre-5.15 SVI syntax
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>SVI_AF=ipv4                     # use "ip" if Lab 5 used the pre-5.15 SVI syntax
 <a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>ANSIBLE_DIR=~/helix-ansible     # your Lab 12 Ansible project
 <a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>SIM=hxa-ibsim
 <a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>VICTIM_GUID=0x0000000000000000  # port GUID of one PRODUCTION member (F8), from partitions.conf
 <a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>
-<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>nv_on() { local sw=$1; shift; ssh -o BatchMode=yes cumulus@&quot;$sw&quot; &quot;$* &amp;&amp; nv config apply -y&quot; &gt;/dev/null; }
-<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>sim_cmd() { ssh -o BatchMode=yes ubuntu@&quot;$SIM&quot; &quot;echo &#39;$1&#39; &gt; ~/ibsim/simcmd&quot;; }
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>nv_on() { local sw=$1; shift; ssh -o BatchMode=yes cumulus@"$sw" "$* &amp;&amp; nv config apply -y" &gt;/dev/null; }
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>sim_cmd() { ssh -o BatchMode=yes ubuntu@"$SIM" "echo '$1' &gt; ~/ibsim/simcmd"; }
 <a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>
 <a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>id=${1:?usage: inject.sh F1..F10|F7b|random}
-<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>if [ &quot;$id&quot; = random ]; then
+<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>if [ "$id" = random ]; then
 <a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a>  id=F$(( (RANDOM % 10) + 1 ))
-<a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a>  echo &quot;$id $(date)&quot; | sudo tee -a /root/capstone-answers &gt;/dev/null
-<a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a>  echo &quot;A fault has been injected. Good luck.&quot;
+<a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a>  echo "$id $(date)" | sudo tee -a /root/capstone-answers &gt;/dev/null
+<a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a>  echo "A fault has been injected. Good luck."
 <a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a>fi
 <a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a>
 <a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a>case $id in
-<a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a>  F1) nv_on hxb-spine02 &quot;nv set vrf default router bgp neighbor swp3 remote-as 65200&quot; ;;
-<a id="__codelineno-4-21" name="__codelineno-4-21" href="#__codelineno-4-21"></a>  F2) nv_on hxb-spine01 &quot;nv set interface swp2 link mtu 1500&quot; ;;
-<a id="__codelineno-4-22" name="__codelineno-4-22" href="#__codelineno-4-22"></a>  F3) nv_on hxb-leaf-r4 &quot;nv unset bridge domain br_default vlan 111 vni 10111 &amp;&amp; nv set bridge domain br_default vlan 111 vni 10101&quot; ;;
-<a id="__codelineno-4-23" name="__codelineno-4-23" href="#__codelineno-4-23"></a>  F4) nv_on hxb-leaf-r3 &quot;nv unset interface vlan110 $SVI_AF vrr&quot; ;;
-<a id="__codelineno-4-24" name="__codelineno-4-24" href="#__codelineno-4-24"></a>  F5) nv_on hxb-leaf-r2 &quot;nv set qos roce mode lossy&quot; ;;
-<a id="__codelineno-4-25" name="__codelineno-4-25" href="#__codelineno-4-25"></a>  F6) cd &quot;$ANSIBLE_DIR&quot;
-<a id="__codelineno-4-26" name="__codelineno-4-26" href="#__codelineno-4-26"></a>      cat &gt; playbooks/access-ports.yml &lt;&lt;&#39;EOF&#39;
+<a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a>  F1) nv_on hxb-spine02 "nv set vrf default router bgp neighbor swp3 remote-as 65200" ;;
+<a id="__codelineno-4-21" name="__codelineno-4-21" href="#__codelineno-4-21"></a>  F2) nv_on hxb-spine01 "nv set interface swp2 link mtu 1500" ;;
+<a id="__codelineno-4-22" name="__codelineno-4-22" href="#__codelineno-4-22"></a>  F3) nv_on hxb-leaf-r4 "nv unset bridge domain br_default vlan 111 vni 10111 &amp;&amp; nv set bridge domain br_default vlan 111 vni 10101" ;;
+<a id="__codelineno-4-23" name="__codelineno-4-23" href="#__codelineno-4-23"></a>  F4) nv_on hxb-leaf-r3 "nv unset interface vlan110 $SVI_AF vrr" ;;
+<a id="__codelineno-4-24" name="__codelineno-4-24" href="#__codelineno-4-24"></a>  F5) nv_on hxb-leaf-r2 "nv set qos roce mode lossy" ;;
+<a id="__codelineno-4-25" name="__codelineno-4-25" href="#__codelineno-4-25"></a>  F6) cd "$ANSIBLE_DIR"
+<a id="__codelineno-4-26" name="__codelineno-4-26" href="#__codelineno-4-26"></a>      cat &gt; playbooks/access-ports.yml &lt;&lt;'EOF'
 <a id="__codelineno-4-27" name="__codelineno-4-27" href="#__codelineno-4-27"></a>- name: Tidy leaf access ports
 <a id="__codelineno-4-28" name="__codelineno-4-28" href="#__codelineno-4-28"></a>  hosts: hxb-leaf-r2
 <a id="__codelineno-4-29" name="__codelineno-4-29" href="#__codelineno-4-29"></a>  gather_facts: false
@@ -2209,16 +2255,16 @@
 <a id="__codelineno-4-41" name="__codelineno-4-41" href="#__codelineno-4-41"></a>                  br_default:
 <a id="__codelineno-4-42" name="__codelineno-4-42" href="#__codelineno-4-42"></a>                    access: 111
 <a id="__codelineno-4-43" name="__codelineno-4-43" href="#__codelineno-4-43"></a>EOF
-<a id="__codelineno-4-44" name="__codelineno-4-44" href="#__codelineno-4-44"></a>      git add playbooks/access-ports.yml &amp;&amp; git commit -qm &quot;Tidy access ports&quot;
+<a id="__codelineno-4-44" name="__codelineno-4-44" href="#__codelineno-4-44"></a>      git add playbooks/access-ports.yml &amp;&amp; git commit -qm "Tidy access ports"
 <a id="__codelineno-4-45" name="__codelineno-4-45" href="#__codelineno-4-45"></a>      ansible-playbook playbooks/access-ports.yml &gt;/dev/null ;;
-<a id="__codelineno-4-46" name="__codelineno-4-46" href="#__codelineno-4-46"></a>  F7)  ssh ubuntu@&quot;$SIM&quot; &quot;pkill -f &#39;[o]pensm.*-p 12&#39;&quot; ;;   # standby SM disappears
-<a id="__codelineno-4-47" name="__codelineno-4-47" href="#__codelineno-4-47"></a>  F7b) ssh ubuntu@&quot;$SIM&quot; &quot;pkill -f &#39;[o]pensm.*-p 14&#39;&quot; ;;   # later: master fails too
-<a id="__codelineno-4-48" name="__codelineno-4-48" href="#__codelineno-4-48"></a>  F8) ssh ubuntu@&quot;$SIM&quot; &quot;cd ~/ibsim &amp;&amp; sed -i.bak &#39;s/${VICTIM_GUID}[^,;]*, *//; s/, *${VICTIM_GUID}[^,;]*//&#39; partitions.conf &amp;&amp; pkill -HUP -f &#39;[o]pensm.*-p 14&#39;&quot; ;;
+<a id="__codelineno-4-46" name="__codelineno-4-46" href="#__codelineno-4-46"></a>  F7)  ssh ubuntu@"$SIM" "pkill -f '[o]pensm.*-p 12'" ;;   # standby SM disappears
+<a id="__codelineno-4-47" name="__codelineno-4-47" href="#__codelineno-4-47"></a>  F7b) ssh ubuntu@"$SIM" "pkill -f '[o]pensm.*-p 14'" ;;   # later: master fails too
+<a id="__codelineno-4-48" name="__codelineno-4-48" href="#__codelineno-4-48"></a>  F8) ssh ubuntu@"$SIM" "cd ~/ibsim &amp;&amp; sed -i.bak 's/${VICTIM_GUID}[^,;]*, *//; s/, *${VICTIM_GUID}[^,;]*//' partitions.conf &amp;&amp; pkill -HUP -f '[o]pensm.*-p 14'" ;;
 <a id="__codelineno-4-49" name="__codelineno-4-49" href="#__codelineno-4-49"></a>  F9) ( for n in 400 1500 4200 9800; do
-<a id="__codelineno-4-50" name="__codelineno-4-50" href="#__codelineno-4-50"></a>          sim_cmd &quot;PerformanceSet \&quot;hxa-su1-leaf-r1\&quot;[33] PortCounters.SymbolErrorCounter=$n&quot;; sleep 120
+<a id="__codelineno-4-50" name="__codelineno-4-50" href="#__codelineno-4-50"></a>          sim_cmd "PerformanceSet \"hxa-su1-leaf-r1\"[33] PortCounters.SymbolErrorCounter=$n"; sleep 120
 <a id="__codelineno-4-51" name="__codelineno-4-51" href="#__codelineno-4-51"></a>        done ) &gt;/dev/null 2&gt;&amp;1 &amp; ;;
-<a id="__codelineno-4-52" name="__codelineno-4-52" href="#__codelineno-4-52"></a>  F10) sim_cmd &#39;Unlink &quot;hxa-su2-leaf-r2&quot;[34]&#39; ;;
-<a id="__codelineno-4-53" name="__codelineno-4-53" href="#__codelineno-4-53"></a>  *) echo &quot;unknown fault $id&quot;; exit 1 ;;
+<a id="__codelineno-4-52" name="__codelineno-4-52" href="#__codelineno-4-52"></a>  F10) sim_cmd 'Unlink "hxa-su2-leaf-r2"[34]' ;;
+<a id="__codelineno-4-53" name="__codelineno-4-53" href="#__codelineno-4-53"></a>  *) echo "unknown fault $id"; exit 1 ;;
 <a id="__codelineno-4-54" name="__codelineno-4-54" href="#__codelineno-4-54"></a>esac
 </code></pre></div>
 </li>
@@ -2598,8 +2644,8 @@
 <div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>cumulus@hxb-spine02:mgmt:~$ nv set vrf default router bgp neighbor swp3 remote-as external
 <a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>cumulus@hxb-spine02:mgmt:~$ nv config diff
 <a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>cumulus@hxb-spine02:mgmt:~$ nv config apply -y
-<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>cumulus@hxb-leaf-r3:mgmt:~$ sudo vtysh -c &quot;show bgp summary&quot;
-<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>cumulus@hxb-leaf-r3:mgmt:~$ sudo vtysh -c &quot;show ip route 10.255.0.11&quot;
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>cumulus@hxb-leaf-r3:mgmt:~$ sudo vtysh -c "show bgp summary"
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>cumulus@hxb-leaf-r3:mgmt:~$ sudo vtysh -c "show ip route 10.255.0.11"
 </code></pre></div>
 </li>
 </ol>
@@ -2643,9 +2689,9 @@
 <p>How Cumulus VX handles an oversized received frame (drop, or accept) depends on the virtual NIC. If the jumbo ping from leaf-r2 to spine01 still works in your simulation, test in the other direction (from spine01 to 10.255.0.12), where spine01's 1500-byte egress MTU applies.</p>
 </div>
 <h3 id="f3-solution-vni-mismatch-on-leaf-r4">F3 solution — VNI mismatch on leaf-r4<a class="headerlink" href="#f3-solution-vni-mismatch-on-leaf-r4" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>cumulus@hxb-leaf-r4:mgmt:~$ sudo vtysh -c &quot;show evpn vni&quot;
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>cumulus@hxb-leaf-r4:mgmt:~$ sudo vtysh -c "show evpn vni"
 <a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>cumulus@hxb-leaf-r4:mgmt:~$ nv show bridge domain br_default vlan 111
-<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>cumulus@hxb-leaf-r2:mgmt:~$ sudo vtysh -c &quot;show evpn vni 10111&quot;
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>cumulus@hxb-leaf-r2:mgmt:~$ sudo vtysh -c "show evpn vni 10111"
 </code></pre></div>
 <p><strong>Expected output (illustrative):</strong> leaf-r4 lists VNI 10101 (L2, 0 remote VTEPs) and no 10111. Leaf-r2's VNI 10111 lists remote VTEPs 10.255.0.11 and 10.255.0.13 only.</p>
 <p>Fix and verify:</p>
@@ -2653,7 +2699,7 @@
 <a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>cumulus@hxb-leaf-r4:mgmt:~$ nv set bridge domain br_default vlan 111 vni 10111
 <a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>cumulus@hxb-leaf-r4:mgmt:~$ nv config diff
 <a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>cumulus@hxb-leaf-r4:mgmt:~$ nv config apply -y
-<a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a>cumulus@hxb-leaf-r4:mgmt:~$ sudo vtysh -c &quot;show evpn vni 10111&quot;
+<a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a>cumulus@hxb-leaf-r4:mgmt:~$ sudo vtysh -c "show evpn vni 10111"
 <a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a>ubuntu@hxb-gpu02:~$ ping -c 3 172.16.11.101
 </code></pre></div>
 <p><strong>Checkpoint:</strong> leaf-r4 shows VNI 10111 with remote VTEPs, and the same-subnet ping works.</p>
@@ -2757,7 +2803,7 @@
 <p><strong>Expected output (illustrative):</strong> the healthy node lists <code>0xffff</code> (or <code>0x7fff</code>) and <code>0x8002</code>. The affected node lists only the default partition. The diff shows the node's GUID missing from the <code>PRODUCTION=0x0002</code> line.</p>
 <p>Fix: add the GUID back (restore the line from the baseline copy, or edit it), then make OpenSM re-read the file and check the PKey table:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a>ubuntu@hxa-ibsim:~/ibsim$ cp base-partitions.conf partitions.conf
-<a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a>ubuntu@hxa-ibsim:~/ibsim$ pkill -HUP -f &#39;[o]pensm.*-p 14&#39;
+<a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a>ubuntu@hxa-ibsim:~/ibsim$ pkill -HUP -f '[o]pensm.*-p 14'
 <a id="__codelineno-28-3" name="__codelineno-28-3" href="#__codelineno-28-3"></a>ubuntu@hxa-ibsim:~/ibsim$ ibsim-run smpquery pkeys &lt;LID of affected node&gt;
 </code></pre></div>
 <p><strong>Checkpoint:</strong> <code>0x8002</code> appears in the node's PKey table. If it doesn't after a minute, restart the master OpenSM the Lab 8 way.</p>
@@ -2766,16 +2812,16 @@
 <div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a>ubuntu@hxa-ibsim:~/ibsim$ ibsim-run ibqueryerrors
 </code></pre></div>
 <p><strong>Expected output (illustrative):</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a>Errors for &quot;hxa-su1-leaf-r1&quot;
+<div class="highlight"><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a>Errors for "hxa-su1-leaf-r1"
 <a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a>   GUID 0x… port 33: [SymbolErrorCounter == 1500]
 </code></pre></div>
 <p>Run it again two minutes later and the count has risen (4200). Confirm that the link is still up and find its far end:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a>ubuntu@hxa-ibsim:~/ibsim$ ibsim-run iblinkinfo --switches-only -l | grep -E &#39;&quot;hxa-su1-leaf-r1&quot;.*\b33\b&#39;
+<div class="highlight"><pre><span></span><code><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a>ubuntu@hxa-ibsim:~/ibsim$ ibsim-run iblinkinfo --switches-only -l | grep -E '"hxa-su1-leaf-r1".*\b33\b'
 <a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a>ubuntu@hxa-ibsim:~/ibsim$ ibsim-run perfquery &lt;leaf LID&gt; 33
 </code></pre></div>
 <p><strong>Diagnosis:</strong> a steadily rising <code>SymbolErrorCounter</code> on a link that is still up means a marginal physical link: a dirty or damaged cable or optic, or a bad port. Symbol errors are corrected or retried, so there's no outage yet, but throughput and latency suffer, and the link may go down or retrain at a lower width. In production you would check the physical layer with <code>mlxlink</code> (BER, eye), look at both ends, and replace the cable or optic in a maintenance window. UFM would flag it through its health checks.</p>
 <p>Fix in the simulator (the equivalent of "replace the cable and clear the counters"):</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a>ubuntu@hxa-ibsim:~/ibsim$ echo &#39;PerformanceSet &quot;hxa-su1-leaf-r1&quot;[33] PortCounters.SymbolErrorCounter=0&#39; &gt; ~/ibsim/simcmd
+<div class="highlight"><pre><span></span><code><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a>ubuntu@hxa-ibsim:~/ibsim$ echo 'PerformanceSet "hxa-su1-leaf-r1"[33] PortCounters.SymbolErrorCounter=0' &gt; ~/ibsim/simcmd
 <a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a>ubuntu@hxa-ibsim:~/ibsim$ ibsim-run ibqueryerrors
 </code></pre></div>
 <p>The injection loop runs on <code>oob-mgmt-server</code>, so the instructor should also stop it there (<code>kill %1</code> in the shell that ran it, or wait until it finishes after eight minutes). Clearing counters with <code>perfquery -R &lt;LID&gt; 33</code> also works on real fabrics (check how your ibsim build handles it).</p>
@@ -2783,12 +2829,12 @@
 <h3 id="f10-solution-failed-spine-uplink-on-su2-leaf-r2">F10 solution — failed spine uplink on SU2 leaf-r2<a class="headerlink" href="#f10-solution-failed-spine-uplink-on-su2-leaf-r2" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a>ubuntu@hxa-ibsim:~/ibsim$ ibsim-run iblinkinfo --switches-only -l &gt; now-links.txt
 <a id="__codelineno-33-2" name="__codelineno-33-2" href="#__codelineno-33-2"></a>ubuntu@hxa-ibsim:~/ibsim$ diff base-links.txt now-links.txt
-<a id="__codelineno-33-3" name="__codelineno-33-3" href="#__codelineno-33-3"></a>ubuntu@hxa-ibsim:~/ibsim$ grep -E &#39;&quot;hxa-su2-leaf-r2&quot;.*\b34\b&#39; base-links.txt
+<a id="__codelineno-33-3" name="__codelineno-33-3" href="#__codelineno-33-3"></a>ubuntu@hxa-ibsim:~/ibsim$ grep -E '"hxa-su2-leaf-r2".*\b34\b' base-links.txt
 </code></pre></div>
 <p><strong>Expected output (illustrative):</strong> the diff shows <code>hxa-su2-leaf-r2</code> port 34 changed from <code>4X … LinkUp</code> with a spine peer to <code>Down</code> with no peer. The baseline line names the peer, for example <code>"hxa-spine02"</code> port 2.</p>
 <p>Fix: reconnect the link through the ibsim console using the peer from your baseline:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a>ubuntu@hxa-ibsim:~/ibsim$ echo &#39;Link &quot;hxa-su2-leaf-r2&quot;[34] &quot;hxa-spine02&quot;[2]&#39; &gt; ~/ibsim/simcmd
-<a id="__codelineno-34-2" name="__codelineno-34-2" href="#__codelineno-34-2"></a>ubuntu@hxa-ibsim:~/ibsim$ sleep 15; ibsim-run iblinkinfo --switches-only -l | grep -E &#39;&quot;hxa-su2-leaf-r2&quot;.*\b34\b&#39;
+<div class="highlight"><pre><span></span><code><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a>ubuntu@hxa-ibsim:~/ibsim$ echo 'Link "hxa-su2-leaf-r2"[34] "hxa-spine02"[2]' &gt; ~/ibsim/simcmd
+<a id="__codelineno-34-2" name="__codelineno-34-2" href="#__codelineno-34-2"></a>ubuntu@hxa-ibsim:~/ibsim$ sleep 15; ibsim-run iblinkinfo --switches-only -l | grep -E '"hxa-su2-leaf-r2".*\b34\b'
 </code></pre></div>
 <p>Some ibsim builds also have <code>ReLink "hxa-su2-leaf-r2"</code>, which restores the node's disconnected links. Type <code>Help</code> at the ibsim console to see the commands your build supports.</p>
 <p><strong>Checkpoint:</strong> port 34 is <code>LinkUp</code> / <code>Active</code> at 4X again, and <code>diff base-links.txt &lt;(ibsim-run iblinkinfo --switches-only -l)</code> shows nothing. The SM brings the port to Active on its next sweep (default sweep interval about 10 seconds).</p>

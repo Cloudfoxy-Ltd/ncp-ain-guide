@@ -289,6 +289,25 @@
   
   
     <li class="md-tabs__item">
+      <a href="https://cloudfoxy-ltd.github.io/ncp-ain-guide/blog/gpu-communication/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Blog
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
       <a href="../../errata/" class="md-tabs__link">
         
   
@@ -1222,6 +1241,33 @@
   
   
     <li class="md-nav__item">
+      <a href="https://cloudfoxy-ltd.github.io/ncp-ain-guide/blog/gpu-communication/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Blog
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../errata/" class="md-nav__link">
         
   
@@ -1262,10 +1308,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
         
           
-          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
             
   
   
@@ -1283,8 +1329,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_5">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1731,33 +1777,33 @@
 <p>Create a working directory and the topology file. Download <code>helix-a.net</code> from the companion site, or type it in from <strong>Appendix B</strong>.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>root@hxa-ibsim:~# mkdir -p ~/ibsim &amp;&amp; cd ~/ibsim
 <a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>root@hxa-ibsim:~/ibsim# nano helix-a.net          # paste Appendix B, save
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>root@hxa-ibsim:~/ibsim# grep -c &#39;^Switch&#39; helix-a.net ; grep -c &#39;^Hca&#39; helix-a.net
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>root@hxa-ibsim:~/ibsim# grep -c '^Switch' helix-a.net ; grep -c '^Hca' helix-a.net
 <a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>6
 <a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>10
 </code></pre></div>
 </li>
 <li>
 <p>Each node record is a header line (<code>Switch 36 "name"</code> or <code>Hca 1 "name"</code>) followed by one line per connected port: <code>[local-port] "remote-node"[remote-port]</code>. Look at one leaf:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>Switch  36 &quot;hxa-su1-leaf-r1&quot;
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>[1] &quot;hxa-gpu01 mlx5_0&quot;[1]
-<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>[2] &quot;hxa-gpu02 mlx5_0&quot;[1]
-<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>[30]    &quot;hxa-ufm-a1 mlx5_0&quot;[1]
-<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>[33]    &quot;hxa-spine01&quot;[1]
-<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>[34]    &quot;hxa-spine02&quot;[1]
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>Switch  36 "hxa-su1-leaf-r1"
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>[1] "hxa-gpu01 mlx5_0"[1]
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>[2] "hxa-gpu02 mlx5_0"[1]
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>[30]    "hxa-ufm-a1 mlx5_0"[1]
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>[33]    "hxa-spine01"[1]
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>[34]    "hxa-spine02"[1]
 </code></pre></div>
 </li>
 <li>
 <p>Start the simulator in the background. Its console reads commands from a <strong>named pipe</strong>, <code>simcmd</code>, so you can change the fabric later without a second terminal.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>root@hxa-ibsim:~/ibsim# mkfifo simcmd
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>root@hxa-ibsim:~/ibsim# nohup sh -c &#39;tail -f ~/ibsim/simcmd | ibsim -s ~/ibsim/helix-a.net&#39; &gt; ~/ibsim/sim.log 2&gt;&amp;1 &amp;
-<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>root@hxa-ibsim:~/ibsim# echo &#39;Help&#39; &gt; simcmd ; sleep 1 ; grep -A6 &#39;Commands:&#39; sim.log
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>root@hxa-ibsim:~/ibsim# nohup sh -c 'tail -f ~/ibsim/simcmd | ibsim -s ~/ibsim/helix-a.net' &gt; ~/ibsim/sim.log 2&gt;&amp;1 &amp;
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>root@hxa-ibsim:~/ibsim# echo 'Help' &gt; simcmd ; sleep 1 ; grep -A6 'Commands:' sim.log
 <a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>sim&gt; Commands:
 <a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>    !&lt;filename&gt; - run commands from the file
 <a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>    Start network
-<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>    Dump [&quot;nodeid&quot;] : dump node information in network
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>    Dump ["nodeid"] : dump node information in network
 <a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>    Route &lt;from-lid&gt; &lt;to-lid&gt;
-<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>    Link &quot;nodeid&quot;[port] &quot;remoteid&quot;[port]
-<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>    ReLink &quot;nodeid&quot; : restore previously unconnected link(s) of the node
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>    Link "nodeid"[port] "remoteid"[port]
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>    ReLink "nodeid" : restore previously unconnected link(s) of the node
 </code></pre></div>
 <div class="admonition info">
 <p class="admonition-title">Field note</p>
@@ -1770,7 +1816,7 @@
 <li>
 <p>Start OpenSM on <code>hxa-ufm-a1</code> with priority 14 (Chapter 12: the preferred master gets the highest priority, 0–15).</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>root@hxa-ibsim:~/ibsim# nohup ibsim-run opensm -p 14 -f ~/ibsim/opensm-a1.log &gt; osm-a1.out 2&gt;&amp;1 &amp;
-<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>root@hxa-ibsim:~/ibsim# sleep 8 ; grep -E &#39;Priority|state&#39; osm-a1.out
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>root@hxa-ibsim:~/ibsim# sleep 8 ; grep -E 'Priority|state' osm-a1.out
 <a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a> Priority = 14
 <a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>Entering DISCOVERING state
 <a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>Entering MASTER state
@@ -1784,29 +1830,29 @@
 </li>
 <li>
 <p>Inventory the fabric (Chapter 17, section 17.3):</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>root@hxa-ibsim:~/ibsim# alias ib=&#39;ibsim-run&#39;        # saves typing; tools print ibwarn noise on stderr
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>root@hxa-ibsim:~/ibsim# alias ib='ibsim-run'        # saves typing; tools print ibwarn noise on stderr
 <a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>root@hxa-ibsim:~/ibsim# ib ibswitches 2&gt;/dev/null
-<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>Switch  : 0x0000000000200005 ports 36 &quot;hxa-su2-leaf-r2&quot; base port 0 lid 9 lmc 0
-<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>Switch  : 0x0000000000200004 ports 36 &quot;hxa-su2-leaf-r1&quot; base port 0 lid 7 lmc 0
-<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>Switch  : 0x0000000000200003 ports 36 &quot;hxa-su1-leaf-r2&quot; base port 0 lid 6 lmc 0
-<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>Switch  : 0x0000000000200001 ports 36 &quot;hxa-spine02&quot; base port 0 lid 3 lmc 0
-<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>Switch  : 0x0000000000200000 ports 36 &quot;hxa-spine01&quot; base port 0 lid 2 lmc 0
-<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>Switch  : 0x0000000000200002 ports 36 &quot;hxa-su1-leaf-r1&quot; base port 0 lid 4 lmc 0
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>Switch  : 0x0000000000200005 ports 36 "hxa-su2-leaf-r2" base port 0 lid 9 lmc 0
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>Switch  : 0x0000000000200004 ports 36 "hxa-su2-leaf-r1" base port 0 lid 7 lmc 0
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>Switch  : 0x0000000000200003 ports 36 "hxa-su1-leaf-r2" base port 0 lid 6 lmc 0
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>Switch  : 0x0000000000200001 ports 36 "hxa-spine02" base port 0 lid 3 lmc 0
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>Switch  : 0x0000000000200000 ports 36 "hxa-spine01" base port 0 lid 2 lmc 0
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>Switch  : 0x0000000000200002 ports 36 "hxa-su1-leaf-r1" base port 0 lid 4 lmc 0
 <a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>root@hxa-ibsim:~/ibsim# ib ibhosts 2&gt;/dev/null | wc -l
 <a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>10
 </code></pre></div>
 </li>
 <li>
 <p>Build the LID and port-GUID map you'll need for partitions. <code>ibnetdiscover -p</code> prints one line per port:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>root@hxa-ibsim:~/ibsim# ib ibnetdiscover -p 2&gt;/dev/null | grep &#39;^CA&#39; | grep gpu | sort -k2 -n
-<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>CA     5  1 0x0000000000100003 4x SDR - SW     4  1 0x0000000000200002 ( &#39;hxa-gpu01 mlx5_0&#39; - &#39;hxa-su1-leaf-r1&#39; )
-<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>CA     8  1 0x0000000000100005 4x SDR - SW     6  1 0x0000000000200003 ( &#39;hxa-gpu01 mlx5_1&#39; - &#39;hxa-su1-leaf-r2&#39; )
-<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>CA    10  1 0x0000000000100007 4x SDR - SW     4  2 0x0000000000200002 ( &#39;hxa-gpu02 mlx5_0&#39; - &#39;hxa-su1-leaf-r1&#39; )
-<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>CA    11  1 0x0000000000100009 4x SDR - SW     6  2 0x0000000000200003 ( &#39;hxa-gpu02 mlx5_1&#39; - &#39;hxa-su1-leaf-r2&#39; )
-<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>CA    12  1 0x000000000010000b 4x SDR - SW     7  1 0x0000000000200004 ( &#39;hxa-gpu03 mlx5_0&#39; - &#39;hxa-su2-leaf-r1&#39; )
-<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>CA    13  1 0x000000000010000d 4x SDR - SW     9  1 0x0000000000200005 ( &#39;hxa-gpu03 mlx5_1&#39; - &#39;hxa-su2-leaf-r2&#39; )
-<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>CA    14  1 0x000000000010000f 4x SDR - SW     7  2 0x0000000000200004 ( &#39;hxa-gpu04 mlx5_0&#39; - &#39;hxa-su2-leaf-r1&#39; )
-<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>CA    15  1 0x0000000000100011 4x SDR - SW     9  2 0x0000000000200005 ( &#39;hxa-gpu04 mlx5_1&#39; - &#39;hxa-su2-leaf-r2&#39; )
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>root@hxa-ibsim:~/ibsim# ib ibnetdiscover -p 2&gt;/dev/null | grep '^CA' | grep gpu | sort -k2 -n
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>CA     5  1 0x0000000000100003 4x SDR - SW     4  1 0x0000000000200002 ( 'hxa-gpu01 mlx5_0' - 'hxa-su1-leaf-r1' )
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>CA     8  1 0x0000000000100005 4x SDR - SW     6  1 0x0000000000200003 ( 'hxa-gpu01 mlx5_1' - 'hxa-su1-leaf-r2' )
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>CA    10  1 0x0000000000100007 4x SDR - SW     4  2 0x0000000000200002 ( 'hxa-gpu02 mlx5_0' - 'hxa-su1-leaf-r1' )
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>CA    11  1 0x0000000000100009 4x SDR - SW     6  2 0x0000000000200003 ( 'hxa-gpu02 mlx5_1' - 'hxa-su1-leaf-r2' )
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>CA    12  1 0x000000000010000b 4x SDR - SW     7  1 0x0000000000200004 ( 'hxa-gpu03 mlx5_0' - 'hxa-su2-leaf-r1' )
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>CA    13  1 0x000000000010000d 4x SDR - SW     9  1 0x0000000000200005 ( 'hxa-gpu03 mlx5_1' - 'hxa-su2-leaf-r2' )
+<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>CA    14  1 0x000000000010000f 4x SDR - SW     7  2 0x0000000000200004 ( 'hxa-gpu04 mlx5_0' - 'hxa-su2-leaf-r1' )
+<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>CA    15  1 0x0000000000100011 4x SDR - SW     9  2 0x0000000000200005 ( 'hxa-gpu04 mlx5_1' - 'hxa-su2-leaf-r2' )
 </code></pre></div>
 </li>
 </ol>
@@ -1855,7 +1901,7 @@
 <ol>
 <li>
 <p>Check one HCA port the way Chapter 11 describes the port state machine:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>root@hxa-ibsim:~/ibsim# ib smpquery portinfo 5 1 2&gt;/dev/null | grep -E &#39;SMLid|LinkState|PhysLinkState|LinkWidthActive|LinkSpeedActive&#39;
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>root@hxa-ibsim:~/ibsim# ib smpquery portinfo 5 1 2&gt;/dev/null | grep -E 'SMLid|LinkState|PhysLinkState|LinkWidthActive|LinkSpeedActive'
 <a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>SMLid:...........................1
 <a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>LinkWidthActive:.................4X
 <a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>LinkState:.......................Active
@@ -1866,9 +1912,9 @@
 </li>
 <li>
 <p>See every link from the switches' point of view (Chapter 17, <code>iblinkinfo</code>):</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>root@hxa-ibsim:~/ibsim# ib iblinkinfo --switches-only -l 2&gt;/dev/null | grep &#39;hxa-su1-leaf-r1&#39; | head -4
-<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>0x0000000000200002 &quot;               hxa-su1-leaf-r1&quot;      4    1[  ] ==( 4X           2.5 Gbps Active/  LinkUp)==&gt;  0x0000000000100002      5    1[  ] &quot;hxa-gpu01 mlx5_0&quot; (Could be 12X Could be 10.0 Gbps)
-<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>0x0000000000200002 &quot;               hxa-su1-leaf-r1&quot;      4    2[  ] ==( 4X           2.5 Gbps Active/  LinkUp)==&gt;  0x0000000000100006     10    1[  ] &quot;hxa-gpu02 mlx5_0&quot; (Could be 12X Could be 10.0 Gbps)
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>root@hxa-ibsim:~/ibsim# ib iblinkinfo --switches-only -l 2&gt;/dev/null | grep 'hxa-su1-leaf-r1' | head -4
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>0x0000000000200002 "               hxa-su1-leaf-r1"      4    1[  ] ==( 4X           2.5 Gbps Active/  LinkUp)==&gt;  0x0000000000100002      5    1[  ] "hxa-gpu01 mlx5_0" (Could be 12X Could be 10.0 Gbps)
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>0x0000000000200002 "               hxa-su1-leaf-r1"      4    2[  ] ==( 4X           2.5 Gbps Active/  LinkUp)==&gt;  0x0000000000100006     10    1[  ] "hxa-gpu02 mlx5_0" (Could be 12X Could be 10.0 Gbps)
 </code></pre></div>
 </li>
 <li>
@@ -1877,25 +1923,25 @@
 <a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>Unicast lids [0x0-0x10] of switch Lid 4 guid 0x0000000000200002 (hxa-su1-leaf-r1):
 <a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>  Lid  Out   Destination
 <a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>       Port     Info 
-<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>0x0001 030 : (Channel Adapter portguid 0x0000000000100001: &#39;hxa-ufm-a1 mlx5_0&#39;)
-<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>0x0002 033 : (Switch portguid 0x0000000000200000: &#39;hxa-spine01&#39;)
-<a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a>0x0003 034 : (Switch portguid 0x0000000000200001: &#39;hxa-spine02&#39;)
-<a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a>0x0004 000 : (Switch portguid 0x0000000000200002: &#39;hxa-su1-leaf-r1&#39;)
-<a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a>0x0005 001 : (Channel Adapter portguid 0x0000000000100003: &#39;hxa-gpu01 mlx5_0&#39;)
-<a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a>0x0006 034 : (Switch portguid 0x0000000000200003: &#39;hxa-su1-leaf-r2&#39;)
-<a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a>0x0007 034 : (Switch portguid 0x0000000000200004: &#39;hxa-su2-leaf-r1&#39;)
-<a id="__codelineno-11-12" name="__codelineno-11-12" href="#__codelineno-11-12"></a>0x0008 034 : (Channel Adapter portguid 0x0000000000100005: &#39;hxa-gpu01 mlx5_1&#39;)
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>0x0001 030 : (Channel Adapter portguid 0x0000000000100001: 'hxa-ufm-a1 mlx5_0')
+<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>0x0002 033 : (Switch portguid 0x0000000000200000: 'hxa-spine01')
+<a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a>0x0003 034 : (Switch portguid 0x0000000000200001: 'hxa-spine02')
+<a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a>0x0004 000 : (Switch portguid 0x0000000000200002: 'hxa-su1-leaf-r1')
+<a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a>0x0005 001 : (Channel Adapter portguid 0x0000000000100003: 'hxa-gpu01 mlx5_0')
+<a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a>0x0006 034 : (Switch portguid 0x0000000000200003: 'hxa-su1-leaf-r2')
+<a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a>0x0007 034 : (Switch portguid 0x0000000000200004: 'hxa-su2-leaf-r1')
+<a id="__codelineno-11-12" name="__codelineno-11-12" href="#__codelineno-11-12"></a>0x0008 034 : (Channel Adapter portguid 0x0000000000100005: 'hxa-gpu01 mlx5_1')
 </code></pre></div>
 </li>
 <li>
 <p>Trace the path from gpu01 rail 1 (LID 5) to gpu03 rail 1 (LID 12), which sits in the other SU:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>root@hxa-ibsim:~/ibsim# ib ibtracert 5 12 2&gt;/dev/null
-<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>From ca {0x0000000000100002} portnum 1 lid 5-5 &quot;hxa-gpu01 mlx5_0&quot;
-<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>[1] -&gt; switch port {0x0000000000200002}[1] lid 4-4 &quot;hxa-su1-leaf-r1&quot;
-<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>[33] -&gt; switch port {0x0000000000200000}[1] lid 2-2 &quot;hxa-spine01&quot;
-<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>[3] -&gt; switch port {0x0000000000200004}[33] lid 7-7 &quot;hxa-su2-leaf-r1&quot;
-<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>[1] -&gt; ca port {0x000000000010000b}[1] lid 12-12 &quot;hxa-gpu03 mlx5_0&quot;
-<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a>To ca {0x000000000010000a} portnum 1 lid 12-12 &quot;hxa-gpu03 mlx5_0&quot;
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>From ca {0x0000000000100002} portnum 1 lid 5-5 "hxa-gpu01 mlx5_0"
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>[1] -&gt; switch port {0x0000000000200002}[1] lid 4-4 "hxa-su1-leaf-r1"
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>[33] -&gt; switch port {0x0000000000200000}[1] lid 2-2 "hxa-spine01"
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>[3] -&gt; switch port {0x0000000000200004}[33] lid 7-7 "hxa-su2-leaf-r1"
+<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>[1] -&gt; ca port {0x000000000010000b}[1] lid 12-12 "hxa-gpu03 mlx5_0"
+<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a>To ca {0x000000000010000a} portnum 1 lid 12-12 "hxa-gpu03 mlx5_0"
 </code></pre></div>
 </li>
 </ol>
@@ -1907,7 +1953,7 @@
 <ol>
 <li>
 <p>Read the SM's routing choice from its log. OpenSM's default engine is <strong>minhop</strong>; NVIDIA's OpenSM in UFM adds <code>ar_updn</code> for adaptive routing (Chapter 14), which this open-source build doesn't include.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>root@hxa-ibsim:~/ibsim# grep -iE &#39;routing engine|ucast&#39; ~/ibsim/opensm-a1.log | head -3
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>root@hxa-ibsim:~/ibsim# grep -iE 'routing engine|ucast' ~/ibsim/opensm-a1.log | head -3
 </code></pre></div>
 </li>
 </ol>
@@ -1920,21 +1966,21 @@
 <ol>
 <li>
 <p>Start a second OpenSM on <code>hxa-ufm-a2</code> with a lower priority (12). The <code>SIM_HOST</code> variable tells umad2sim which simulated node to attach to.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>root@hxa-ibsim:~/ibsim# SIM_HOST=&quot;hxa-ufm-a2 mlx5_0&quot; nohup ibsim-run opensm -p 12 -f ~/ibsim/opensm-a2.log &gt; osm-a2.out 2&gt;&amp;1 &amp;
-<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>root@hxa-ibsim:~/ibsim# sleep 10 ; grep &#39;state&#39; osm-a2.out
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>root@hxa-ibsim:~/ibsim# SIM_HOST="hxa-ufm-a2 mlx5_0" nohup ibsim-run opensm -p 12 -f ~/ibsim/opensm-a2.log &gt; osm-a2.out 2&gt;&amp;1 &amp;
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>root@hxa-ibsim:~/ibsim# sleep 10 ; grep 'state' osm-a2.out
 <a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>Entering DISCOVERING state
 <a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>Entering STANDBY state
 </code></pre></div>
 </li>
 <li>
 <p>Fail the master by stopping it (the equivalent of losing <code>ufm-a1</code>):</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>root@hxa-ibsim:~/ibsim# pgrep -af &#39;opensm -p 14&#39;
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>root@hxa-ibsim:~/ibsim# pgrep -af 'opensm -p 14'
 <a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>root@hxa-ibsim:~/ibsim# kill &lt;pid-from-above&gt;
 </code></pre></div>
 </li>
 <li>
 <p>Watch the standby. It polls the master and takes over after several missed polls; in the simulator this takes about a minute.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>root@hxa-ibsim:~/ibsim# sleep 90 ; grep &#39;state&#39; osm-a2.out | tail -1
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>root@hxa-ibsim:~/ibsim# sleep 90 ; grep 'state' osm-a2.out | tail -1
 <a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>Entering MASTER state
 <a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>root@hxa-ibsim:~/ibsim# ib sminfo 2&gt;/dev/null
 <a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a>sminfo: sm lid 16 sm guid 0x100013, activity count 788 priority 12 state 3 SMINFO_MASTER
@@ -1968,7 +2014,7 @@
 <ol>
 <li>
 <p>Write <code>partitions.conf</code> using the <strong>port GUIDs</strong> from Task 3. RESEARCH gets gpu01 and gpu03 (rail 1), PRODUCTION gets gpu02 and gpu04 (rail 1), and SHARED is a limited partition that every port can use to talk to a full member only (the UFM server).</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>root@hxa-ibsim:~/ibsim# cat &gt; partitions.conf &lt;&lt;&#39;EOF&#39;
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>root@hxa-ibsim:~/ibsim# cat &gt; partitions.conf &lt;&lt;'EOF'
 <a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>Default=0x7fff, ipoib : ALL=full ;
 <a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a>RESEARCH=0x8001, ipoib : 0x0000000000100003=full, 0x000000000010000b=full ;
 <a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a>PRODUCTION=0x8002, ipoib : 0x0000000000100007=full, 0x000000000010000f=full ;
@@ -1978,9 +2024,9 @@
 </li>
 <li>
 <p>Restart the master SM with the partition file (<code>-P</code>). In production UFM manages this file for you (Chapter 13).</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>root@hxa-ibsim:~/ibsim# pkill -f &#39;opensm -p 14&#39; ; sleep 2
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>root@hxa-ibsim:~/ibsim# pkill -f 'opensm -p 14' ; sleep 2
 <a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>root@hxa-ibsim:~/ibsim# nohup ibsim-run opensm -p 14 -P ~/ibsim/partitions.conf -f ~/ibsim/opensm-a1.log &gt; osm-a1.out 2&gt;&amp;1 &amp;
-<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>root@hxa-ibsim:~/ibsim# sleep 45 ; ib sminfo 2&gt;/dev/null | grep -o &#39;priority 14.*&#39;
+<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>root@hxa-ibsim:~/ibsim# sleep 45 ; ib sminfo 2&gt;/dev/null | grep -o 'priority 14.*'
 <a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a>priority 14 state 3 SMINFO_MASTER
 </code></pre></div>
 </li>
@@ -1997,8 +2043,8 @@
 <ol>
 <li>
 <p>Change membership and reload without restarting. Add gpu02 rail 1 to RESEARCH, then send OpenSM a HUP so it re-reads the file:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>root@hxa-ibsim:~/ibsim# sed -i &#39;s/0x000000000010000b=full ;/0x000000000010000b=full, 0x0000000000100007=full ;/&#39; partitions.conf
-<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>root@hxa-ibsim:~/ibsim# pkill -HUP -f &#39;opensm -p 14&#39; ; sleep 20
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>root@hxa-ibsim:~/ibsim# sed -i 's/0x000000000010000b=full ;/0x000000000010000b=full, 0x0000000000100007=full ;/' partitions.conf
+<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>root@hxa-ibsim:~/ibsim# pkill -HUP -f 'opensm -p 14' ; sleep 20
 <a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a>root@hxa-ibsim:~/ibsim# ib smpquery pkeys 10 2&gt;/dev/null | head -1
 <a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a>   0: 0xffff 0x0100 0x8002 0x8001 0x0000 0x0000 0x0000 0x0000
 </code></pre></div>
@@ -2030,14 +2076,14 @@
 </li>
 <li>
 <p>Inject a marginal cable: set symbol errors and link-downed events on <code>hxa-su1-leaf-r1</code> port 33 through the simulator console.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>root@hxa-ibsim:~/ibsim# echo &#39;PerformanceSet &quot;hxa-su1-leaf-r1&quot;[33] PortCounters.SymbolErrorCounter=250&#39; &gt; simcmd
-<a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a>root@hxa-ibsim:~/ibsim# echo &#39;PerformanceSet &quot;hxa-su1-leaf-r1&quot;[33] PortCounters.LinkDownedCounter=3&#39; &gt; simcmd
+<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>root@hxa-ibsim:~/ibsim# echo 'PerformanceSet "hxa-su1-leaf-r1"[33] PortCounters.SymbolErrorCounter=250' &gt; simcmd
+<a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a>root@hxa-ibsim:~/ibsim# echo 'PerformanceSet "hxa-su1-leaf-r1"[33] PortCounters.LinkDownedCounter=3' &gt; simcmd
 </code></pre></div>
 </li>
 <li>
 <p>Find it the way an operator would, with a fabric-wide error sweep (Chapter 17):</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a>root@hxa-ibsim:~/ibsim# ib ibqueryerrors 2&gt;/dev/null
-<a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a>Errors for 0x200002 &quot;hxa-su1-leaf-r1&quot;
+<a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a>Errors for 0x200002 "hxa-su1-leaf-r1"
 <a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a>   GUID 0x200002 port ALL: [SymbolErrorCounter == 250] [LinkDownedCounter == 3]
 <a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a>   GUID 0x200002 port 33: [SymbolErrorCounter == 250] [LinkDownedCounter == 3]
 <a id="__codelineno-24-5" name="__codelineno-24-5" href="#__codelineno-24-5"></a>
@@ -2052,10 +2098,10 @@
 <ol>
 <li>
 <p>Now fail a link completely: unplug the spine02 uplink of <code>hxa-su2-leaf-r2</code>.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>root@hxa-ibsim:~/ibsim# echo &#39;Unlink &quot;hxa-su2-leaf-r2&quot;[34]&#39; &gt; simcmd ; sleep 20
-<a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a>root@hxa-ibsim:~/ibsim# ib iblinkinfo --switches-only -l 2&gt;/dev/null | grep &#39;hxa-su2-leaf-r2&#39; | grep -E &#39; 3[34]\[&#39;
-<a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a>0x0000000000200005 &quot;               hxa-su2-leaf-r2&quot;      9   33[  ] ==( 4X           2.5 Gbps Active/  LinkUp)==&gt;  0x0000000000200000      2    4[  ] &quot;hxa-spine01&quot; (Could be 12X Could be 10.0 Gbps)
-<a id="__codelineno-26-4" name="__codelineno-26-4" href="#__codelineno-26-4"></a>0x0000000000200005 &quot;               hxa-su2-leaf-r2&quot;      9   34[  ] ==(                Down/ Polling)==&gt;             [  ] &quot;&quot; ( )
+<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>root@hxa-ibsim:~/ibsim# echo 'Unlink "hxa-su2-leaf-r2"[34]' &gt; simcmd ; sleep 20
+<a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a>root@hxa-ibsim:~/ibsim# ib iblinkinfo --switches-only -l 2&gt;/dev/null | grep 'hxa-su2-leaf-r2' | grep -E ' 3[34]\['
+<a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a>0x0000000000200005 "               hxa-su2-leaf-r2"      9   33[  ] ==( 4X           2.5 Gbps Active/  LinkUp)==&gt;  0x0000000000200000      2    4[  ] "hxa-spine01" (Could be 12X Could be 10.0 Gbps)
+<a id="__codelineno-26-4" name="__codelineno-26-4" href="#__codelineno-26-4"></a>0x0000000000200005 "               hxa-su2-leaf-r2"      9   34[  ] ==(                Down/ Polling)==&gt;             [  ] "" ( )
 </code></pre></div>
 </li>
 </ol>
@@ -2063,8 +2109,8 @@
 <ol>
 <li>
 <p>Restore the link:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>root@hxa-ibsim:~/ibsim# echo &#39;ReLink &quot;hxa-su2-leaf-r2&quot;[34]&#39; &gt; simcmd ; sleep 20
-<a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a>root@hxa-ibsim:~/ibsim# ib iblinkinfo --switches-only -l 2&gt;/dev/null | grep &#39;hxa-su2-leaf-r2&#39; | grep &#39; 34\[&#39;
+<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>root@hxa-ibsim:~/ibsim# echo 'ReLink "hxa-su2-leaf-r2"[34]' &gt; simcmd ; sleep 20
+<a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a>root@hxa-ibsim:~/ibsim# ib iblinkinfo --switches-only -l 2&gt;/dev/null | grep 'hxa-su2-leaf-r2' | grep ' 34\['
 </code></pre></div>
 </li>
 </ol>

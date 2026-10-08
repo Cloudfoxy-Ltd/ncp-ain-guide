@@ -1,0 +1,856 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>How GPUs Talk</title>
+<meta name="description" content="A picture-first, plain-English guide to GPU-to-GPU communication and NCCL, with animated diagrams for PCIe, NVLink, RDMA, GPUDirect and collectives.">
+<meta name="author" content="Vakeesan Thevarajah">
+<meta property="og:type" content="article">
+<meta property="og:title" content="How GPUs talk to each other: GPU communication and NCCL, explained">
+<meta property="og:description" content="Animated, plain-English guide to PCIe, NVLink, RDMA, GPUDirect and NCCL collectives.">
+<meta property="og:url" content="https://cloudfoxy-ltd.github.io/ncp-ain-guide/blog/gpu-communication/">
+<meta property="og:image" content="https://cloudfoxy-ltd.github.io/ncp-ain-guide/blog/gpu-communication/og.png">
+<meta property="og:image:width" content="1200"><meta property="og:image:height" content="627">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: one calm reading column (~70ch); every diagram is a wider "bench" card with its own controls.
+   Colour: each GPU owns a colour for the whole post, so you can follow its data through every animation. */
+:root{
+  --bg:#F2F4FA; --surface:#FFFFFF; --ink:#141A2E; --muted:#58617D; --line:#DCE1EE; --wire:#B5BED4; --accent:#2D63F5;
+  --g0:#F2545B; --g1:#F0A21A; --g2:#11B09F; --g3:#7B5CFF; --g4:#2F80ED; --g5:#E2499A; --g6:#68A914; --g7:#EC772A;
+  --cpu:#64748B; --mem:#0E9BD9; --nic:#0F9F6A; --pcie:#8590AE; --nvs:#5145E5;
+  --code-bg:#10152A; --code-ink:#E6EAF5; --code-dim:#8D97B8;
+  --f-display:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;
+  --f-body:"Atkinson Hyperlegible","Segoe UI",system-ui,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0B0F1E; --surface:#141A2E; --ink:#E9EDF8; --muted:#9DA7C4; --line:#252E4C; --wire:#3B4669; --accent:#7A9BFF;
+  --cpu:#94A3B8; --pcie:#6E7AA0; --nvs:#7D74FF; --code-bg:#070A16; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0B0F1E; --surface:#141A2E; --ink:#E9EDF8; --muted:#9DA7C4; --line:#252E4C; --wire:#3B4669; --accent:#7A9BFF;
+  --cpu:#94A3B8; --pcie:#6E7AA0; --nvs:#7D74FF; --code-bg:#070A16; color-scheme:dark}
+
+body{margin:0;background:var(--bg);color:var(--ink);font:18px/1.65 var(--f-body)}
+.wrap{padding-inline:18px;padding-block:36px 90px}
+.col{max-width:700px;margin-inline:auto}
+.wide{max-width:980px;margin-inline:auto}
+h1,h2,h3,h4{font-family:var(--f-display);line-height:1.12;text-wrap:balance;margin:0}
+h1{font-size:clamp(2.4rem,7vw,4.4rem);font-weight:800;letter-spacing:-.02em}
+h2{font-size:clamp(1.6rem,4vw,2.2rem);font-weight:800;margin-top:2.6em;margin-bottom:.5em;letter-spacing:-.01em}
+h3{font-size:1.2rem;font-weight:700}
+p{margin:0 0 1em}
+a{color:var(--accent)}
+strong,b{font-weight:700}
+code{font-family:var(--f-mono);font-size:.86em;background:color-mix(in oklab,var(--accent) 10%,transparent);padding:.1em .35em;border-radius:5px}
+
+/* hero */
+.kicker{font:600 .8rem var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.hero h1 .c0{color:var(--g0)}.hero h1 .c3{color:var(--g3)}.hero h1 .c2{color:var(--g2)}
+.dek{font-size:1.25rem;color:var(--muted);margin-top:.6em;max-width:36ch}
+.byline{display:flex;flex-wrap:wrap;gap:6px 18px;margin-top:1.4em;font-size:.92rem;color:var(--muted)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:1.6em}
+.chip{display:inline-flex;align-items:center;gap:7px;font:600 .8rem var(--f-mono);padding:5px 11px 5px 8px;border-radius:99px;background:var(--surface);border:1px solid var(--line)}
+.chip i{width:11px;height:11px;border-radius:50%;display:inline-block}
+
+.toc{margin-top:2.2em;padding:18px 22px;background:var(--surface);border:1px solid var(--line);border-radius:16px}
+.toc h4{font-size:.95rem;margin-bottom:.5em}
+.toc ol{margin:0;padding-left:1.3em;columns:2 240px;column-gap:28px;font-size:.95rem}
+.toc a{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--line)}
+.toc a:hover{border-color:var(--accent)}
+
+/* callouts */
+.analogy{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:start;background:color-mix(in oklab,var(--g1) 12%,var(--surface));border:1px solid color-mix(in oklab,var(--g1) 35%,var(--line));border-radius:14px;padding:16px 18px;margin:1.4em 0}
+.analogy .tag{font:700 .72rem var(--f-mono);letter-spacing:.08em;text-transform:uppercase;background:var(--g1);color:#1b1300;padding:4px 8px;border-radius:6px;margin-top:3px}
+.analogy p{margin:0}
+.terms{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:1.2em 0}
+.term{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 16px;min-width:0}
+.term b{display:block;font-family:var(--f-display);font-size:1.05rem}
+.term span{font-size:.95rem;color:var(--muted)}
+
+/* figures */
+.fig{margin:1.8em auto 2.2em;background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:18px 18px 16px}
+.fig-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px;margin-bottom:10px}
+.fig-no{font:600 .75rem var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
+.modes{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.modes button,.ctrl button,.tabs button,.scen button{font:600 .88rem var(--f-body);border:1px solid var(--line);background:var(--bg);color:var(--ink);padding:7px 14px;border-radius:99px;cursor:pointer}
+.modes button[aria-pressed="true"],.tabs button[aria-pressed="true"],.scen button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.ctrl button.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.stage{overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:12px;background:color-mix(in oklab,var(--bg) 60%,var(--surface))}
+svg.dia{display:block;width:100%;height:auto}
+.fig-foot{display:grid;grid-template-columns:1fr auto;gap:14px;margin-top:12px;align-items:start}
+.ctrl{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+@media (max-width:620px){.fig-foot{grid-template-columns:1fr}.ctrl{justify-content:flex-start}}
+.steps{margin:0;padding:0;list-style:none;counter-reset:s;display:grid;gap:4px;min-width:0}
+.steps li{counter-increment:s;display:grid;grid-template-columns:28px 1fr;gap:10px;padding:6px 10px;border-radius:10px;font-size:.95rem;color:var(--muted);transition:background .25s,color .25s}
+.steps li::before{content:counter(s);width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font:700 .78rem var(--f-mono);background:var(--bg);border:1px solid var(--line);color:var(--muted)}
+.steps li.on{background:color-mix(in oklab,var(--accent) 12%,transparent);color:var(--ink)}
+.steps li.on::before{background:var(--accent);border-color:var(--accent);color:#fff}
+.note{font-size:.88rem;color:var(--muted);margin-top:8px}
+.note:empty{display:none}
+
+/* svg text */
+.lbl{font:700 15px var(--f-display);fill:var(--ink)}
+.sub{font:12px var(--f-body);fill:var(--muted)}
+.small{font:600 12px var(--f-mono);fill:var(--muted)}
+.srvl{font:700 13px var(--f-mono);fill:var(--muted);letter-spacing:.06em}
+.nb{fill-opacity:.16;stroke-width:2}
+.under{fill:var(--surface)}
+.wire{fill:none;stroke-linecap:round;stroke-linejoin:round}
+.tk{stroke:var(--surface);stroke-width:2.5}
+.srv{fill:none;stroke:var(--line);stroke-width:2;stroke-dasharray:6 6}
+.node.busy .nb{animation:pulse .45s ease-in-out infinite alternate}
+.node.flash .nb{animation:pulse .3s ease-in-out infinite alternate}
+@keyframes pulse{from{fill-opacity:.16}to{fill-opacity:.62}}
+.slot-empty{fill:none;stroke:var(--wire);stroke-width:1.5;stroke-dasharray:5 5}
+.slot-edge{fill:none;stroke:rgba(10,14,30,.25);stroke-width:1}
+.ck{font:700 13px var(--f-display);fill:#fff;paint-order:stroke;stroke:rgba(10,14,30,.5);stroke-width:3px}
+.flyer{filter:drop-shadow(0 4px 6px rgba(10,14,30,.35))}
+.colbox{fill-opacity:.09;stroke-width:1.5}
+
+/* collectives explorer */
+.tabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.coll-grid{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:18px;align-items:start}
+@media (max-width:820px){.coll-grid{grid-template-columns:1fr}}
+.coll-info h4{font-size:1.5rem;margin-bottom:.3em}
+.coll-info .one{font-size:1.08rem;margin-bottom:.8em}
+.coll-info dl{margin:0;display:grid;gap:10px}
+.coll-info dt{font:700 .72rem var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.coll-info dd{margin:0;font-size:.96rem}
+.badge{display:inline-block;font:700 .75rem var(--f-mono);letter-spacing:.08em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:var(--bg);border:1px solid var(--line);color:var(--muted)}
+.badge.after{background:var(--g2);border-color:var(--g2);color:#032620}
+.badge.moving{background:var(--g1);border-color:var(--g1);color:#2a1c00}
+
+/* ring stepper */
+.ring-cap{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:center;margin-top:12px;padding:12px 14px;border-radius:12px;background:var(--bg)}
+.ring-cap .count{font:800 1.5rem var(--f-display);font-variant-numeric:tabular-nums;white-space:nowrap}
+.ring-cap p{margin:0;font-size:.98rem}
+.meter{display:flex;gap:4px;margin-top:10px}
+.meter span{flex:1;height:8px;border-radius:4px;background:var(--line);transition:background .3s}
+.meter span.rs{background:var(--g0)}.meter span.ag{background:var(--g2)}
+
+/* race */
+.race{display:grid;gap:12px;padding:14px 4px 4px}
+.lane{display:grid;grid-template-columns:minmax(0,210px) 1fr 70px;gap:12px;align-items:center}
+@media (max-width:620px){.lane{grid-template-columns:1fr 64px}.lane .track{grid-column:1/-1;grid-row:2}}
+.lane .nm{font-size:.92rem;line-height:1.3;min-width:0}
+.lane .nm small{display:block;color:var(--muted);font:600 .75rem var(--f-mono)}
+.track{height:22px;border-radius:11px;background:var(--bg);border:1px solid var(--line);overflow:hidden}
+.fill{height:100%;width:0;border-radius:11px}
+.lane .tm{font:700 .9rem var(--f-mono);text-align:right;font-variant-numeric:tabular-nums;color:var(--muted)}
+.lane.done .tm{color:var(--ink)}
+
+/* stack */
+.stack{display:grid;gap:8px;margin:1.4em 0}
+.layer{display:grid;grid-template-columns:minmax(0,190px) 1fr;gap:14px;align-items:center;padding:12px 16px;border-radius:12px;border:1.5px solid}
+.layer b{font-family:var(--f-display);font-size:1.02rem}
+.layer span{font-size:.92rem;color:var(--muted)}
+@media (max-width:560px){.layer{grid-template-columns:1fr;gap:2px}}
+.transports{display:flex;flex-wrap:wrap;gap:6px}
+.transports em{font-style:normal;font:600 .78rem var(--f-mono);padding:3px 8px;border-radius:6px;background:var(--surface);border:1px solid var(--line);color:var(--ink)}
+
+/* decision */
+.scen{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+.checks{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.checks li{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;padding:11px 14px;border-radius:12px;background:var(--bg);border:1px solid var(--line);opacity:.25;transform:translateY(6px);transition:opacity .35s,transform .35s}
+.checks li.in{opacity:1;transform:none}
+.checks .ans{font:700 .8rem var(--f-mono);padding:3px 10px;border-radius:99px}
+.ans.yes{background:var(--g2);color:#032620}.ans.no{background:var(--g0);color:#2b0507}
+.result{margin-top:12px;padding:16px 18px;border-radius:14px;border:2px solid var(--line);opacity:.25;transition:opacity .4s,border-color .4s}
+.result.in{opacity:1}
+.result b{font-family:var(--f-display);font-size:1.3rem;display:block}
+.result span{color:var(--muted);font-size:.95rem}
+
+/* code & tables */
+pre{background:var(--code-bg);color:var(--code-ink);font:13.5px/1.6 var(--f-mono);padding:16px 18px;border-radius:14px;overflow-x:auto;margin:1em 0 1.4em}
+pre .c{color:var(--code-dim)} pre .h{color:#7EE2B8} pre .y{color:#FFC861}
+.tbl{overflow-x:auto;margin:1em 0 1.6em;border:1px solid var(--line);border-radius:14px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:.93rem;min-width:520px}
+th,td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font:700 .75rem var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+tr:last-child td{border-bottom:0}
+td code{white-space:nowrap}
+.takeaways{display:grid;gap:10px;counter-reset:t;margin:1em 0;padding:0;list-style:none}
+.takeaways li{display:grid;grid-template-columns:34px 1fr;gap:12px;align-items:start}
+.takeaways li::before{counter-increment:t;content:counter(t);width:30px;height:30px;border-radius:9px;display:grid;place-items:center;font:800 .95rem var(--f-display);color:#fff}
+.takeaways li:nth-child(8n+1)::before{background:var(--g0)}.takeaways li:nth-child(8n+2)::before{background:var(--g1)}
+.takeaways li:nth-child(8n+3)::before{background:var(--g2)}.takeaways li:nth-child(8n+4)::before{background:var(--g3)}
+.takeaways li:nth-child(8n+5)::before{background:var(--g4)}.takeaways li:nth-child(8n+6)::before{background:var(--g5)}
+.takeaways li:nth-child(8n+7)::before{background:var(--g6)}.takeaways li:nth-child(8n+8)::before{background:var(--g7)}
+footer{margin-top:3em;padding-top:1.4em;border-top:1px solid var(--line);font-size:.9rem;color:var(--muted)}
+@media (prefers-reduced-motion: reduce){*{transition:none!important}.node.busy .nb,.node.flash .nb{animation:none;fill-opacity:.5}}
+</style>
+</head>
+<body>
+
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs id="gdefs">
+    <linearGradient id="sumGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" style="stop-color:var(--g0)"/><stop offset=".35" style="stop-color:var(--g1)"/>
+      <stop offset=".65" style="stop-color:var(--g2)"/><stop offset="1" style="stop-color:var(--g3)"/>
+    </linearGradient>
+    <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" style="fill:var(--muted)"/>
+    </marker>
+  </defs>
+</svg>
+
+<div class="wrap">
+<header class="hero col">
+  <div class="kicker"><a href="../../" style="color:inherit;text-decoration:none">← NCP-AIN Guide</a> · AI networking, explained simply</div>
+  <h1>How <span class="c0">GPUs</span> <span class="c3">talk</span> to each <span class="c2">other</span></h1>
+  <p class="dek">A picture-first guide to GPU-to-GPU communication and NCCL. Every diagram moves, so you can watch the data travel.</p>
+  <div class="byline"><span>By Vakeesan</span><span>October 2026</span><span>About 15 minutes</span></div>
+  <div class="chips" aria-label="Colour key">
+    <span class="chip"><i style="background:var(--g0)"></i>GPU 0</span>
+    <span class="chip"><i style="background:var(--g1)"></i>GPU 1</span>
+    <span class="chip"><i style="background:var(--g2)"></i>GPU 2</span>
+    <span class="chip"><i style="background:var(--g3)"></i>GPU 3</span>
+    <span class="chip"><i style="background:linear-gradient(135deg,var(--g0),var(--g1),var(--g2),var(--g3))"></i>Added together</span>
+  </div>
+  <nav class="toc" aria-label="Contents">
+    <h4>In this post</h4>
+    <ol>
+      <li><a href="#why">Why GPUs need to talk</a></li>
+      <li><a href="#words">Five words you need</a></li>
+      <li><a href="#inside">Inside one server: PCIe and P2P</a></li>
+      <li><a href="#nvlink">NVLink and NVSwitch</a></li>
+      <li><a href="#between">Between servers: TCP, RDMA, GPUDirect</a></li>
+      <li><a href="#speed">How fast is each road?</a></li>
+      <li><a href="#nccl">Meet NCCL</a></li>
+      <li><a href="#collectives">The six team moves</a></li>
+      <li><a href="#ring">The ring, step by step</a></li>
+      <li><a href="#algos">Ring, tree or switch?</a></li>
+      <li><a href="#paths">How NCCL picks the road</a></li>
+      <li><a href="#try">Try it yourself</a></li>
+      <li><a href="#cheat">Cheat sheet</a></li>
+    </ol>
+  </nav>
+</header>
+
+<main>
+<section id="why">
+  <div class="col">
+    <h2>1. Why do GPUs need to talk?</h2>
+    <p>Big AI models are trained on many GPUs at once. One GPU alone would take months. So we split the work.</p>
+    <p>The most common way is called <b>data parallel</b> training. Every GPU holds a full copy of the model. Each GPU learns from a different slice of the data. Then, after every small step, the GPUs must <b>share what they learned</b> so all copies stay the same.</p>
+    <p>That sharing happens thousands of times. If it is slow, the expensive GPUs sit idle and wait. This is why GPU-to-GPU communication matters so much.</p>
+  </div>
+  <figure class="fig wide" id="fig-why">
+    <div class="fig-head"><span class="fig-no">Diagram 1</span><h3>One training step on four GPUs</h3></div>
+    <div class="stage"></div>
+    <div class="fig-foot"><ol class="steps"></ol><div class="ctrl"><button data-act="play">Pause</button><button data-act="replay">Replay</button></div></div>
+  </figure>
+  <div class="col">
+    <div class="analogy"><span class="tag">Think of it as</span><p>Four students each mark a quarter of the exam papers. At the end they must add up their totals and agree on one class average. The marking is fast. Walking around to share totals is the part we want to make quick.</p></div>
+  </div>
+</section>
+
+<section id="words">
+  <div class="col">
+    <h2>2. Five words you need</h2>
+    <p>Let's treat data like parcels and the connections like roads. Then the rest of this post is easy.</p>
+    <div class="terms">
+      <div class="term"><b>Bandwidth</b><span>How wide the road is. How many GB per second can pass.</span></div>
+      <div class="term"><b>Latency</b><span>How long the first parcel takes to arrive, even on an empty road.</span></div>
+      <div class="term"><b>Copy</b><span>Each time data is put down and picked up again. Every copy costs time.</span></div>
+      <div class="term"><b>Hop</b><span>One trip from one box to the next. Fewer hops is usually better.</span></div>
+      <div class="term"><b>Collective</b><span>A group move where many GPUs take part, like "everyone add up and share".</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="inside">
+  <div class="col">
+    <h2>3. Inside one server: the slow way and the direct way</h2>
+    <p>Inside a server, GPUs plug into <b>PCIe</b>. PCIe is the standard road that connects the CPU, memory, GPUs and network cards.</p>
+    <p>In the old way, data from GPU 0 goes <b>up to the CPU's memory first</b>, then down to GPU 1. With <b>peer-to-peer (P2P)</b>, GPU 0 writes straight into GPU 1's memory. Press the buttons to compare.</p>
+  </div>
+  <figure class="fig wide" id="fig-pcie">
+    <div class="fig-head"><span class="fig-no">Diagram 2</span><h3>Moving data between two GPUs over PCIe</h3></div>
+    <div class="modes"></div>
+    <div class="stage"></div>
+    <div class="fig-foot"><ol class="steps"></ol><div class="ctrl"><button data-act="play">Pause</button><button data-act="replay">Replay</button></div></div>
+  </figure>
+  <div class="col">
+    <p>P2P removes the extra stop. But the PCIe road is still fairly narrow, and it is shared with everything else in the server. For AI, we need something much wider.</p>
+  </div>
+</section>
+
+<section id="nvlink">
+  <div class="col">
+    <h2>4. NVLink and NVSwitch: the GPU motorway</h2>
+    <p><b>NVLink</b> is NVIDIA's own direct cable between GPUs. It is many times wider than PCIe.</p>
+    <p><b>NVSwitch</b> is a chip that joins all the NVLinks together. In an 8-GPU server (like an HGX H100 or B200 board), every GPU can talk to every other GPU <b>at full speed, at the same time</b>. No GPU has to wait for another.</p>
+  </div>
+  <figure class="fig wide" id="fig-nvlink">
+    <div class="fig-head"><span class="fig-no">Diagram 3</span><h3>Eight GPUs: shared PCIe road vs NVSwitch</h3></div>
+    <div class="modes"></div>
+    <div class="stage"></div>
+    <div class="fig-foot"><ol class="steps"></ol><div class="ctrl"><button data-act="play">Pause</button><button data-act="replay">Replay</button></div></div>
+  </figure>
+</section>
+
+<section id="between">
+  <div class="col">
+    <h2>5. Between servers: TCP, RDMA and GPUDirect RDMA</h2>
+    <p>One server holds 8 GPUs. Big training jobs use hundreds or thousands. So data must also travel <b>between servers</b>, through a <b>network card (NIC)</b> and a network switch.</p>
+    <p>There are three ways to do this. They differ in how many copies are made and how much the CPU has to help.</p>
+    <ul>
+      <li><b>TCP (normal networking):</b> works everywhere, but the CPU copies data several times.</li>
+      <li><b>RDMA</b> (Remote Direct Memory Access): the NIC reads and writes memory by itself. No CPU copies. It runs on <b>InfiniBand</b> or on Ethernet as <b>RoCE</b>.</li>
+      <li><b>GPUDirect RDMA:</b> the NIC reads and writes <b>GPU memory directly</b>. The CPU and system memory are skipped completely.</li>
+    </ul>
+  </div>
+  <figure class="fig wide" id="fig-net">
+    <div class="fig-head"><span class="fig-no">Diagram 4</span><h3>GPU in Server A sends to GPU in Server B</h3></div>
+    <div class="modes"></div>
+    <div class="stage"></div>
+    <div class="fig-foot"><ol class="steps"></ol><div class="ctrl"><button data-act="play">Pause</button><button data-act="replay">Replay</button></div></div>
+    <p class="note"></p>
+  </figure>
+  <div class="col">
+    <div class="analogy"><span class="tag">Think of it as</span><p>TCP is sending a parcel through two post offices and two sorting rooms. RDMA is a courier who picks up from your warehouse. GPUDirect RDMA is a courier who walks straight into your workshop and takes the parcel off your desk.</p></div>
+    <p>One detail matters a lot: GPUDirect RDMA is fastest when the GPU and the NIC sit on the <b>same PCIe switch</b>. That is why AI servers usually pair <b>one NIC with each GPU</b>.</p>
+  </div>
+</section>
+
+<section id="speed">
+  <div class="col">
+    <h2>6. How fast is each road?</h2>
+    <p>Here is a race. Each road moves the same <b>10 GB</b> of data. The numbers are approximate peak speeds in <b>one direction</b>. Real speeds are a bit lower.</p>
+  </div>
+  <figure class="fig wide" id="fig-race">
+    <div class="fig-head"><span class="fig-no">Diagram 5</span><h3>Sending 10 GB, one direction</h3></div>
+    <div class="race"></div>
+    <div class="fig-foot"><p class="note" style="margin:0">The animation is slowed down 20 times so you can see it. Times shown are the real times.</p><div class="ctrl"><button data-act="play">Pause</button><button data-act="replay">Replay</button></div></div>
+  </figure>
+  <div class="col">
+    <p>Notice two things. First, NVLink inside a server is around <b>10 times faster</b> than one network card between servers. Second, this gap is why smart software must choose the right road for each job. That software is NCCL.</p>
+  </div>
+</section>
+
+<section id="nccl">
+  <div class="col">
+    <h2>7. Meet NCCL</h2>
+    <p><b>NCCL</b> (say "nickel") is the <b>NVIDIA Collective Communications Library</b>. It is the piece of software that moves data between GPUs for AI training and inference.</p>
+    <p>You almost never call NCCL yourself. PyTorch, JAX, DeepSpeed, Megatron and others call it for you. When PyTorch says <code>backend="nccl"</code>, this is what runs.</p>
+    <p>NCCL does three jobs:</p>
+    <ol>
+      <li><b>Finds the roads.</b> At start-up it maps every GPU, NVLink, PCIe switch and NIC in the system.</li>
+      <li><b>Picks a plan.</b> It chooses an algorithm (ring, tree or in-switch) and a road for each piece of data.</li>
+      <li><b>Moves the data.</b> It runs small GPU programs that copy, add and forward data, very fast, without the CPU.</li>
+    </ol>
+    <div class="stack" aria-label="Where NCCL sits">
+      <div class="layer" style="border-color:var(--g4);background:color-mix(in oklab,var(--g4) 10%,var(--surface))"><b>Your training script</b><span>model.train(), loss.backward()</span></div>
+      <div class="layer" style="border-color:var(--g3);background:color-mix(in oklab,var(--g3) 10%,var(--surface))"><b>Framework</b><span>PyTorch DDP / FSDP, JAX, DeepSpeed, Megatron</span></div>
+      <div class="layer" style="border-color:var(--g2);background:color-mix(in oklab,var(--g2) 14%,var(--surface))"><b>NCCL</b><span>AllReduce, AllGather, ReduceScatter, AllToAll, Send/Recv</span></div>
+      <div class="layer" style="border-color:var(--g1);background:color-mix(in oklab,var(--g1) 12%,var(--surface))"><b>Transports (roads)</b><span class="transports"><em>P2P over NVLink</em><em>P2P over PCIe</em><em>SHM (via CPU memory)</em><em>NET: InfiniBand / RoCE</em><em>NET: TCP sockets</em><em>NVLS (NVSwitch)</em><em>CollNet (SHARP)</em></span></div>
+      <div class="layer" style="border-color:var(--g0);background:color-mix(in oklab,var(--g0) 10%,var(--surface))"><b>Hardware</b><span>GPUs, NVLink, NVSwitch, PCIe switches, NICs, network switches</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="collectives">
+  <div class="col">
+    <h2>8. The six team moves (collectives)</h2>
+    <p>A <b>collective</b> is a move that a whole group of GPUs does together. NCCL has a small set of them. Once you know these six, you can read almost any AI training log.</p>
+    <p>In the diagram, each GPU's data is cut into four <b>pieces</b>. The colour tells you whose data it is. When pieces are <b>added together</b>, they show stripes of every colour inside them.</p>
+  </div>
+  <figure class="fig wide" id="fig-coll">
+    <div class="fig-head"><span class="fig-no">Diagram 6</span><h3>Collective explorer</h3></div>
+    <div class="tabs" role="group" aria-label="Choose a collective"></div>
+    <div class="coll-grid">
+      <div style="min-width:0"><div class="stage"></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:10px;flex-wrap:wrap"><span class="badge" id="coll-badge">Before</span><div class="ctrl"><button data-act="play">Pause</button><button data-act="replay">Replay</button></div></div>
+      </div>
+      <div class="coll-info" id="coll-info"></div>
+    </div>
+  </figure>
+  <div class="col">
+    <p>Here is a useful trick: <b>AllReduce = ReduceScatter + AllGather</b>. First everyone adds up and keeps one share. Then everyone shares their finished share. That is exactly how the ring works, as you will see next.</p>
+  </div>
+</section>
+
+<section id="ring">
+  <div class="col">
+    <h2>9. The ring, step by step</h2>
+    <p>The simple AllReduce above sends everything to GPU 0. That makes GPU 0 a traffic jam. NCCL's favourite answer is the <b>ring</b>.</p>
+    <p>The GPUs stand in a circle. Each one only talks to its <b>right-hand neighbour</b>. Data is cut into as many pieces as there are GPUs. Every GPU sends at the same time, so <b>every link is busy all the time</b>. Use the buttons to walk through it.</p>
+  </div>
+  <figure class="fig wide" id="fig-ring">
+    <div class="fig-head"><span class="fig-no">Diagram 7</span><h3>Ring AllReduce with 4 GPUs</h3></div>
+    <div class="stage"></div>
+    <div class="meter" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+    <div class="ring-cap"><span class="count" id="ring-count">0 / 6</span><p id="ring-text"></p></div>
+    <div class="ctrl" style="margin-top:12px;justify-content:flex-start">
+      <button data-act="prev">◀ Back</button><button data-act="next" class="primary">Next step ▶</button><button data-act="all">Play all</button><button data-act="reset">Reset</button>
+    </div>
+  </figure>
+  <div class="col">
+    <p>The magic: each GPU sends only <b>2 × (N − 1) / N</b> of its data. With 4 GPUs that is 1.5 times. With 1,000 GPUs it is still just under 2 times. The amount each GPU sends <b>does not grow</b> as you add GPUs. That is why the ring is so popular for big messages.</p>
+  </div>
+</section>
+
+<section id="algos">
+  <div class="col">
+    <h2>10. Ring, tree or switch?</h2>
+    <p>The ring has one weak spot: it needs <b>2 × (N − 1) steps</b>. Each step adds a little delay. With small messages and many GPUs, those delays add up. So NCCL has other plans too.</p>
+  </div>
+  <figure class="fig wide" id="fig-algo">
+    <div class="fig-head"><span class="fig-no">Diagram 8</span><h3>Three ways to AllReduce across 8 GPUs</h3></div>
+    <div class="modes"></div>
+    <div class="stage"></div>
+    <div class="fig-foot"><ol class="steps"></ol><div class="ctrl"><button data-act="play">Pause</button><button data-act="replay">Replay</button></div></div>
+    <p class="note"></p>
+  </figure>
+  <div class="col">
+    <div class="tbl"><table>
+      <thead><tr><th>Plan</th><th>Steps for 8 GPUs</th><th>Best for</th><th>NCCL name</th></tr></thead>
+      <tbody>
+        <tr><td><b>Ring</b></td><td>14</td><td>Big messages. Uses every link fully.</td><td><code>Ring</code></td></tr>
+        <tr><td><b>Tree</b></td><td>6</td><td>Small and medium messages across many servers.</td><td><code>Tree</code></td></tr>
+        <tr><td><b>In-switch</b></td><td>2</td><td>Systems with NVSwitch (NVLS) or SHARP InfiniBand switches.</td><td><code>NVLS</code>, <code>CollNet</code></td></tr>
+      </tbody>
+    </table></div>
+    <p>You don't have to choose. NCCL measures the system and picks the best plan for each message size by itself.</p>
+  </div>
+</section>
+
+<section id="paths">
+  <div class="col">
+    <h2>11. How NCCL picks the road</h2>
+    <p>At start-up, NCCL builds a map of the machine. For every pair of GPUs it asks a few simple questions, then picks the best road. Choose a situation:</p>
+  </div>
+  <figure class="fig wide" id="fig-decide">
+    <div class="fig-head"><span class="fig-no">Diagram 9</span><h3>NCCL's road-picking questions</h3></div>
+    <div class="scen" role="group" aria-label="Choose a situation"></div>
+    <ol class="checks"></ol>
+    <div class="result"></div>
+  </figure>
+  <div class="col">
+    <h3 style="margin-top:1.6em">Three more ideas that make NCCL fast</h3>
+    <p><b>Channels (more lanes).</b> NCCL does not run just one ring. It runs several at once, called <b>channels</b>. Each channel takes part of the data, uses some of the GPU's cores, and can use a different NIC. More channels means more lanes on the motorway.</p>
+    <p><b>Protocols (how parcels are packed).</b> NCCL has three ways to pack data:</p>
+    <ul>
+      <li><b>LL</b> (Low Latency): tiny packets with a built-in "ready" flag. Very quick to start, but half the space is used by flags. Good for small messages.</li>
+      <li><b>LL128</b>: bigger 128-byte packets, almost all data. Fast and efficient, mainly over NVLink.</li>
+      <li><b>Simple</b>: large blocks with a separate "ready" signal. Best bandwidth for big messages.</li>
+    </ul>
+    <p><b>PXN and rails.</b> In big AI clusters, GPU 0 of every server connects to the same group of switches, GPU 1 to another group, and so on. These groups are called <b>rails</b>. If GPU 3 needs to send to a GPU on a different rail, NCCL can first hop over NVLink to the GPU that sits next to the right NIC, then go out on the network. This trick is called <b>PXN</b> (PCI × NVLink). It keeps traffic on the fast, short paths.</p>
+  </div>
+</section>
+
+<section id="try">
+  <div class="col">
+    <h2>12. Try it yourself</h2>
+    <p>NVIDIA provides a free test kit called <b>nccl-tests</b>. It is the first thing to run on any new GPU server or cluster.</p>
+<pre><span class="c"># build the tests</span>
+git clone https://github.com/NVIDIA/nccl-tests.git
+cd nccl-tests && make
+
+<span class="c"># one server, 8 GPUs: AllReduce from 8 bytes up to 8 GB</span>
+<span class="h">./build/all_reduce_perf -b 8 -e 8G -f 2 -g 8</span>
+
+<span class="c"># many servers with MPI (build with: make MPI=1)</span>
+<span class="h">mpirun -np 16 -N 8 ./build/all_reduce_perf -b 8 -e 8G -f 2 -g 1</span></pre>
+    <p>The output has two speed columns. They confuse many people, so here is the simple version:</p>
+    <ul>
+      <li><b>algbw</b> (algorithm bandwidth) = data size ÷ time. Easy, but it changes with the number of GPUs.</li>
+      <li><b>busbw</b> (bus bandwidth) = algbw × 2(N − 1)/N for AllReduce. This is the number to <b>compare with your hardware's link speed</b>. If busbw is close to the link speed, your system is healthy.</li>
+    </ul>
+    <p>To see which roads NCCL picked, turn on logging:</p>
+<pre><span class="h">NCCL_DEBUG=INFO</span> ./build/all_reduce_perf -b 1G -e 1G -g 8
+
+<span class="c"># look for lines like these:</span>
+NCCL INFO Channel 00/16 :    0   1   2   3   4   5   6   7
+NCCL INFO Channel 00/0 : 0[0] -> 1[1] via <span class="y">P2P/CUMEM</span>
+NCCL INFO NET/IB : Using [0]mlx5_0:1/IB [1]mlx5_1:1/IB ...
+NCCL INFO Channel 00/0 : 8[0] -> 0[0] [receive] via <span class="y">NET/IB/0/GDRDMA</span></pre>
+    <p><code>P2P</code> means direct GPU to GPU (NVLink or PCIe). <code>NET/IB</code> means RDMA over InfiniBand or RoCE. <b><code>GDRDMA</code> means GPUDirect RDMA is on</b>. If you see <code>NET/Socket</code> on a cluster that has RDMA NICs, something is set up wrong.</p>
+  </div>
+</section>
+
+<section id="cheat">
+  <div class="col">
+    <h2>13. Cheat sheet</h2>
+    <p>NCCL is controlled with environment variables. These are the ones you will meet first. Change them for testing and troubleshooting. In normal use, NCCL's own choices are usually best.</p>
+    <div class="tbl"><table>
+      <thead><tr><th>Variable</th><th>What it does</th></tr></thead>
+      <tbody>
+        <tr><td><code>NCCL_DEBUG=INFO</code></td><td>Prints what NCCL found and which roads it chose.</td></tr>
+        <tr><td><code>NCCL_DEBUG_SUBSYS=INIT,NET</code></td><td>Only show some parts of the log (start-up, network...).</td></tr>
+        <tr><td><code>NCCL_IB_HCA=mlx5_0,mlx5_1</code></td><td>Which RDMA network cards NCCL may use.</td></tr>
+        <tr><td><code>NCCL_SOCKET_IFNAME=eth0</code></td><td>Which normal network port to use for start-up and for TCP.</td></tr>
+        <tr><td><code>NCCL_IB_GID_INDEX=3</code></td><td>For RoCE: which address entry to use (often RoCE v2).</td></tr>
+        <tr><td><code>NCCL_NET_GDR_LEVEL</code></td><td>How "far apart" a GPU and NIC can be and still use GPUDirect RDMA.</td></tr>
+        <tr><td><code>NCCL_P2P_DISABLE=1</code></td><td>Turns off direct GPU-to-GPU. Useful only to test if P2P is the problem.</td></tr>
+        <tr><td><code>NCCL_ALGO=Ring</code></td><td>Forces an algorithm (Ring, Tree, NVLS...). For testing.</td></tr>
+        <tr><td><code>NCCL_PROTO=Simple</code></td><td>Forces a protocol (LL, LL128, Simple). For testing.</td></tr>
+      </tbody>
+    </table></div>
+
+    <h2>Key takeaways</h2>
+    <ol class="takeaways">
+      <li><span>AI training is a team sport. GPUs must share results after every step, so the network is part of the computer.</span></li>
+      <li><span>Every extra copy and every trip through the CPU costs time. The best paths have no stops.</span></li>
+      <li><span>Inside a server, NVLink and NVSwitch are the motorway. PCIe is the side road.</span></li>
+      <li><span>Between servers, RDMA removes CPU copies, and GPUDirect RDMA removes system memory too.</span></li>
+      <li><span>NCCL finds the roads, picks the plan and moves the data. You rarely call it directly.</span></li>
+      <li><span>Learn the six collectives. AllReduce is the star, and it is just ReduceScatter + AllGather.</span></li>
+      <li><span>Ring is best for big messages, tree for small ones at scale, and in-switch reduction beats both when you have it.</span></li>
+      <li><span>Test with nccl-tests, read busbw, and check the log for <code>GDRDMA</code>.</span></li>
+    </ol>
+  </div>
+</section>
+</main>
+
+<section id="book" class="col" style="margin-top:3em">
+  <div style="background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:24px 24px 20px">
+    <div class="kicker">Go deeper</div>
+    <h2 style="margin-top:.3em">NCP-AIN Certification Guide</h2>
+    <p style="color:var(--muted)">NVIDIA AI Networking with Spectrum-X and InfiniBand · by Vakeesan Thevarajah (CCIE #43898)</p>
+    <p>This post covers one slice of AI networking. The book covers the whole NCP-AIN blueprint: NCCL and rail-optimised designs, RDMA and RoCEv2, lossless Ethernet, Spectrum-X, InfiniBand and UFM, Kubernetes, troubleshooting with nccl-tests and automation. It includes about 1,000 practice questions and three timed mock exams.</p>
+    <p style="display:flex;flex-wrap:wrap;gap:8px 16px;margin:0">
+      <a href="https://leanpub.com/nvidiancp-aincertificationguide" target="_blank" rel="noopener"><b>Leanpub ebook</b></a>
+      <a href="https://www.amazon.co.uk/dp/B0HLMP7R9Q" target="_blank" rel="noopener">Kindle</a>
+      <a href="https://www.amazon.co.uk/dp/1065446403" target="_blank" rel="noopener">Paperback Vol I</a>
+      <a href="https://amzn.eu/d/07kTB52M" target="_blank" rel="noopener">Paperback Vol II</a>
+      <a href="../../labs/">Free hands-on labs</a>
+    </p>
+  </div>
+</section>
+
+<footer class="col">
+  <p>Speeds are approximate per-direction peaks: PCIe Gen5 x16 ≈ 64 GB/s, NVLink 4 (H100) ≈ 450 GB/s, NVLink 5 (B200) ≈ 900 GB/s, a 400 Gb/s NIC ≈ 50 GB/s. Real results depend on the system.</p>
+  <p>Further reading: <a href="https://docs.nvidia.com/deeplearning/nccl/user-guide/docs/index.html" target="_blank" rel="noopener">NCCL User Guide</a> · <a href="https://github.com/NVIDIA/nccl-tests" target="_blank" rel="noopener">nccl-tests on GitHub</a> · <a href="https://docs.nvidia.com/cuda/gpudirect-rdma/" target="_blank" rel="noopener">GPUDirect RDMA docs</a></p>
+</footer>
+</div>
+
+<script>
+(()=>{
+const NS='http://www.w3.org/2000/svg';
+const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const G=i=>`var(--g${i})`, SUM='url(#sumGrad)';
+const ease=u=>u<.5?2*u*u:1-Math.pow(-2*u+2,2)/2;
+function E(tag,attrs={},parent){const e=document.createElementNS(NS,tag);for(const k in attrs){if(k==='text')e.textContent=attrs[k];else e.setAttribute(k,attrs[k]);}if(parent)parent.appendChild(e);return e;}
+function txt(p,x,y,s,cls,anchor='middle'){return E('text',{x,y,class:cls,'text-anchor':anchor,text:s},p);}
+function svgBase(host,w,h,minW=560){host.innerHTML='';const svg=E('svg',{viewBox:`0 0 ${w} ${h}`,class:'dia',role:'img'});svg.style.minWidth=minW+'px';host.appendChild(svg);
+  return {svg,wires:E('g',{},svg),nodes:E('g',{},svg),tokens:E('g',{},svg),top:E('g',{},svg)};}
+function node(L,o){const g=E('g',{class:'node'},L.nodes);const rx=o.rx??12;
+  E('rect',{x:o.x,y:o.y,width:o.w,height:o.h,rx,class:'under'},g);
+  E('rect',{x:o.x,y:o.y,width:o.w,height:o.h,rx,class:'nb',style:`fill:${o.c};stroke:${o.c}`},g);
+  const cx=o.x+o.w/2,cy=o.y+o.h/2;
+  if(o.sub){txt(g,cx,cy-3,o.label,'lbl');txt(g,cx,cy+15,o.sub,'sub');}else txt(g,cx,cy+5,o.label,'lbl');
+  return g;}
+function wire(L,pts,o={}){const a={points:pts.map(p=>p.join(',')).join(' '),class:'wire',style:`stroke:${o.c||'var(--wire)'};stroke-width:${o.w||3}`+(o.dash?`;stroke-dasharray:${o.dash}`:'')+(o.op?`;stroke-opacity:${o.op}`:'')};
+  if(o.arrow)a['marker-end']='url(#arr)';if(o.mid)a['marker-mid']='url(#arr)';return E('polyline',a,L.wires);}
+function tok(L,color,r=8){const g=E('g',{},L.tokens);E('circle',{r:r+7,style:`fill:${color};opacity:.22`},g);E('circle',{r,class:'tk',style:`fill:${color}`},g);g.style.display='none';return g;}
+function along(pts,f){let tot=0;const seg=[];for(let i=1;i<pts.length;i++){const d=Math.hypot(pts[i][0]-pts[i-1][0],pts[i][1]-pts[i-1][1]);seg.push(d);tot+=d;}
+  if(!tot)return pts[0];let r=f*tot;for(let i=0;i<seg.length;i++){if(r<=seg[i]||i===seg.length-1){const u=seg[i]?Math.min(1,r/seg[i]):1;return [pts[i][0]+(pts[i+1][0]-pts[i][0])*u,pts[i][1]+(pts[i+1][1]-pts[i][1])*u];}r-=seg[i];}return pts[pts.length-1];}
+
+/* ---------- animation loop ---------- */
+const anims=[];
+function register(fig,anim){anims.push(anim);
+  if('IntersectionObserver' in window){new IntersectionObserver(es=>es.forEach(e=>anim.visible=e.isIntersecting),{threshold:.12}).observe(fig);}else anim.visible=true;}
+let last=performance.now();
+function frame(now){const dt=Math.min(50,now-last);last=now;
+  for(const a of anims){if(!a.playing||!a.visible)continue;a.t+=dt;
+    if(a.target!=null&&a.t>=a.target){a.t=a.target;a.target=null;a.playing=false;a.sync&&a.sync();}
+    else if(a.t>a.period){if(a.loop)a.t=0;else{a.t=a.period;a.playing=false;a.sync&&a.sync();}}
+    a.update(a.t);}
+  requestAnimationFrame(frame);}
+requestAnimationFrame(frame);
+function bindCtrl(fig,anim){const pb=fig.querySelector('[data-act=play]'),rb=fig.querySelector('[data-act=replay]');
+  anim.sync=()=>{if(pb){pb.textContent=anim.playing?'Pause':'Play';pb.setAttribute('aria-pressed',String(anim.playing));}};
+  pb&&pb.addEventListener('click',()=>{if(!anim.playing&&anim.t>=anim.period)anim.t=0;anim.playing=!anim.playing;anim.sync();});
+  rb&&rb.addEventListener('click',()=>{anim.t=0;anim.target=null;anim.playing=true;anim.update(0);anim.sync();});
+  anim.sync();}
+
+/* ---------- flow diagrams ---------- */
+function flowFig(id,cfg){
+  const fig=document.getElementById(id),stage=fig.querySelector('.stage'),stepsEl=fig.querySelector('.steps'),modesEl=fig.querySelector('.modes'),note=fig.querySelector('.note');
+  const anim={t:0,playing:!RM,visible:false,loop:true,period:1000};
+  let toks=[],events=[],lis=[],lastStep=-1,leadEnd=0;
+  const names=Object.keys(cfg.modes);
+  function load(name){
+    const L=svgBase(stage,cfg.w,cfg.h,cfg.minW);
+    const spec=cfg.modes[name](L);
+    toks=spec.tokens.map(tk=>{const g=tok(L,tk.color,tk.r);let t=tk.start||0,p=tk.from;
+      const legs=tk.legs.map(l=>{const pts=[p,...(Array.isArray(l.to[0])?l.to:[l.to])];const o={pts,t0:t,t1:t+l.dur,step:l.step};t+=l.dur;p=pts[pts.length-1];return o;});
+      return {g,legs,start:tk.start||0,end:t,lead:!!tk.lead};});
+    events=spec.events||[];
+    anim.period=Math.max(...toks.map(k=>k.end),...events.map(e=>e.t1),0)+(spec.tail??1200);
+    const leads=toks.filter(k=>k.lead).sort((a,b)=>b.end-a.end);
+    lastStep=leads.length?leads[0].legs[leads[0].legs.length-1].step:-1;leadEnd=leads.length?leads[0].end:0;
+    stepsEl.innerHTML='';lis=spec.steps.map(s=>{const li=document.createElement('li');li.innerHTML=s;stepsEl.appendChild(li);return li;});
+    if(note)note.innerHTML=spec.note||'';
+    anim.t=0;anim.update(0);
+  }
+  anim.update=t=>{let active=-1;
+    for(const k of toks){const vis=t>=k.start&&t<=k.end+120;k.g.style.display=vis?'':'none';
+      let leg=k.legs[k.legs.length-1],u=1;for(const l of k.legs){if(t<=l.t1){leg=l;u=(t-l.t0)/((l.t1-l.t0)||1);break;}}
+      if(k.lead&&t>=k.start&&t<=k.end&&leg.step!=null)active=leg.step;
+      if(!vis)continue;u=Math.max(0,Math.min(1,u));const [x,y]=along(leg.pts,ease(u));k.g.setAttribute('transform',`translate(${x.toFixed(1)},${y.toFixed(1)})`);}
+    if(active<0&&t>leadEnd&&leadEnd>0)active=lastStep;
+    for(const e of events){const on=events.some(f=>f.el===e.el&&f.cls===e.cls&&t>=f.t0&&t<=f.t1);e.el.classList.toggle(e.cls,on);}
+    lis.forEach((li,i)=>li.classList.toggle('on',i===active));};
+  if(names.length>1&&modesEl){names.forEach((n,i)=>{const b=document.createElement('button');b.textContent=n;b.setAttribute('aria-pressed',String(i===0));
+    b.addEventListener('click',()=>{modesEl.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));load(n);if(!RM)anim.playing=true;anim.sync&&anim.sync();});modesEl.appendChild(b);});}
+  load(names[0]);register(fig,anim);bindCtrl(fig,anim);
+}
+
+/* Diagram 1: why */
+flowFig('fig-why',{w:720,h:380,modes:{main:L=>{
+  node(L,{x:230,y:14,w:260,h:52,label:'Training data',sub:'one big batch',c:'var(--accent)'});
+  const comb=node(L,{x:230,y:304,w:260,h:56,label:'Add up the notes',sub:'AllReduce',c:'var(--nvs)'});
+  const cx=[99,273,447,621],gp=[];
+  for(let i=0;i<4;i++){wire(L,[[360,66],[360,104],[cx[i],104],[cx[i],150]]);wire(L,[[cx[i],214],[cx[i],262],[360,262],[360,304]]);
+    gp.push(node(L,{x:24+i*174,y:150,w:150,h:64,label:`GPU ${i}`,sub:'copy of the model',c:G(i)}));}
+  const tokens=[],events=[];
+  for(let i=0;i<4;i++){
+    tokens.push({color:G(i),from:[360,40],lead:i===0,legs:[{to:[[360,104],[cx[i],104],[cx[i],182]],dur:1100,step:0},{to:[cx[i],182],dur:1000,step:1},{to:[[cx[i],262],[360,262],[360,332]],dur:1100,step:2},{to:[360,332],dur:500,step:2}]});
+    tokens.push({color:SUM,r:9,from:[360,332],start:3700,lead:i===0,legs:[{to:[[360,262],[cx[i],262],[cx[i],182]],dur:1100,step:3},{to:[cx[i],182],dur:900,step:3}]});
+    events.push({el:gp[i],cls:'busy',t0:1100,t1:2100});}
+  events.push({el:comb,cls:'flash',t0:3200,t1:3700});
+  return {tokens,events,steps:[
+    '<b>Split.</b> The big batch of data is cut into slices. Each GPU gets its own slice.',
+    '<b>Learn.</b> Each GPU runs its slice through the model and writes "notes" on how to improve it. These notes are called <em>gradients</em>.',
+    '<b>Share.</b> The GPUs send their notes and add them all up.',
+    '<b>Update.</b> Every GPU gets the same total (rainbow dot), so every copy of the model stays exactly the same.']};
+}}});
+
+/* Diagram 2: PCIe */
+function pcieBase(L){
+  wire(L,[[360,76],[360,140]],{w:4});wire(L,[[470,48],[500,48]],{w:4});
+  wire(L,[[140,250],[140,162],[200,162]],{w:4});wire(L,[[520,162],[580,162],[580,250]],{w:4});
+  const cpu=node(L,{x:250,y:20,w:220,h:56,label:'CPU',sub:"the server's main chip",c:'var(--cpu)'});
+  const ram=node(L,{x:500,y:20,w:196,h:56,label:'System memory',sub:'RAM',c:'var(--mem)'});
+  node(L,{x:200,y:140,w:320,h:44,label:'PCIe switch',c:'var(--pcie)'});
+  node(L,{x:40,y:250,w:200,h:64,label:'GPU 0',sub:'has the data',c:G(0)});
+  node(L,{x:480,y:250,w:200,h:64,label:'GPU 1',sub:'needs the data',c:G(3)});
+  return {cpu,ram};}
+flowFig('fig-pcie',{w:720,h:340,modes:{
+  'Through the CPU (old way)':L=>{const n=pcieBase(L);return {
+    tokens:[{color:G(0),from:[140,282],lead:true,legs:[{to:[[140,162],[360,162],[360,48],[598,48]],dur:1900,step:0},{to:[598,48],dur:1000,step:1},{to:[[360,48],[360,162],[580,162],[580,282]],dur:1900,step:2},{to:[580,282],dur:900,step:3}]}],
+    events:[{el:n.ram,cls:'busy',t0:1900,t1:2900},{el:n.cpu,cls:'busy',t0:1900,t1:2900}],
+    steps:['GPU 0 copies the data <b>up</b> to system memory (RAM).','The data waits in RAM. The CPU has to manage this copy.','It is copied again, <b>down</b> to GPU 1.','Two trips and an extra stop. It works, but it is slow and keeps the CPU busy.']};},
+  'Direct (P2P)':L=>{pcieBase(L);return {
+    tokens:[{color:G(0),from:[140,282],lead:true,legs:[{to:[[140,162],[580,162],[580,282]],dur:1400,step:0},{to:[580,282],dur:900,step:1}]},
+      {color:G(0),from:[140,282],start:350,legs:[{to:[[140,162],[580,162],[580,282]],dur:1400}]},
+      {color:G(0),from:[140,282],start:700,legs:[{to:[[140,162],[580,162],[580,282]],dur:1400}]}],
+    steps:["GPU 0 writes straight into GPU 1's memory, through the PCIe switch.","No stop in RAM and no work for the CPU. This is called <b>peer-to-peer (P2P)</b>."]};}
+}});
+
+/* Diagram 3: NVLink */
+const ncx=i=>96+176*(i%4), ncy=i=>i<4?50:330;
+function eightBase(L,mode){
+  const nv=mode==='nv';
+  for(let i=0;i<8;i++){const x=ncx(i);if(i<4)wire(L,[[x,80],[x,165]],nv?{w:9,c:'var(--nvs)',op:.55}:{w:3,dash:'4 5'});else wire(L,[[x,300],[x,215]],nv?{w:9,c:'var(--nvs)',op:.55}:{w:3,dash:'4 5'});}
+  node(L,{x:20,y:165,w:680,h:50,label:nv?'NVSwitch':'PCIe switch',sub:nv?'joins every GPU to every GPU at full speed':'one narrow road that everyone shares',c:nv?'var(--nvs)':'var(--pcie)'});
+  for(let i=0;i<8;i++)node(L,{x:20+176*(i%4),y:i<4?20:300,w:152,h:60,label:`GPU ${i}`,c:G(i)});
+  if(nv)txt(L.top,ncx(0)+12,128,'NVLink','small','start');
+}
+const hop8=(i,j)=>[[ncx(i),190],[ncx(j),190],[ncx(j),ncy(j)]];
+flowFig('fig-nvlink',{w:720,h:380,modes:{
+  'NVLink + NVSwitch':L=>{eightBase(L,'nv');const tokens=[];
+    const waves=[i=>(i+4)%8,i=>i<4?(i+2)%4:4+((i-2)%4),i=>(i+5)%8];
+    waves.forEach((f,w)=>{for(let i=0;i<8;i++)tokens.push({color:G(i),from:[ncx(i),ncy(i)],start:w*1250,lead:i===0,legs:[{to:hop8(i,f(i)),dur:950,step:w?1:0},{to:[ncx(f(i)),ncy(f(i))],dur:300,step:w?1:0}]});});
+    return {tokens,steps:['All 8 GPUs send <b>at the same time</b>. Each one has its own wide lane into the switch.','Any GPU reaches any other GPU in <b>one hop</b>. Nobody has to queue.']};},
+  'PCIe only':L=>{eightBase(L,'pcie');const tokens=[];
+    for(let i=0;i<8;i++){const j=(i+4)%8;tokens.push({color:G(i),from:[ncx(i),ncy(i)],start:i*900,lead:true,legs:[{to:hop8(i,j),dur:1700,step:0}]});}
+    return {tokens,steps:['GPUs share one narrow road, so data moves slowly and often waits its turn.']};}
+}});
+
+/* Diagram 4: between servers */
+function netBase(L){
+  E('rect',{x:10,y:10,width:310,height:318,rx:16,class:'srv'},L.wires);E('rect',{x:400,y:10,width:310,height:318,rx:16,class:'srv'},L.wires);
+  txt(L.top,24,34,'SERVER A','srvl','start');txt(L.top,414,34,'SERVER B','srvl','start');
+  [[85,95,85,150],[245,245,245,180],[85,180,85,245],[635,95,635,150],[475,245,475,180],[635,180,635,245]].forEach(a=>wire(L,[[a[0],a[1]],[a[2],a[3]]],{w:4}));
+  wire(L,[[140,72],[160,72]],{w:4});wire(L,[[580,72],[560,72]],{w:4});
+  wire(L,[[300,275],[330,275]],{w:5,c:'var(--nic)'});wire(L,[[390,275],[420,275]],{w:5,c:'var(--nic)'});
+  const cpuA=node(L,{x:30,y:50,w:110,h:45,label:'CPU',c:'var(--cpu)'}),ramA=node(L,{x:160,y:50,w:140,h:45,label:'RAM',c:'var(--mem)'});
+  node(L,{x:30,y:150,w:270,h:30,label:'PCIe switch',c:'var(--pcie)',rx:9});
+  node(L,{x:30,y:245,w:110,h:60,label:'GPU',sub:'HBM memory',c:G(0)});node(L,{x:190,y:245,w:110,h:60,label:'NIC',sub:'network card',c:'var(--nic)'});
+  const cpuB=node(L,{x:580,y:50,w:110,h:45,label:'CPU',c:'var(--cpu)'}),ramB=node(L,{x:420,y:50,w:140,h:45,label:'RAM',c:'var(--mem)'});
+  node(L,{x:420,y:150,w:270,h:30,label:'PCIe switch',c:'var(--pcie)',rx:9});
+  node(L,{x:580,y:245,w:110,h:60,label:'GPU',sub:'HBM memory',c:G(3)});node(L,{x:420,y:245,w:110,h:60,label:'NIC',sub:'network card',c:'var(--nic)'});
+  node(L,{x:330,y:257,w:60,h:36,label:'Switch',c:'var(--nic)',rx:8});
+  txt(L.top,360,318,'network','small');
+  return {cpuA,ramA,cpuB,ramB};}
+flowFig('fig-net',{w:720,h:340,modes:{
+  'Normal network (TCP)':L=>{const n=netBase(L);return {
+    tokens:[{color:G(0),from:[85,275],lead:true,legs:[
+      {to:[[85,165],[85,72],[230,72]],dur:1300,step:0},{to:[[85,72],[230,72]],dur:1200,step:1},
+      {to:[[85,72],[85,165],[245,165],[245,275]],dur:1300,step:2},{to:[[360,275],[475,275]],dur:800,step:3},
+      {to:[[475,165],[635,165],[635,72],[490,72]],dur:1300,step:4},{to:[[635,72],[490,72]],dur:1200,step:4},
+      {to:[[635,72],[635,165],[635,275]],dur:1100,step:5}]}],
+    events:[{el:n.cpuA,cls:'busy',t0:1300,t1:2500},{el:n.cpuB,cls:'busy',t0:5900,t1:7100},{el:n.ramA,cls:'busy',t0:1300,t1:2500},{el:n.ramB,cls:'busy',t0:5900,t1:7100}],
+    note:'Trip time in this animation: about 8 seconds. Watch the CPUs flash: they are doing copy work.',
+    steps:["GPU data is copied into the server's RAM.","The CPU copies it again into the operating system's network buffers.",'The NIC picks it up from RAM.','It travels across the network.','On Server B the same work happens in reverse: into RAM, then the CPU copies it again...','...and finally into GPU memory. Many copies, lots of CPU work.']};},
+  'RDMA':L=>{netBase(L);return {
+    tokens:[{color:G(0),from:[85,275],lead:true,legs:[
+      {to:[[85,165],[85,72],[230,72]],dur:1150,step:0},{to:[[85,72],[85,165],[245,165],[245,275]],dur:1150,step:1},
+      {to:[[360,275],[475,275]],dur:800,step:2},{to:[[475,165],[635,165],[635,72],[490,72]],dur:1150,step:3},{to:[[635,72],[635,165],[635,275]],dur:1000,step:3}]}],
+    note:'Trip time in this animation: about 5 seconds. The CPUs stay calm.',
+    steps:['GPU data is still copied into RAM first (a "bounce buffer").','The NIC reads RAM by itself. The CPU copies nothing. This is <b>RDMA</b>.','It crosses the network over InfiniBand, or Ethernet using RoCE.',"Server B's NIC writes into RAM, then it is copied to the GPU."]};},
+  'GPUDirect RDMA':L=>{netBase(L);return {
+    tokens:[{color:G(0),from:[85,275],lead:true,legs:[{to:[[85,165],[245,165],[245,275]],dur:950,step:0},{to:[[360,275],[475,275]],dur:800,step:1},{to:[[475,165],[635,165],[635,275]],dur:950,step:2},{to:[635,275],dur:600,step:2}]}],
+    note:'Trip time in this animation: about 3 seconds. CPU and RAM are not touched at all.',
+    steps:['The NIC reads <b>straight from GPU memory</b>, through the PCIe switch.','It crosses the network.',"Server B's NIC writes straight into GPU memory. This is <b>GPUDirect RDMA</b>."]};}
+}});
+
+/* Diagram 5: race */
+(()=>{const fig=document.getElementById('fig-race'),box=fig.querySelector('.race');
+  const lanes=[['PCIe Gen4 x16','≈ 32 GB/s',32,4],['400 Gb/s NIC','InfiniBand / RoCE · ≈ 50 GB/s',50,6],['PCIe Gen5 x16','≈ 64 GB/s',64,2],['800 Gb/s NIC','≈ 100 GB/s',100,7],['NVLink 4 (H100)','≈ 450 GB/s',450,3],['NVLink 5 (B200)','≈ 900 GB/s',900,5]];
+  const SLOW=20;const els=lanes.map(([n,s,bw,c])=>{const ms=10/bw*1000;const d=document.createElement('div');d.className='lane';
+    d.innerHTML=`<div class="nm">${n}<small>${s}</small></div><div class="track"><div class="fill" style="background:var(--g${c})"></div></div><div class="tm">${ms<100?ms.toFixed(0):Math.round(ms)} ms</div>`;
+    box.appendChild(d);return {d,fill:d.querySelector('.fill'),dur:ms*SLOW};});
+  const anim={t:0,playing:!RM,visible:false,loop:true,period:Math.max(...els.map(e=>e.dur))+2200};
+  anim.update=t=>els.forEach(e=>{const f=Math.min(1,t/e.dur);e.fill.style.width=(f*100)+'%';e.d.classList.toggle('done',f>=1);});
+  anim.update(RM?anim.period:0);register(fig,anim);bindCtrl(fig,anim);})();
+
+/* ---------- phased chunk diagrams ---------- */
+const clipIds=new Set();
+function clipFor(w,h){const id=`clp${w}x${h}`;if(!clipIds.has(id)){clipIds.add(id);const cp=E('clipPath',{id,clipPathUnits:'userSpaceOnUse'},document.getElementById('gdefs'));E('rect',{x:0,y:0,width:w,height:h,rx:8},cp);}return id;}
+function chunkG(parent,ch,w,h,label){const g=E('g',{},parent);
+  if(!ch){E('rect',{x:0,y:0,width:w,height:h,rx:8,class:'slot-empty'},g);return g;}
+  const inner=E('g',{'clip-path':`url(#${clipFor(w,h)})`},g);const cs=[...ch.c].sort((a,b)=>a-b),n=cs.length;
+  cs.forEach((c,i)=>E('rect',{x:i*w/n,y:0,width:w/n+.6,height:h,style:`fill:var(--g${c})`},inner));
+  E('rect',{x:0,y:0,width:w,height:h,rx:8,class:'slot-edge'},g);
+  txt(g,w/2,h/2+5,label(ch),'ck');return g;}
+function Phased(stage,cfg,anim){
+  const L=svgBase(stage,cfg.w,cfg.h,cfg.minW||560);cfg.frame(L);
+  const slots=E('g',{},L.nodes),fly=L.tokens;
+  const clone=s=>s.map(r=>r.map(c=>c?{...c,c:[...c.c]}:null));
+  const states=[cfg.init()];
+  cfg.phases.forEach(p=>{const s=states[states.length-1],n=clone(s);
+    p.moves.forEach(m=>{const src=s[m.from[0]][m.from[1]];if(!src)return;const d=n[m.to[0]][m.to[1]];
+      n[m.to[0]][m.to[1]]=(m.op==='add'&&d)?{...d,c:[...new Set([...d.c,...src.c])]}:{...src,c:[...src.c]};});
+    if(p.after)p.after(n);states.push(n);});
+  const PH=cfg.PH,MV=cfg.MV,REST=PH-MV,N=cfg.phases.length;let shown=-1,flyP=null,flyers=[];
+  function draw(i){if(shown===i)return;shown=i;slots.innerHTML='';const st=states[i];
+    for(let g=0;g<st.length;g++)for(let k=0;k<st[g].length;k++){const s=cfg.slot(g,k);chunkG(slots,st[g][k],s.w,s.h,cfg.label).setAttribute('transform',`translate(${s.x},${s.y})`);}}
+  function setFly(p){fly.innerHTML='';flyP=p;flyers=p==null?[]:cfg.phases[p].moves.map(m=>{const src=states[p][m.from[0]][m.from[1]];const a=cfg.slot(...m.from),b=cfg.slot(...m.to);const g=chunkG(fly,src,a.w,a.h,cfg.label);g.classList.add('flyer');return {g,a,b};});}
+  anim.period=N*PH+(cfg.hold||0);
+  anim.update=t=>{const p=Math.floor(t/PH),local=t-p*PH;
+    if(p>=N){draw(N);if(flyP!==null)setFly(null);cfg.onStep&&cfg.onStep(N,false);return;}
+    if(local<REST){draw(p);if(flyP!==null)setFly(null);cfg.onStep&&cfg.onStep(p,false);return;}
+    draw(p);if(flyP!==p)setFly(p);const u=ease((local-REST)/MV),lift=Math.sin(Math.PI*u)*(cfg.lift||26);
+    flyers.forEach(f=>{const dx=f.b.x-f.a.x,dy=f.b.y-f.a.y,len=Math.hypot(dx,dy)||1;const x=f.a.x+dx*u+(dy/len)*lift,y=f.a.y+dy*u+(-dx/len)*lift;f.g.setAttribute('transform',`translate(${x.toFixed(1)},${y.toFixed(1)})`);});
+    cfg.onStep&&cfg.onStep(p,true);};
+  return {N,PH};}
+
+/* Diagram 6: collectives */
+(()=>{const fig=document.getElementById('fig-coll'),stage=fig.querySelector('.stage'),tabs=fig.querySelector('.tabs'),info=document.getElementById('coll-info'),badge=document.getElementById('coll-badge');
+  const R=[0,1,2,3],ALL=f=>R.map(g=>R.map(k=>f(g,k))),own=()=>ALL((g,k)=>({k,c:[g]}));
+  const flat=f=>{const o=[];R.forEach(g=>R.forEach(k=>{const m=f(g,k);if(m)o.push(m);}));return o;};
+  const lab=ch=>ch.dst!=null?`${ch.c[0]} → ${ch.dst}`:(ch.c.length>1?`sum ${ch.k+1}`:`piece ${ch.k+1}`);
+  const toAll=flat((g,k)=>g>0?{from:[0,k],to:[g,k],op:'copy'}:null),toZero=flat((g,k)=>g>0?{from:[g,k],to:[0,k],op:'add'}:null);
+  const C={
+    'AllReduce':{init:own,phases:[{moves:toZero},{moves:toAll}],one:'Add up everyone\'s numbers, and give the total to <b>everyone</b>.',like:'A group dinner bill. Everyone adds their part, and everyone learns the final total.',use:'The star of AI training. Used after every step to share gradients (PyTorch DDP).',note:'This shows the idea. NCCL does it smarter, with a ring or tree, so GPU 0 is not a bottleneck.'},
+    'Broadcast':{init:()=>ALL((g,k)=>g===0?{k,c:[0]}:null),phases:[{moves:toAll}],one:'One GPU has something. <b>Everyone gets a copy.</b>',like:'A teacher hands the same worksheet to the whole class.',use:'Sending the starting model weights from one GPU to all the others.'},
+    'Reduce':{init:own,phases:[{moves:toZero}],one:'Add up everyone\'s numbers and give the total to <b>one</b> GPU.',like:'Everyone hands in their score, and one person writes the class total.',use:'Collecting a result (like a total loss) on one GPU.'},
+    'AllGather':{init:()=>ALL((g,k)=>g===k?{k,c:[g]}:null),phases:[{moves:flat((g,h)=>g!==h?{from:[g,g],to:[h,g],op:'copy'}:null)}],one:'Each GPU has <b>one piece</b>. Everyone ends up with <b>all the pieces</b>.',like:'Four friends each wrote one page of notes. They photocopy so everyone has the full set.',use:'FSDP and ZeRO: gathering the model weights that are split across GPUs, just before they are needed.'},
+    'ReduceScatter':{init:own,phases:[{moves:flat((g,h)=>g!==h?{from:[h,g],to:[g,g],op:'add'}:null),after:n=>R.forEach(g=>R.forEach(k=>{if(g!==k)n[g][k]=null;}))}],one:'Add everything up, but each GPU keeps <b>only its own share</b> of the total.',like:'Four people split the job of counting votes: each one totals one region.',use:'FSDP and ZeRO: adding up gradients, where each GPU only needs its own slice.'},
+    'AllToAll':{init:()=>ALL((g,k)=>({k,c:[g],dst:k})),phases:[{moves:flat((g,k)=>g!==k?{from:[g,k],to:[k,g],op:'copy'}:null)}],one:'Every GPU sends a <b>different piece to every other GPU</b>.',like:'Sorting post: each sorter sends each letter to the right town.',use:'Mixture-of-Experts models: sending each token to the GPU that holds its "expert". Very heavy on the network.',lbl:'Label "0 → 2" means: from GPU 0, going to GPU 2.'}
+  };
+  const anim={t:0,playing:!RM,visible:false,loop:true,period:1};
+  function frame(L){for(let g=0;g<4;g++){const x=25+g*175;E('rect',{x,y:12,width:150,height:282,rx:14,class:'colbox',style:`fill:var(--g${g});stroke:var(--g${g})`},L.wires);txt(L.top,x+75,42,`GPU ${g}`,'lbl');}}
+  function load(name){const c=C[name];
+    Phased(stage,{w:720,h:306,PH:2300,MV:1300,hold:2600,lift:22,init:c.init,phases:c.phases,label:lab,frame,
+      slot:(g,k)=>({x:37+g*175,y:60+k*56,w:126,h:44}),
+      onStep:(p,mv)=>{const n=c.phases.length;badge.textContent=mv?'Moving…':(p>=n?'After':(p===0?'Before':'Halfway'));badge.className='badge'+(mv?' moving':(p>=n?' after':''));}},anim);
+    info.innerHTML=`<h4>${name}</h4><p class="one">${c.one}</p><dl><div><dt>Like</dt><dd>${c.like}</dd></div><div><dt>Used for</dt><dd>${c.use}</dd></div>${c.note?`<div><dt>Note</dt><dd>${c.note}</dd></div>`:''}${c.lbl?`<div><dt>Reading it</dt><dd>${c.lbl}</dd></div>`:''}</dl>`;
+    anim.t=0;anim.update(0);}
+  Object.keys(C).forEach((n,i)=>{const b=document.createElement('button');b.textContent=n;b.setAttribute('aria-pressed',String(i===0));
+    b.addEventListener('click',()=>{tabs.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));load(n);if(!RM)anim.playing=true;anim.sync&&anim.sync();});tabs.appendChild(b);});
+  load('AllReduce');register(fig,anim);bindCtrl(fig,anim);})();
+
+/* Diagram 7: ring stepper */
+(()=>{const fig=document.getElementById('fig-ring'),stage=fig.querySelector('.stage'),cnt=document.getElementById('ring-count'),tx=document.getElementById('ring-text'),meter=[...fig.querySelectorAll('.meter span')];
+  const N=4,pos=[[70,30],[430,30],[430,228],[70,228]],m=(a,b)=>((a%b)+b)%b,phases=[];
+  for(let s=0;s<N-1;s++)phases.push({moves:[0,1,2,3].map(r=>({from:[r,m(r-s,N)],to:[(r+1)%N,m(r-s,N)],op:'add'}))});
+  for(let s=0;s<N-1;s++)phases.push({moves:[0,1,2,3].map(r=>({from:[r,m(r+1-s,N)],to:[(r+1)%N,m(r+1-s,N)],op:'copy'}))});
+  const stateCap=['<b>Start.</b> Each GPU has its own numbers, cut into 4 pieces. The colours show whose numbers are inside each piece.',
+    'Each GPU now holds one piece with <b>two</b> colours: its own numbers plus its neighbour\'s.',
+    'Some pieces now hold <b>three</b> colours. The totals are growing as they go round.',
+    '<b>Halfway!</b> Each GPU holds one piece with all four colours: one finished total. This half is called <b>ReduceScatter</b>.',
+    'Each GPU now has two finished totals.','Three finished totals each. One more step.',
+    '<b>Done!</b> Every GPU has every total. This second half is called <b>AllGather</b>. Each GPU sent just 6 small pieces.'];
+  const phaseCap=s=>s<3?`<b>Share and add.</b> Every GPU sends one piece to its right-hand neighbour, who <b>adds</b> it to its own piece.`:`<b>Share the totals.</b> Every GPU passes a finished piece to its neighbour, who simply <b>copies</b> it.`;
+  const anim={t:0,playing:false,visible:false,loop:false,period:1,target:null};
+  const P=Phased(stage,{w:720,h:340,PH:1600,MV:1100,lift:30,phases,label:ch=>`${ch.k+1}`,
+    init:()=>[0,1,2,3].map(g=>[0,1,2,3].map(k=>({k,c:[g]}))),
+    frame:L=>{[[[290,76],[430,76]],[[540,122],[540,228]],[[430,274],[290,274]],[[180,228],[180,122]]].forEach(p=>wire(L,p,{w:3,arrow:true,c:'var(--muted)'}));
+      pos.forEach(([x,y],g)=>{E('rect',{x,y,width:220,height:92,rx:14,class:'colbox',style:`fill:var(--g${g});stroke:var(--g${g})`},L.wires);txt(L.top,x+14,y+26,`GPU ${g}`,'lbl','start');});
+      txt(L.top,360,180,'data moves clockwise','small');},
+    slot:(g,k)=>({x:pos[g][0]+14+k*50,y:pos[g][1]+40,w:42,h:38}),
+    onStep:(p,mv)=>{const done=mv?p:p;cnt.textContent=mv?`${p+1} / 6`:`${p} / 6`;tx.innerHTML=mv?phaseCap(p):stateCap[p];
+      meter.forEach((s,i)=>{s.className=(i<p||(mv&&i===p))?(i<3?'rs':'ag'):'';});}},anim);
+  anim.period=P.N*P.PH;anim.update(0);register(fig,anim);
+  const go=tgt=>{anim.target=tgt;anim.playing=true;};
+  fig.querySelector('[data-act=next]').addEventListener('click',()=>{const cur=Math.min(P.N,Math.floor(anim.t/P.PH+1e-6)+1);go(cur*P.PH);});
+  fig.querySelector('[data-act=prev]').addEventListener('click',()=>{const cur=Math.max(0,Math.ceil(anim.t/P.PH-1e-6)-1);anim.playing=false;anim.target=null;anim.t=cur*P.PH;anim.update(anim.t);});
+  fig.querySelector('[data-act=all]').addEventListener('click',()=>{if(anim.t>=anim.period)anim.t=0;go(anim.period);});
+  fig.querySelector('[data-act=reset]').addEventListener('click',()=>{anim.playing=false;anim.target=null;anim.t=0;anim.update(0);});
+  if(!RM){let started=false;new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting&&!started){started=true;setTimeout(()=>go(anim.period),600);}}),{threshold:.4}).observe(fig);}
+})();
+
+/* Diagram 8: ring vs tree vs switch */
+(()=>{
+  const RX=i=>360+250*Math.cos((-90+45*i)*Math.PI/180),RY=i=>170+118*Math.sin((-90+45*i)*Math.PI/180);
+  const TP=[[360,40],[200,120],[520,120],[110,200],[290,200],[430,200],[610,200],[110,280]];
+  const SX=i=>95+170*(i%4),SY=i=>i<4?52:288;
+  flowFig('fig-algo',{w:720,h:340,modes:{
+    'Ring':L=>{for(let i=0;i<8;i++){const j=(i+1)%8;wire(L,[[RX(i),RY(i)],[(RX(i)+RX(j))/2,(RY(i)+RY(j))/2],[RX(j),RY(j)]],{w:3,mid:true});}
+      for(let i=0;i<8;i++)node(L,{x:RX(i)-48,y:RY(i)-20,w:96,h:40,label:`GPU ${i}`,c:G(i)});
+      const tokens=[];for(let h=0;h<14;h++)for(let i=0;i<8;i++){const j=(i+1)%8;tokens.push({color:h<7?G(i):SUM,r:7,from:[RX(i),RY(i)],start:h*600,lead:i===0,legs:[{to:[RX(j),RY(j)],dur:450,step:h<7?0:1},{to:[RX(j),RY(j)],dur:150,step:h<7?0:1}]});}
+      txt(L.top,360,176,'14 steps','lbl');
+      return {tokens,steps:['<b>Share and add</b>: 7 hops round the ring.','<b>Share the totals</b>: 7 more hops. Every link is busy the whole time, but there are many steps.'],note:'Ring: 2 × (8 − 1) = 14 steps.'};},
+    'Tree':L=>{const par=[null,0,0,1,1,2,2,3];for(let i=1;i<8;i++)wire(L,[TP[i],TP[par[i]]],{w:3});
+      for(let i=0;i<8;i++)node(L,{x:TP[i][0]-48,y:TP[i][1]-20,w:96,h:40,label:`GPU ${i}`,c:G(i)});
+      const up=[[7],[3,4,5,6],[1,2]],tokens=[];
+      up.forEach((w,wi)=>w.forEach((i,n)=>tokens.push({color:wi===0?G(i):SUM,r:8,from:TP[i],start:wi*950,lead:n===0,legs:[{to:TP[par[i]],dur:700,step:0},{to:TP[par[i]],dur:250,step:0}]})));
+      const down=[[1,2],[3,4,5,6],[7]];
+      down.forEach((w,wi)=>w.forEach((i,n)=>tokens.push({color:SUM,r:8,from:TP[par[i]],start:2850+wi*950,lead:n===0,legs:[{to:TP[i],dur:700,step:1},{to:TP[i],dur:250,step:1}]})));
+      txt(L.top,520,290,'6 steps','lbl');
+      return {tokens,steps:['<b>Up</b>: GPUs add their numbers as they climb to the top (3 steps).','<b>Down</b>: the total is sent back down the branches (3 steps).'],note:'NCCL really uses two trees at once (a "double binary tree"), so every link stays busy.'};},
+    'In-switch (NVLS / SHARP)':L=>{for(let i=0;i<8;i++)wire(L,[[SX(i),SY(i)],[360,170]],{w:6,c:'var(--nvs)',op:.45});
+      const sw=node(L,{x:250,y:142,w:220,h:56,label:'NVSwitch',sub:'adds the numbers itself',c:'var(--nvs)'});
+      for(let i=0;i<8;i++)node(L,{x:SX(i)-65,y:SY(i)-22,w:130,h:44,label:`GPU ${i}`,c:G(i)});
+      const tokens=[];for(let i=0;i<8;i++){tokens.push({color:G(i),from:[SX(i),SY(i)],lead:i===0,legs:[{to:[360,170],dur:850,step:0},{to:[360,170],dur:500,step:1}]});
+        tokens.push({color:SUM,r:9,from:[360,170],start:1350,lead:i===0,legs:[{to:[SX(i),SY(i)],dur:850,step:2},{to:[SX(i),SY(i)],dur:400,step:2}]});}
+      return {tokens,events:[{el:sw,cls:'flash',t0:850,t1:1350}],steps:['Every GPU sends its numbers to the switch, once.','The switch <b>adds them up inside itself</b>.','The switch sends the total back to everyone. Only <b>2 trips</b>!'],note:'NVLS = NVLink SHARP, inside NVSwitch. On InfiniBand networks the same idea is called SHARP (NCCL name: CollNet).'};}
+  }});})();
+
+/* Diagram 9: decision */
+(()=>{const fig=document.getElementById('fig-decide'),sc=fig.querySelector('.scen'),list=fig.querySelector('.checks'),res=fig.querySelector('.result');
+  const S=[
+    {n:'Same server, NVLink',q:[['Is the other GPU in the same server?',1],['Are they joined by NVLink / NVSwitch?',1]],r:['P2P over NVLink','The fastest road. Hundreds of GB/s.',2]},
+    {n:'Same server, PCIe only',q:[['Is the other GPU in the same server?',1],['Are they joined by NVLink / NVSwitch?',0],['Can PCIe peer-to-peer work between them?',1]],r:['P2P over PCIe','Direct, but limited by the PCIe road. If P2P were not allowed, NCCL would fall back to SHM (through CPU memory).',1]},
+    {n:'Other server, RDMA NIC',q:[['Is the other GPU in the same server?',0],['Is there an RDMA NIC (InfiniBand or RoCE)?',1],['Is that NIC close to the GPU (same PCIe switch)?',1]],r:['NET/IB with GPUDirect RDMA','The NIC reads and writes GPU memory directly. Look for GDRDMA in the log.',4]},
+    {n:'Other server, NIC far away',q:[['Is the other GPU in the same server?',0],['Is there an RDMA NIC (InfiniBand or RoCE)?',1],['Is that NIC close to the GPU (same PCIe switch)?',0]],r:['NET/IB through CPU memory','Still RDMA, but data bounces through system memory. NCCL may also use PXN to hop over NVLink to a GPU near a NIC.',7]},
+    {n:'Other server, plain Ethernet',q:[['Is the other GPU in the same server?',0],['Is there an RDMA NIC (InfiniBand or RoCE)?',0]],r:['NET/Socket (TCP)','Works anywhere, but slowest, with heavy CPU use. Fine for a lab, not for big training.',0]}];
+  let timers=[];
+  function show(i,instant){timers.forEach(clearTimeout);timers=[];const s=S[i];
+    list.innerHTML=s.q.map(([q,a])=>`<li><span>${q}</span><span class="ans ${a?'yes':'no'}">${a?'YES':'NO'}</span></li>`).join('');
+    res.className='result';res.style.borderColor=`var(--g${s.r[2]})`;res.innerHTML=`<b style="color:var(--g${s.r[2]})">${s.r[0]}</b><span>${s.r[1]}</span>`;
+    const lis=[...list.children];
+    if(instant||RM){lis.forEach(l=>l.classList.add('in'));res.classList.add('in');return;}
+    lis.forEach((l,k)=>timers.push(setTimeout(()=>l.classList.add('in'),250+k*650)));
+    timers.push(setTimeout(()=>res.classList.add('in'),250+lis.length*650));}
+  S.forEach((s,i)=>{const b=document.createElement('button');b.textContent=s.n;b.setAttribute('aria-pressed',String(i===0));
+    b.addEventListener('click',()=>{sc.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));show(i);});sc.appendChild(b);});
+  show(0,true);})();
+})();
+</script>
+
+</body>
+</html>

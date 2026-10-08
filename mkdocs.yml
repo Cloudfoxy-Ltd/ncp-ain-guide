@@ -73,6 +73,7 @@ nav:
       - Lab 13 — Capstone challenge: labs/lab13.md
       - Appendices: labs/appendix.md
   - The Book: book.md
+  - Blog: https://cloudfoxy-ltd.github.io/ncp-ain-guide/blog/gpu-communication/
   - Errata: errata.md
   - Study Files:
       - Flashcards: flashcards/README.md

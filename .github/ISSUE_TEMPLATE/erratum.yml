@@ -14,11 +14,11 @@ body:
     attributes: {label: Edition line from the copyright page, placeholder: "First edition, 2026"}
   - type: input
     id: location
-    attributes: {label: Chapter, section and page, placeholder: "Chapter 5, section 5.3, page 187"}
+    attributes: {label: "Chapter, section and page", placeholder: "Chapter 5, section 5.3, page 187"}
     validations: {required: true}
   - type: textarea
     id: problem
-    attributes: {label: What the book says, and what you think is correct}
+    attributes: {label: "What the book says, and what you think is correct"}
     validations: {required: true}
   - type: input
     id: source
